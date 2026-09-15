@@ -2,259 +2,162 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#0a0a15">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>لعبة الروبوت — اربح USDT | PAID PLUS</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    /* ============================================
-       الأساسيات
-    ============================================ */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Cairo', sans-serif;
       -webkit-tap-highlight-color: transparent;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    html, body {
-      overscroll-behavior: none;
-      overflow-x: hidden;
     }
 
     body {
-      background: linear-gradient(160deg, #0a0a15 0%, #1a1a2e 50%, #16213e 100%);
+      background: linear-gradient(135deg, #0a0a15 0%, #1a1a2e 100%);
       min-height: 100vh;
-      min-height: 100dvh;
       color: #fff;
-      padding: 12px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      overflow-x: hidden;
     }
 
-    /* ============================================
-       الهيدر
-    ============================================ */
+    /* ===== الهيدر ===== */
     .header {
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 18px;
+      padding: 15px 20px;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
-      border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(106,17,203,0.35);
-      position: relative;
-      overflow: hidden;
+      border-radius: 18px;
+      margin-bottom: 15px;
+      box-shadow: 0 10px 30px rgba(106,17,203,0.4);
     }
 
-    .header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-      animation: shineHeader 3s infinite;
-    }
-
-    @keyframes shineHeader {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .logo {
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
-      position: relative;
-      z-index: 2;
-    }
+    .logo { font-size: 20px; font-weight: 900; letter-spacing: 1.5px; }
 
     .back-btn {
       color: #fff;
       text-decoration: none;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
-      padding: 7px 14px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 18px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
       transition: 0.3s;
-      position: relative;
-      z-index: 2;
-      backdrop-filter: blur(10px);
     }
 
-    .back-btn:active {
-      transform: scale(0.94);
-      background: rgba(255,255,255,0.3);
+    .back-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* ===== العنوان ===== */
+    .title {
+      text-align: center;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 700px;
     }
 
-    /* ============================================
-       الإحصائيات
-    ============================================ */
+    .title h1 {
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #6a11cb, #2575fc, #26a17b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+
+    .title p { font-size: 12px; color: #a0a0b0; }
+
+    /* ===== الإحصائيات ===== */
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 10px;
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
+      margin-bottom: 12px;
     }
 
     .stat {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 9px 6px;
+      border-radius: 14px;
+      padding: 10px;
       text-align: center;
-      backdrop-filter: blur(10px);
-      transition: 0.3s;
     }
 
     .stat-label {
-      font-size: 9px;
+      font-size: 10px;
       color: #a0a0b0;
       display: block;
-      margin-bottom: 2px;
-      font-weight: 600;
+      margin-bottom: 3px;
     }
 
     .stat-value {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 900;
       color: #26a17b;
       direction: ltr;
       display: block;
-      line-height: 1;
-      transition: transform 0.2s;
     }
 
     .stat-value.time { color: #3498db; }
     .stat-value.plays { color: #f39c12; }
 
-    .stat-value.bump {
-      animation: bump 0.3s;
-    }
-
-    @keyframes bump {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.25); }
-      100% { transform: scale(1); }
-    }
-
-    /* ============================================
-       شريط المرات
-    ============================================ */
-    .plays-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(135deg, rgba(243,156,18,0.12), rgba(243,156,18,0.06));
-      border: 1px solid rgba(243,156,18,0.25);
-      border-radius: 12px;
-      padding: 8px 14px;
-      width: 100%;
-      max-width: 500px;
-      font-size: 11px;
-      backdrop-filter: blur(10px);
-    }
-
-    .plays-bar-label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      color: #f39c12;
-      font-weight: 800;
-    }
-
-    .plays-bar-label svg { width: 14px; height: 14px; }
-
-    .plays-count {
-      font-size: 15px;
-      font-weight: 900;
-      color: #fff;
-      direction: ltr;
-    }
-
-    /* ============================================
-       ساحة اللعب — متجاوبة 100%
-    ============================================ */
+    /* ===== ساحة اللعب ===== */
     .game-board {
       position: relative;
       width: 100%;
-      max-width: 500px;
-      height: 65vh;
-      min-height: 380px;
-      max-height: 550px;
+      max-width: 700px;
+      height: 500px;
       background: 
-        radial-gradient(circle at 50% 100%, rgba(106,17,203,0.25), transparent 60%),
-        radial-gradient(circle at 0% 0%, rgba(38,161,123,0.15), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(106,17,203,0.2), transparent 60%),
         linear-gradient(180deg, #1a1a2e 0%, #0a0a15 100%);
       border-radius: 22px;
       overflow: hidden;
       border: 2px solid rgba(106,17,203,0.3);
-      box-shadow: 
-        0 0 60px rgba(106,17,203,0.25),
-        inset 0 0 80px rgba(0,0,0,0.4);
+      box-shadow: 0 0 60px rgba(106,17,203,0.25);
+      user-select: none;
       touch-action: none;
       cursor: none;
-      isolation: isolate;
     }
 
-    /* نجوم متحركة */
-    .stars-bg {
+    /* نجوم */
+    .game-board::before {
+      content: '';
       position: absolute;
       inset: 0;
+      background-image: 
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 80% 15%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 40% 50%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 90% 60%, rgba(255,255,255,0.5), transparent);
+      background-size: 100% 100%;
+      animation: twinkle 4s infinite;
       pointer-events: none;
-      overflow: hidden;
     }
 
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: #fff;
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: starFloat linear infinite;
-      box-shadow: 0 0 4px rgba(255,255,255,0.8);
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.4; }
     }
 
-    @keyframes starFloat {
-      0% { transform: translateY(-10px); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.8; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-
-    /* ============================================
-       الروبوت
-    ============================================ */
+    /* الروبوت */
     .robot {
       position: absolute;
       bottom: 15px;
-      width: 65px;
-      height: 65px;
+      width: 70px;
+      height: 70px;
       z-index: 20;
-      will-change: transform;
-      filter: drop-shadow(0 0 12px rgba(46,204,113,0.7));
-      transition: filter 0.2s;
-    }
-
-    .robot.hit {
-      filter: drop-shadow(0 0 25px rgba(231,76,60,1));
-      animation: robotHit 0.5s;
-    }
-
-    @keyframes robotHit {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-15deg) scale(1.15); }
-      75% { transform: rotate(15deg) scale(1.15); }
+      transition: left 0.08s linear;
+      filter: drop-shadow(0 0 15px rgba(46,204,113,0.6));
     }
 
     .robot img {
@@ -262,24 +165,17 @@
       height: 100%;
       object-fit: contain;
       pointer-events: none;
-      animation: robotIdle 2s ease-in-out infinite;
+      user-select: none;
     }
 
-    @keyframes robotIdle {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-3px) rotate(2deg); }
-    }
-
-    /* ============================================
-       العناصر الساقطة
-    ============================================ */
+    /* عنصر السقوط (USDT أو قنبلة) */
     .falling-item {
       position: absolute;
-      width: 48px;
-      height: 48px;
+      width: 55px;
+      height: 55px;
       z-index: 10;
-      will-change: transform;
-      pointer-events: none;
+      will-change: top;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
     }
 
     .falling-item img {
@@ -287,37 +183,30 @@
       height: 100%;
       object-fit: contain;
       pointer-events: none;
+      user-select: none;
     }
 
     .falling-item.usdt {
       filter: drop-shadow(0 0 12px rgba(38,161,123,0.9));
+      animation: spin 2s linear infinite;
     }
 
-    .falling-item.usdt img {
-      animation: spinCoin 1.5s linear infinite;
-    }
-
-    @keyframes spinCoin {
+    @keyframes spin {
       0% { transform: rotateY(0deg); }
       100% { transform: rotateY(360deg); }
     }
 
     .falling-item.bomb {
       filter: drop-shadow(0 0 15px rgba(231,76,60,0.9));
-    }
-
-    .falling-item.bomb img {
-      animation: bombPulse 0.6s ease-in-out infinite;
+      animation: bombPulse 0.5s infinite;
     }
 
     @keyframes bombPulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
+      50% { transform: scale(1.1); }
     }
 
-    /* ============================================
-       نقاط طائرة
-    ============================================ */
+    /* النقاط الطائرة */
     .score-popup {
       position: absolute;
       color: #2ecc71;
@@ -325,198 +214,110 @@
       font-size: 20px;
       pointer-events: none;
       z-index: 100;
-      text-shadow: 0 0 15px rgba(46,204,113,1);
-      animation: scoreFly 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      will-change: transform, opacity;
+      text-shadow: 0 0 12px rgba(46,204,113,0.9);
+      animation: scoreFly 0.7s forwards;
     }
 
     @keyframes scoreFly {
-      0% { transform: translate(-50%, 0) scale(0.3); opacity: 0; }
-      30% { transform: translate(-50%, -15px) scale(1.3); opacity: 1; }
-      100% { transform: translate(-50%, -70px) scale(1); opacity: 0; }
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      20% { transform: translateY(-10px) scale(1.2); opacity: 1; }
+      100% { transform: translateY(-60px) scale(1.3); opacity: 0; }
     }
 
-    /* ============================================
-       انفجار
-    ============================================ */
-    .explosion {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      margin-left: -50px;
-      margin-top: -50px;
-      pointer-events: none;
-      z-index: 150;
-      background: radial-gradient(circle, #fff 0%, #ffeb3b 20%, #ff6b35 50%, #c0392b 80%, transparent 100%);
-      border-radius: 50%;
-      animation: explodeAnim 0.7s ease-out forwards;
-      will-change: transform, opacity;
-    }
-
-    .explosion::before {
-      content: '';
-      position: absolute;
-      inset: -20px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,107,53,0.6) 0%, transparent 70%);
-      animation: explodeRing 0.7s ease-out forwards;
-    }
-
-    @keyframes explodeAnim {
-      0% { transform: scale(0.2); opacity: 1; }
-      50% { transform: scale(1.5); opacity: 1; }
-      100% { transform: scale(2.2); opacity: 0; }
-    }
-
-    @keyframes explodeRing {
-      0% { transform: scale(0.5); opacity: 1; }
-      100% { transform: scale(2.5); opacity: 0; }
-    }
-
-    /* اهتزاز الشاشة عند الانفجار */
-    .game-board.shake {
-      animation: boardShake 0.4s;
-    }
-
-    @keyframes boardShake {
-      0%, 100% { transform: translate(0, 0); }
-      20% { transform: translate(-8px, 4px); }
-      40% { transform: translate(8px, -4px); }
-      60% { transform: translate(-6px, -3px); }
-      80% { transform: translate(6px, 3px); }
-    }
-
-    /* ============================================
-       شاشة البداية / النهاية
-    ============================================ */
+    /* شاشة البداية/النهاية */
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(10,10,21,0.92);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      background: rgba(10,10,21,0.95);
+      backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 200;
-      padding: 18px;
-      transition: opacity 0.35s, visibility 0.35s;
+      padding: 15px;
+      transition: opacity 0.3s;
     }
 
     .overlay.hidden {
       opacity: 0;
-      visibility: hidden;
       pointer-events: none;
     }
 
     .overlay-content {
       text-align: center;
-      max-width: 340px;
-      width: 100%;
-      animation: overlayIn 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 400px;
+      animation: fadeIn 0.4s;
     }
 
-    @keyframes overlayIn {
-      from { transform: scale(0.85) translateY(20px); opacity: 0; }
-      to { transform: scale(1) translateY(0); opacity: 1; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .overlay-icon {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 15px;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: iconFloat 3s ease-in-out infinite;
+      animation: float 3s ease-in-out infinite;
     }
 
-    @keyframes iconFloat {
+    @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-12px); }
     }
 
     .overlay-icon img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 10px 30px rgba(106,17,203,0.7));
-    }
-
-    .overlay-icon.emoji {
-      font-size: 75px;
+      filter: drop-shadow(0 10px 25px rgba(106,17,203,0.7));
     }
 
     .overlay h2 {
       font-size: 24px;
       font-weight: 900;
-      margin-bottom: 8px;
-      background: linear-gradient(90deg, #fff, #a0a0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      margin-bottom: 10px;
     }
 
     .overlay p {
       color: #a0a0b0;
       font-size: 13px;
       line-height: 1.7;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .overlay p strong {
       color: #26a17b;
       font-size: 16px;
       display: block;
-      margin: 5px 0;
-      direction: ltr;
+      margin: 6px 0;
     }
 
-    /* ============================================
-       زر البدء
-    ============================================ */
     .start-btn {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      gap: 10px;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: #fff;
       border: none;
-      padding: 14px 38px;
+      padding: 15px 40px;
       border-radius: 30px;
       font-weight: 900;
       font-size: 15px;
       cursor: pointer;
       font-family: 'Cairo', sans-serif;
-      transition: transform 0.25s, box-shadow 0.25s;
-      box-shadow: 
-        0 12px 30px rgba(106,17,203,0.45),
-        inset 0 -3px 0 rgba(0,0,0,0.15);
-      position: relative;
-      overflow: hidden;
+      transition: 0.3s;
+      box-shadow: 0 15px 35px rgba(106,17,203,0.45);
     }
 
-    .start-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: 0.6s;
-    }
+    .start-btn svg { width: 18px; height: 18px; }
 
-    .start-btn:not(:disabled):active::before {
-      left: 100%;
-    }
-
-    .start-btn svg { width: 16px; height: 16px; }
-
-    .start-btn:not(:disabled):active {
-      transform: scale(0.95);
-      box-shadow: 0 5px 15px rgba(106,17,203,0.5);
+    .start-btn:hover:not(:disabled) {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 22px 50px rgba(106,17,203,0.6);
     }
 
     .start-btn:disabled {
@@ -524,19 +325,18 @@
       cursor: not-allowed;
     }
 
-    /* ============================================
-       بطاقة الرصيد
-    ============================================ */
+    /* بطاقة الرصيد */
     .balance-card {
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       background: linear-gradient(135deg, #26a17b 0%, #2ecc71 100%);
-      border-radius: 18px;
-      padding: 15px 18px;
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-top: 15px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 12px 35px rgba(38,161,123,0.35);
+      gap: 15px;
+      box-shadow: 0 15px 40px rgba(38,161,123,0.35);
       position: relative;
       overflow: hidden;
     }
@@ -544,33 +344,26 @@
     .balance-card::before {
       content: '';
       position: absolute;
-      width: 160px;
-      height: 160px;
-      background: rgba(255,255,255,0.12);
+      width: 180px;
+      height: 180px;
+      background: rgba(255,255,255,0.1);
       border-radius: 50%;
-      top: -60px;
-      right: -40px;
-      animation: balanceFloat 6s ease-in-out infinite;
-    }
-
-    @keyframes balanceFloat {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-15px, 10px); }
+      top: -70px;
+      right: -50px;
     }
 
     .balance-icon {
-      width: 48px;
-      height: 48px;
+      width: 55px;
+      height: 55px;
       background: rgba(255,255,255,0.2);
-      border-radius: 13px;
+      border-radius: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      padding: 7px;
+      padding: 8px;
       position: relative;
       z-index: 2;
-      backdrop-filter: blur(10px);
     }
 
     .balance-icon img { width: 100%; height: 100%; object-fit: contain; }
@@ -578,116 +371,96 @@
     .balance-info { flex: 1; position: relative; z-index: 2; }
 
     .balance-label {
-      font-size: 10px;
-      color: rgba(255,255,255,0.9);
-      font-weight: 700;
-      margin-bottom: 2px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      margin-bottom: 3px;
     }
 
     .balance-value {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 900;
       color: #fff;
       direction: ltr;
+      text-align: right;
       line-height: 1;
       display: flex;
       align-items: baseline;
-      gap: 4px;
+      gap: 5px;
     }
 
-    .balance-symbol { font-size: 11px; opacity: 0.9; }
+    .balance-symbol { font-size: 12px; opacity: 0.9; }
 
     .withdraw-btn {
       background: #fff;
       color: #26a17b;
       border: none;
-      padding: 10px 16px;
-      border-radius: 12px;
+      padding: 12px 20px;
+      border-radius: 14px;
       font-weight: 900;
-      font-size: 12px;
+      font-size: 13px;
       cursor: pointer;
       font-family: 'Cairo', sans-serif;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       transition: 0.3s;
       position: relative;
       z-index: 2;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       flex-shrink: 0;
     }
 
-    .withdraw-btn svg { width: 14px; height: 14px; }
+    .withdraw-btn svg { width: 16px; height: 16px; }
 
-    .withdraw-btn:not(:disabled):active {
-      transform: scale(0.94);
+    .withdraw-btn:hover:not(:disabled) {
+      transform: translateY(-3px) scale(1.05);
     }
 
     .withdraw-btn:disabled {
-      background: rgba(255,255,255,0.35);
-      color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.6);
       cursor: not-allowed;
     }
 
-    /* ============================================
-       شرح اللعبة
-    ============================================ */
-    .how-to {
-      width: 100%;
-      max-width: 500px;
-      padding: 15px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-    }
-
-    .how-to h3 {
-      font-size: 14px;
-      font-weight: 900;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-    }
-
-    .how-item {
-      text-align: center;
-      padding: 8px 4px;
-      background: rgba(106,17,203,0.08);
-      border-radius: 10px;
-      border: 1px solid rgba(106,17,203,0.15);
-      transition: 0.3s;
-    }
-
-    .how-num {
-      width: 24px;
-      height: 24px;
-      margin: 0 auto 4px;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      border-radius: 50%;
+    /* شريط المرات */
+    .plays-bar {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 11px;
+      justify-content: space-between;
+      background: rgba(243,156,18,0.1);
+      border: 1px solid rgba(243,156,18,0.3);
+      border-radius: 14px;
+      padding: 10px 15px;
+      margin-bottom: 12px;
+      width: 100%;
+      max-width: 700px;
+      font-size: 12px;
     }
 
-    .how-item h4 { font-size: 10px; margin-bottom: 1px; }
-    .how-item p { font-size: 9px; color: #a0a0b0; }
+    .plays-bar-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #f39c12;
+      font-weight: 800;
+    }
 
-    /* ============================================
-       نافذة السحب
-    ============================================ */
+    .plays-bar-label svg { width: 16px; height: 16px; }
+
+    .plays-count {
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+      direction: ltr;
+    }
+
+    /* نافذة السحب */
     .withdraw-modal {
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -696,40 +469,31 @@
       overflow-y: auto;
     }
 
-    .withdraw-modal.show {
-      display: flex;
-      animation: fadeIn 0.3s;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    .withdraw-modal.show { display: flex; animation: fadeIn 0.3s; }
 
     .withdraw-modal-content {
-      background: linear-gradient(160deg, #1a1a2e, #0f0f1a);
-      border-radius: 22px;
-      padding: 26px 22px;
-      max-width: 400px;
+      background: #1a1a2e;
+      border-radius: 24px;
+      padding: 30px 25px;
+      max-width: 420px;
       width: 100%;
       position: relative;
-      box-shadow: 
-        0 30px 80px rgba(0,0,0,0.7),
-        0 0 0 1px rgba(255,255,255,0.05);
-      animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      animation: slideUp 0.4s;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
-    @keyframes modalIn {
-      from { transform: scale(0.9) translateY(30px); opacity: 0; }
-      to { transform: scale(1) translateY(0); opacity: 1; }
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .modal-close {
       position: absolute;
-      top: 12px;
-      left: 12px;
-      width: 34px;
-      height: 34px;
+      top: 15px;
+      left: 15px;
+      width: 36px;
+      height: 36px;
       background: rgba(255,255,255,0.08);
       border: none;
       border-radius: 50%;
@@ -740,86 +504,80 @@
       transition: 0.3s;
     }
 
-    .modal-close:active { transform: scale(0.9); background: rgba(255,0,0,0.25); }
-    .modal-close svg { width: 15px; height: 15px; color: #fff; }
+    .modal-close:hover { background: rgba(255,0,0,0.2); }
+    .modal-close svg { width: 16px; height: 16px; color: #fff; }
 
-    .modal-header { text-align: center; margin-bottom: 18px; }
+    .modal-header { text-align: center; margin-bottom: 20px; }
 
     .modal-binance-logo {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 10px;
+      width: 75px;
+      height: 75px;
+      margin: 0 auto 12px;
       background: #000;
-      border-radius: 17px;
-      padding: 11px;
+      border-radius: 18px;
+      padding: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 0 3px rgba(240,185,11,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 0 3px rgba(240,185,11,0.3);
       border: 2px solid rgba(240,185,11,0.4);
-      animation: binanceGlow 2s infinite;
-    }
-
-    @keyframes binanceGlow {
-      0%, 100% { box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 0 3px rgba(240,185,11,0.3); }
-      50% { box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 0 5px rgba(240,185,11,0.5); }
     }
 
     .modal-binance-logo img { width: 100%; height: 100%; object-fit: contain; }
 
-    .modal-header h2 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
-    .modal-header p { font-size: 11px; color: #a0a0b0; }
+    .modal-header h2 { font-size: 20px; font-weight: 900; margin-bottom: 5px; }
+    .modal-header p { font-size: 12px; color: #a0a0b0; }
 
     .frozen-balance {
-      background: linear-gradient(135deg, rgba(38,161,123,0.12), rgba(46,204,113,0.06));
+      background: linear-gradient(135deg, rgba(38,161,123,0.1), rgba(46,204,113,0.1));
       border: 2px solid rgba(38,161,123,0.3);
-      border-radius: 14px;
-      padding: 13px;
+      border-radius: 16px;
+      padding: 15px;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .frozen-label {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 10px;
+      font-size: 11px;
       color: #a0a0b0;
       font-weight: 700;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
-    .frozen-label svg { width: 12px; height: 12px; color: #f39c12; }
+    .frozen-label svg { width: 13px; height: 13px; color: #f39c12; }
 
     .frozen-amount {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 900;
       color: #26a17b;
       direction: ltr;
       display: flex;
       align-items: baseline;
       justify-content: center;
-      gap: 4px;
+      gap: 5px;
       line-height: 1;
     }
 
-    .frozen-symbol { font-size: 11px; opacity: 0.8; }
+    .frozen-symbol { font-size: 12px; opacity: 0.8; }
 
-    .form-group { margin-bottom: 13px; }
+    .form-group { margin-bottom: 15px; }
 
     .form-group label {
       display: block;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       color: #fff;
     }
 
     .form-group input {
       width: 100%;
-      padding: 12px 14px;
+      padding: 13px 15px;
       border: 2px solid rgba(255,255,255,0.1);
-      border-radius: 11px;
+      border-radius: 12px;
       background: rgba(255,255,255,0.04);
       color: #fff;
       font-family: 'Cairo', sans-serif;
@@ -832,84 +590,123 @@
       outline: none;
       border-color: #f0b90b;
       box-shadow: 0 0 0 4px rgba(240,185,11,0.15);
-      background: rgba(255,255,255,0.06);
     }
 
     .form-group input::placeholder { color: rgba(255,255,255,0.3); }
 
     .submit-withdraw-btn {
       width: 100%;
-      padding: 14px;
+      padding: 15px;
       border: none;
-      border-radius: 13px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #f0b90b, #fcd535);
       color: #1a1a2e;
       font-family: 'Cairo', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       transition: 0.3s;
-      box-shadow: 0 10px 25px rgba(240,185,11,0.35);
-      margin-top: 15px;
+      box-shadow: 0 12px 30px rgba(240,185,11,0.4);
+      margin-top: 18px;
     }
 
-    .submit-withdraw-btn svg { width: 15px; height: 15px; }
+    .submit-withdraw-btn svg { width: 16px; height: 16px; }
 
-    .submit-withdraw-btn:not(:disabled):active {
-      transform: scale(0.97);
+    .submit-withdraw-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(240,185,11,0.6);
     }
 
     .submit-withdraw-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .success-icon-big {
-      width: 75px;
-      height: 75px;
-      margin: 0 auto 15px;
+      width: 85px;
+      height: 85px;
+      margin: 0 auto 18px;
       background: linear-gradient(135deg, #26a17b, #2ecc71);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: successPop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeIn 0.5s;
       box-shadow: 0 15px 40px rgba(38,161,123,0.5);
     }
 
-    @keyframes successPop {
-      0% { transform: scale(0); }
-      60% { transform: scale(1.15); }
-      100% { transform: scale(1); }
+    .success-icon-big svg { width: 45px; height: 45px; color: #fff; }
+
+    /* شرح */
+    .how-to {
+      width: 100%;
+      max-width: 700px;
+      margin-top: 15px;
+      padding: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
     }
 
-    .success-icon-big svg { width: 40px; height: 40px; color: #fff; }
+    .how-to h3 {
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 12px;
+    }
 
-    /* ============================================
-       للجوال
-    ============================================ */
-    @media (max-width: 400px) {
-      body { padding: 8px; gap: 8px; }
-      .header { padding: 10px 14px; border-radius: 14px; }
-      .logo { font-size: 15px; }
-      .back-btn { font-size: 11px; padding: 6px 12px; }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px;
+    }
+
+    .how-item {
+      text-align: center;
+      padding: 10px 6px;
+      background: rgba(106,17,203,0.08);
+      border-radius: 12px;
+      border: 1px solid rgba(106,17,203,0.2);
+    }
+
+    .how-num {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 5px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .how-item h4 { font-size: 12px; margin-bottom: 2px; }
+    .how-item p { font-size: 10px; color: #a0a0b0; }
+
+    /* للجوال */
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .header { padding: 12px 15px; }
+      .logo { font-size: 16px; }
+      .back-btn { font-size: 12px; padding: 6px 12px; }
+      .title h1 { font-size: 18px; }
+      .title p { font-size: 11px; }
       .stat-value { font-size: 15px; }
-      .game-board { height: 62vh; min-height: 340px; border-radius: 18px; }
-      .robot { width: 55px; height: 55px; }
-      .falling-item { width: 42px; height: 42px; }
-      .balance-card { padding: 12px 14px; }
-      .balance-icon { width: 42px; height: 42px; }
-      .balance-value { font-size: 17px; }
-      .withdraw-btn { padding: 8px 12px; font-size: 11px; }
-      .how-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    /* ============================================
-       للشاشات العريضة
-    ============================================ */
-    @media (min-width: 768px) {
-      .game-board { height: 500px; }
+      .game-board { height: 420px; }
+      .robot { width: 60px; height: 60px; }
+      .falling-item { width: 48px; height: 48px; }
+      .balance-card { padding: 14px; gap: 10px; }
+      .balance-icon { width: 45px; height: 45px; }
+      .balance-value { font-size: 18px; }
+      .withdraw-btn { padding: 9px 14px; font-size: 11px; }
+      .withdraw-btn svg { width: 13px; height: 13px; }
+      .withdraw-modal-content { padding: 22px 18px; border-radius: 20px; }
+      .modal-header h2 { font-size: 17px; }
+      .modal-binance-logo { width: 65px; height: 65px; }
+      .frozen-amount { font-size: 22px; }
     }
   </style>
 </head>
@@ -919,6 +716,12 @@
   <div class="header">
     <span class="logo">PAID PLUS</span>
     <a href="games.html" class="back-btn">← الألعاب</a>
+  </div>
+
+  <!-- العنوان -->
+  <div class="title">
+    <h1>🤖 اجمع USDT وتجنب القنابل</h1>
+    <p>حرّك الروبوت واجمع العملات — تجنب القنابل!</p>
   </div>
 
   <!-- الإحصائيات -->
@@ -947,20 +750,34 @@
     </div>
     <div class="plays-count" id="playsLeft">10</div>
   </div>
+<!--ADSTERRA-->
+  <script>
+  atOptions = {
+    'key' : '368963302f52616ae408b99d5bc68f1a',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
 
+  
+
+  <script src="https://pl31327659.profitableratecpmnetwork.com/b8/30/f3/b830f333cc9c4375b32b4e9916029d52.js"></script>
   <!-- ساحة اللعب -->
   <div class="game-board" id="gameBoard">
-    <div class="stars-bg" id="starsBg"></div>
-    <img class="robot" id="robot" src="RO.png" alt="الروبوت">
+
+    <img class="robot" id="robot" src="ROD.png" alt="الروبوت">
 
     <div class="overlay" id="overlay">
-      <div class="overlay-content" id="overlayContent">
+      <div class="overlay-content">
         <div class="overlay-icon">
-          <img src="RO.png" alt="الروبوت">
+          <img src="ROD.png" alt="الروبوت">
         </div>
         <h2 id="overlayTitle">جاهز للعب؟</h2>
         <p id="overlayText">
-          حرّك الروبوت بإصبعك<br>
+          حرّك الروبوت بلمس الشاشة<br>
           اجمع <strong>USDT</strong> وتجنب <strong>القنابل</strong><br>
           مدة اللعب: 20 ثانية
         </p>
@@ -977,7 +794,7 @@
   <!-- بطاقة الرصيد -->
   <div class="balance-card">
     <div class="balance-icon">
-      <img src="USDT_Logo.png" alt="USDT">
+      <img src="USDT_logo.png" alt="USDT">
     </div>
     <div class="balance-info">
       <div class="balance-label">رصيدك</div>
@@ -1002,22 +819,22 @@
       <div class="how-item">
         <div class="how-num">1</div>
         <h4>اضغط ابدأ</h4>
-        <p>استعد</p>
+        <p>استعد للعب</p>
       </div>
       <div class="how-item">
         <div class="how-num">2</div>
-        <h4>حرّك</h4>
-        <p>بإصبعك</p>
+        <h4>حرّك بإصبعك</h4>
+        <p>المس الشاشة</p>
       </div>
       <div class="how-item">
         <div class="how-num">3</div>
-        <h4>اجمع</h4>
-        <p>USDT</p>
+        <h4>اجمع USDT</h4>
+        <p>+0.0005 لكل فوز</p>
       </div>
       <div class="how-item">
         <div class="how-num">4</div>
-        <h4>تجنب</h4>
-        <p>القنابل</p>
+        <h4>تجنب القنابل</h4>
+        <p>💣 القنبلة = خسارة</p>
       </div>
     </div>
   </div>
@@ -1087,15 +904,14 @@
     /* ============================================
        الإعدادات
     ============================================ */
-    const GAME_DURATION = 20;
-    const REWARD_PER_WIN = 0.0005;
-    const MAX_PLAYS = 10;
-    const COOLDOWN = 3 * 60 * 60 * 1000;
-    const MIN_WITHDRAW = 0.01;
-    const ROBOT_LERP = 0.18;
-    const ITEM_INTERVAL = 550;
-    const BOMB_CHANCE = 0.35;
-    const BASE_FALL_SPEED = 2.8;
+    const GAME_DURATION = 20;                  // 20 ثانية
+    const REWARD_PER_WIN = 0.0005;             // ربح لكل فوز
+    const MAX_PLAYS = 10;                      // 10 مرات
+    const COOLDOWN = 3 * 60 * 60 * 1000;       // 3 ساعات
+    const MIN_WITHDRAW = 0.01;                 // 0.01 USDT
+    const ROBOT_SPEED = 0.25;                  // سرعة الروبوت (0-1)
+    const ITEM_SPAWN_RATE = 700;               // كل 700ms يسقط عنصر
+    const BOMB_CHANCE = 0.4;                   // 40% قنابل
 
     /* ============================================
        حالة اللعبة
@@ -1107,15 +923,12 @@
       gameOver: false,
       timer: null,
       spawner: null,
-      animationId: null,
-      robotX: 0,
-      targetX: 0,
-      robotCurrentX: 0,
+      animationFrame: null,
+      robotX: 50,
+      targetX: 50,
       items: [],
-      lastFrame: 0,
-      boardW: 0,
-      boardH: 0,
-      robotW: 0,
+      lastItemTime: 0,
+      lastBombTime: 0,
       balance: parseFloat(localStorage.getItem('robotBalance') || '0'),
       wins: parseInt(localStorage.getItem('robotWins') || '0'),
       playsLeft: parseInt(localStorage.getItem('robotPlaysLeft') || String(MAX_PLAYS)),
@@ -1128,7 +941,6 @@
     const board = document.getElementById('gameBoard');
     const robot = document.getElementById('robot');
     const overlay = document.getElementById('overlay');
-    const overlayContent = document.getElementById('overlayContent');
     const overlayTitle = document.getElementById('overlayTitle');
     const overlayText = document.getElementById('overlayText');
     const startBtn = document.getElementById('startBtn');
@@ -1140,64 +952,13 @@
     const withdrawBtn = document.getElementById('withdrawBtn');
     const withdrawText = document.getElementById('withdrawText');
     const frozenAmount = document.getElementById('frozenAmount');
-    const starsBg = document.getElementById('starsBg');
-
-    /* ============================================
-       الأصوات
-    ============================================ */
-    const soundExplosion = new Audio('SO1.mp3');
-    const soundWin = new Audio('SO2.mp3');
-    soundExplosion.preload = 'auto';
-    soundWin.preload = 'auto';
-    soundExplosion.volume = 0.7;
-    soundWin.volume = 0.7;
-
-    function playSound(audio) {
-      try {
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && p.catch) p.catch(() => {});
-      } catch (e) {}
-    }
-
-    /* ============================================
-       إنشاء النجوم
-    ============================================ */
-    function createStars() {
-      starsBg.innerHTML = '';
-      for (let i = 0; i < 20; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.animationDuration = (3 + Math.random() * 4) + 's';
-        star.style.animationDelay = Math.random() * 5 + 's';
-        star.style.opacity = 0.3 + Math.random() * 0.5;
-        starsBg.appendChild(star);
-      }
-    }
-
-    /* ============================================
-       قياسات الساحة
-    ============================================ */
-    function measureBoard() {
-      state.boardW = board.clientWidth;
-      state.boardH = board.clientHeight;
-      state.robotW = robot.clientWidth;
-    }
-
-    window.addEventListener('resize', () => {
-      measureBoard();
-      if (state.running) {
-        state.targetX = Math.min(state.targetX, state.boardW - state.robotW);
-        state.robotCurrentX = state.targetX;
-      }
-    });
 
     /* ============================================
        إعادة التعيين كل 3 ساعات
     ============================================ */
     function checkReset() {
       const now = Date.now();
+
       if (state.lastReset === 0) {
         state.lastReset = now;
         state.playsLeft = MAX_PLAYS;
@@ -1205,6 +966,7 @@
         localStorage.setItem('robotPlaysLeft', MAX_PLAYS);
         return;
       }
+
       if (now - state.lastReset >= COOLDOWN) {
         state.playsLeft = MAX_PLAYS;
         state.lastReset = now;
@@ -1229,14 +991,8 @@
         withdrawText.textContent = 'سحب';
       } else {
         withdrawBtn.disabled = true;
-        withdrawText.textContent = 'الحد 0.01';
+        withdrawText.textContent = 'الحد الأدنى 0.01';
       }
-    }
-
-    function bumpValue(el) {
-      el.classList.remove('bump');
-      void el.offsetWidth;
-      el.classList.add('bump');
     }
 
     /* ============================================
@@ -1248,51 +1004,46 @@
 
       if (state.playsLeft <= 0) return;
 
-      measureBoard();
-
+      // إعادة تعيين
       state.score = 0;
       state.timeLeft = GAME_DURATION;
       state.running = true;
       state.gameOver = false;
+      state.robotX = 50;
+      state.targetX = 50;
       state.playsLeft--;
-      state.items = [];
 
       localStorage.setItem('robotPlaysLeft', state.playsLeft);
 
+      // إخفاء overlay
       overlay.classList.add('hidden');
-      board.classList.remove('shake');
-      robot.classList.remove('hit');
 
-      // تنظيف
-      document.querySelectorAll('.falling-item, .score-popup, .explosion').forEach(el => el.remove());
+      // تنظيف العناصر السابقة
+      document.querySelectorAll('.falling-item, .score-popup').forEach(el => el.remove());
+      state.items = [];
 
-      // موضع الروبوت
-      state.robotCurrentX = (state.boardW - state.robotW) / 2;
-      state.targetX = state.robotCurrentX;
-      robot.style.transform = `translateX(${state.robotCurrentX}px)`;
+      // وضع الروبوت في المنتصف
+      updateRobotPosition();
 
       updateUI();
 
       // المؤقت
       state.timer = setInterval(() => {
         state.timeLeft--;
-        timeEl.textContent = state.timeLeft;
-        bumpValue(timeEl);
+        updateUI();
 
         if (state.timeLeft <= 0) {
           endGame(true);
         }
       }, 1000);
 
-      // بدء إسقاط العناصر
-      state.lastFrame = performance.now();
-      state.spawner = setInterval(spawnItem, ITEM_INTERVAL);
-
-      // أول عنصر فورًا
-      setTimeout(spawnItem, 200);
+      // إسقاط العناصر
+      state.lastItemTime = 0;
+      state.lastBombTime = 0;
+      state.spawner = setInterval(spawnItem, ITEM_SPAWN_RATE);
 
       // بدء حلقة اللعبة
-      state.animationId = requestAnimationFrame(gameLoop);
+      state.animationFrame = requestAnimationFrame(gameLoop);
     }
 
     /* ============================================
@@ -1302,106 +1053,112 @@
       if (!state.running || state.gameOver) return;
 
       const isBomb = Math.random() < BOMB_CHANCE;
-      const itemW = window.innerWidth < 400 ? 42 : 48;
-
-      const el = document.createElement('div');
-      el.className = 'falling-item ' + (isBomb ? 'bomb' : 'usdt');
-
+      const item = document.createElement('div');
+      item.className = 'falling-item ' + (isBomb ? 'bomb' : 'usdt');
+      
       const img = document.createElement('img');
       img.src = isBomb ? 'BOMB.png' : 'USDT_Logo.png';
       img.alt = isBomb ? 'bomb' : 'usdt';
-      el.appendChild(img);
+      item.appendChild(img);
 
-      const maxX = state.boardW - itemW;
-      const x = Math.random() * maxX;
+      // موضع عشوائي
+      const boardW = board.clientWidth;
+      const itemW = 55;
+      const x = Math.random() * (boardW - itemW);
       const y = -60;
 
-      el.style.width = itemW + 'px';
-      el.style.height = itemW + 'px';
-      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      item.style.left = x + 'px';
+      item.style.top = y + 'px';
 
-      board.appendChild(el);
+      board.appendChild(item);
 
       state.items.push({
-        el: el,
+        el: item,
         x: x,
         y: y,
-        w: itemW,
-        h: itemW,
         isBomb: isBomb,
-        speed: BASE_FALL_SPEED + Math.random() * 1.5
+        speed: 3 + Math.random() * 2
       });
     }
 
     /* ============================================
        حلقة اللعبة
     ============================================ */
-    function gameLoop(now) {
+    function gameLoop() {
       if (!state.running || state.gameOver) return;
 
-      const delta = Math.min(now - state.lastFrame, 50);
-      state.lastFrame = now;
-      const factor = delta / 16.67;
+      const boardW = board.clientWidth;
+      const boardH = board.clientHeight;
 
-      // حركة الروبوت الناعمة (lerp)
-      const dx = state.targetX - state.robotCurrentX;
-      if (Math.abs(dx) > 0.3) {
-        state.robotCurrentX += dx * ROBOT_LERP * factor;
-        robot.style.transform = `translate3d(${state.robotCurrentX}px, 0, 0)`;
+      // تحديث موقع الروبوت (سلس)
+      const dx = state.targetX - state.robotX;
+      if (Math.abs(dx) > 0.5) {
+        state.robotX += dx * ROBOT_SPEED;
+        updateRobotPosition();
       }
 
-      // منطقة التصادم للروبوت
-      const robotLeft = state.robotCurrentX + 8;
-      const robotRight = state.robotCurrentX + state.robotW - 8;
-      const robotTop = state.boardH - 15 - 65 + 10;
-      const robotBottom = state.boardH - 15;
-
       // تحديث العناصر
+      const robotRect = robot.getBoundingClientRect();
+      const boardRect = board.getBoundingClientRect();
+
       for (let i = state.items.length - 1; i >= 0; i--) {
         const item = state.items[i];
-        item.y += item.speed * factor;
-
-        // تحريك بـ transform (أسرع)
-        item.el.style.transform = `translate3d(${item.x}px, ${item.y}px, 0)`;
+        item.y += item.speed;
+        item.el.style.top = item.y + 'px';
 
         // التحقق من التصادم
-        const itemLeft = item.x + 6;
-        const itemRight = item.x + item.w - 6;
-        const itemTop = item.y + 6;
-        const itemBottom = item.y + item.h - 6;
+        const itemRect = item.el.getBoundingClientRect();
 
-        const collides = 
-          itemRight > robotLeft &&
-          itemLeft < robotRight &&
-          itemBottom > robotTop &&
-          itemTop < robotBottom;
-
-        if (collides) {
+        if (checkCollision(robotRect, itemRect)) {
           if (item.isBomb) {
-            explode(item.x + item.w / 2, item.y + item.h / 2);
+            // 💥 القنبلة = خسارة
+            explode(item.x, item.y);
             item.el.remove();
             state.items.splice(i, 1);
             endGame(false);
             return;
           } else {
+            // ✅ USDT = +1 نقطة
             state.score++;
-            scoreEl.textContent = state.score;
-            bumpValue(scoreEl);
-            showScorePopup(item.x + item.w / 2, item.y + item.h / 2);
+            showScorePopup(item.x, item.y);
             item.el.remove();
             state.items.splice(i, 1);
+            updateUI();
             continue;
           }
         }
 
-        // خارج الشاشة
-        if (item.y > state.boardH + 20) {
+        // إذا خرج من الشاشة
+        if (item.y > boardH) {
           item.el.remove();
           state.items.splice(i, 1);
         }
       }
 
-      state.animationId = requestAnimationFrame(gameLoop);
+      state.animationFrame = requestAnimationFrame(gameLoop);
+    }
+
+    /* ============================================
+       التحقق من التصادم
+    ============================================ */
+    function checkCollision(a, b) {
+      return !(
+        a.right < b.left ||
+        a.left > b.right ||
+        a.bottom < b.top ||
+        a.top > b.bottom
+      );
+    }
+
+    /* ============================================
+       تحديث موقع الروبوت
+    ============================================ */
+    function updateRobotPosition() {
+      const robotW = robot.clientWidth;
+      const boardW = board.clientWidth;
+      const maxX = boardW - robotW;
+      const x = Math.max(0, Math.min(maxX, state.robotX));
+      robot.style.left = x + 'px';
     }
 
     /* ============================================
@@ -1414,34 +1171,42 @@
       popup.style.left = x + 'px';
       popup.style.top = y + 'px';
       board.appendChild(popup);
-      setTimeout(() => popup.remove(), 800);
+      setTimeout(() => popup.remove(), 700);
     }
 
     /* ============================================
-       انفجار
+       انفجار القنبلة
     ============================================ */
     function explode(x, y) {
       const explosion = document.createElement('div');
-      explosion.className = 'explosion';
-      explosion.style.left = x + 'px';
-      explosion.style.top = y + 'px';
+      explosion.style.cssText = `
+        position: absolute;
+        left: ${x}px;
+        top: ${y}px;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle, #ff6b35, #f39c12, transparent 70%);
+        border-radius: 50%;
+        z-index: 150;
+        animation: explodeAnim 0.6s forwards;
+      `;
       board.appendChild(explosion);
-
-      robot.classList.add('hit');
-      board.classList.add('shake');
-
-      // صوت الانفجار
-      playSound(soundExplosion);
-
-      // اهتزاز الجوال
-      if (navigator.vibrate) navigator.vibrate(200);
-
-      setTimeout(() => explosion.remove(), 700);
-      setTimeout(() => board.classList.remove('shake'), 400);
+      setTimeout(() => explosion.remove(), 600);
     }
 
+    // إضافة keyframes للانفجار
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes explodeAnim {
+        0% { transform: scale(0.3); opacity: 1; }
+        50% { transform: scale(2); opacity: 0.8; }
+        100% { transform: scale(3); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
     /* ============================================
-       تحريك الروبوت
+       تحريك الروبوت (لمس / ماوس)
     ============================================ */
     function moveRobot(e) {
       if (!state.running || state.gameOver) return;
@@ -1451,24 +1216,18 @@
 
       if (e.touches && e.touches.length > 0) {
         clientX = e.touches[0].clientX;
-      } else if (e.changedTouches && e.changedTouches.length > 0) {
-        clientX = e.changedTouches[0].clientX;
       } else {
         clientX = e.clientX;
       }
 
       const x = clientX - rect.left;
-      const target = x - state.robotW / 2;
-      state.targetX = Math.max(0, Math.min(state.boardW - state.robotW, target));
+      const robotW = robot.clientWidth;
+      state.targetX = x - robotW / 2;
     }
 
-    // أحداث الماوس
     board.addEventListener('mousemove', moveRobot);
-    board.addEventListener('mousedown', moveRobot);
-
-    // أحداث اللمس — passive:false لتجنب التمرير
-    board.addEventListener('touchstart', moveRobot, { passive: true });
     board.addEventListener('touchmove', moveRobot, { passive: true });
+    board.addEventListener('touchstart', moveRobot, { passive: true });
 
     /* ============================================
        إنهاء اللعبة
@@ -1480,8 +1239,9 @@
 
       clearInterval(state.timer);
       clearInterval(state.spawner);
-      cancelAnimationFrame(state.animationId);
+      cancelAnimationFrame(state.animationFrame);
 
+      // تنظيف
       document.querySelectorAll('.falling-item').forEach(el => el.remove());
       state.items = [];
 
@@ -1491,22 +1251,22 @@
       let prizeText = '';
 
       if (survived) {
+        // نجح في البقاء 20 ثانية
         reward = REWARD_PER_WIN;
         state.balance += reward;
         state.wins++;
         localStorage.setItem('robotBalance', state.balance);
         localStorage.setItem('robotWins', state.wins);
 
-        iconHTML = '<div class="overlay-icon emoji">🏆</div>';
+        iconHTML = '🏆';
         titleText = 'أحسنت!';
         prizeText = `
           نجحت في البقاء!
           <strong>+${reward.toFixed(4)} USDT</strong>
         `;
-
-        playSound(soundWin);
       } else {
-        iconHTML = '<div class="overlay-icon emoji">💥</div>';
+        // 💥 انفجار
+        iconHTML = '💥';
         titleText = 'انفجرت!';
         prizeText = 'لم تنجح — حاول مرة أخرى!';
       }
@@ -1514,28 +1274,35 @@
       updateUI();
 
       // عرض النتيجة
-      overlayContent.innerHTML = `
-        ${iconHTML}
+      overlay.classList.remove('hidden');
+      const content = overlay.querySelector('.overlay-content');
+      content.innerHTML = `
+        <div class="overlay-icon" style="font-size: 80px; display: flex; align-items: center; justify-content: center;">
+          ${iconHTML}
+        </div>
         <h2>${titleText}</h2>
         <p>${prizeText}</p>
-        <button class="start-btn" id="startBtn2">
+        <button class="start-btn" onclick="restartGame()">
           <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           ${state.playsLeft > 0 ? 'العب مرة أخرى' : 'انتهت المرات'}
         </button>
       `;
 
-      const btn2 = document.getElementById('startBtn2');
+      // تعطيل الزر إذا انتهت المرات
+      const btn = content.querySelector('.start-btn');
       if (state.playsLeft <= 0) {
-        btn2.disabled = true;
-        btn2.textContent = 'انتهت المرات — انتظر 3 ساعات';
-      } else {
-        btn2.addEventListener('click', () => {
-          overlay.classList.add('hidden');
-          setTimeout(startGame, 100);
-        });
+        btn.disabled = true;
+        btn.textContent = 'انتهت المرات — انتظر 3 ساعات';
       }
+    }
 
-      overlay.classList.remove('hidden');
+    /* ============================================
+       إعادة البدء
+    ============================================ */
+    function restartGame() {
+      checkReset();
+      if (state.playsLeft <= 0) return;
+      startGame();
     }
 
     /* ============================================
@@ -1593,6 +1360,7 @@
     function showSuccess(binanceId) {
       const withdrawnAmount = state.balance.toFixed(5);
 
+      // 🔄 تصفير الرصيد
       state.balance = 0;
       localStorage.setItem('robotBalance', 0);
       updateUI();
@@ -1604,17 +1372,17 @@
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
-        <h2 style="text-align:center; margin-bottom: 10px; color: #26a17b; font-size: 19px; font-weight: 900;">
+        <h2 style="text-align:center; margin-bottom: 12px; color: #26a17b; font-size: 20px; font-weight: 900;">
           تم إرسال طلبك!
         </h2>
-        <p style="text-align:center; color: #a0a0b0; font-size: 12px; line-height: 1.8; margin-bottom: 18px;">
+        <p style="text-align:center; color: #a0a0b0; font-size: 13px; line-height: 1.8; margin-bottom: 20px;">
           سيتم مراجعة طلبك وإرسال<br>
-          <b style="color: #26a17b; font-size: 16px;">${withdrawnAmount} USDT</b><br>
+          <b style="color: #26a17b; font-size: 17px;">${withdrawnAmount} USDT</b><br>
           إلى Binance ID: <b style="direction: ltr; display: inline-block;">${binanceId}</b><br>
           خلال 24-48 ساعة
         </p>
-        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 16px;">
-          <p style="color: #f39c12; font-size: 11px; text-align: center; font-weight: 700;">
+        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
+          <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
             ⚠️ تم تصفير رصيدك — ابدأ من جديد
           </p>
         </div>
@@ -1630,23 +1398,8 @@
        تهيئة
     ============================================ */
     checkReset();
-    updateStatsInitial();
-    createStars();
-    setTimeout(() => {
-      measureBoard();
-      state.robotCurrentX = (state.boardW - state.robotW) / 2;
-      state.targetX = state.robotCurrentX;
-      robot.style.transform = `translateX(${state.robotCurrentX}px)`;
-    }, 50);
-
-    function updateStatsInitial() {
-      updateUI();
-    }
-
-    /* منع التمرير عند اللمس على الساحة */
-    board.addEventListener('touchmove', (e) => {
-      if (state.running) e.preventDefault();
-    }, { passive: false });
+    updateUI();
+    setTimeout(() => updateRobotPosition(), 100);
   </script>
 
 </body>
