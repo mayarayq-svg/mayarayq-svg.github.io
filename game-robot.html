@@ -455,6 +455,64 @@
       direction: ltr;
     }
 
+    /* ============================================
+       شريط العداد التنازلي
+    ============================================ */
+    .cooldown-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(192,57,43,0.1));
+      border: 1px solid rgba(231,76,60,0.35);
+      border-radius: 14px;
+      padding: 10px 15px;
+      margin-bottom: 12px;
+      width: 100%;
+      max-width: 700px;
+      font-size: 12px;
+      animation: cooldownPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes cooldownPulse {
+      0%, 100% {
+        border-color: rgba(231,76,60,0.35);
+        box-shadow: 0 0 0 0 rgba(231,76,60,0);
+      }
+      50% {
+        border-color: rgba(231,76,60,0.7);
+        box-shadow: 0 0 15px 0 rgba(231,76,60,0.3);
+      }
+    }
+
+    .cooldown-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #e74c3c;
+      font-weight: 800;
+    }
+
+    .cooldown-label svg {
+      width: 16px;
+      height: 16px;
+      animation: rotateClock 3s linear infinite;
+    }
+
+    @keyframes rotateClock {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cooldown-timer {
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+      direction: ltr;
+      font-family: 'Cairo', monospace;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 10px rgba(231,76,60,0.5);
+    }
+
     /* نافذة السحب */
     .withdraw-modal {
       position: fixed;
@@ -707,6 +765,7 @@
       .modal-header h2 { font-size: 17px; }
       .modal-binance-logo { width: 65px; height: 65px; }
       .frozen-amount { font-size: 22px; }
+      .cooldown-timer { font-size: 14px; }
     }
   </style>
 </head>
@@ -750,30 +809,28 @@
     </div>
     <div class="plays-count" id="playsLeft">10</div>
   </div>
-<!--ADSTERRA-->
-  <script>
-  atOptions = {
-    'key' : '368963302f52616ae408b99d5bc68f1a',
-    'format' : 'iframe',
-    'height' : 50,
-    'width' : 320,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
 
-  
+  <!-- ⏰ شريط العداد التنازلي -->
+  <div class="cooldown-bar" id="cooldownBar" style="display: none;">
+    <div class="cooldown-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      المرات القادمة بعد
+    </div>
+    <div class="cooldown-timer" id="cooldownTimer">03:00:00</div>
+  </div>
 
-  <script src="https://pl31327659.profitableratecpmnetwork.com/b8/30/f3/b830f333cc9c4375b32b4e9916029d52.js"></script>
   <!-- ساحة اللعب -->
   <div class="game-board" id="gameBoard">
 
-    <img class="robot" id="robot" src="ROD.png" alt="الروبوت">
+    <img class="robot" id="robot" src="RO.png" alt="الروبوت">
 
     <div class="overlay" id="overlay">
       <div class="overlay-content">
         <div class="overlay-icon">
-          <img src="ROD.png" alt="الروبوت">
+          <img src="RO.png" alt="الروبوت">
         </div>
         <h2 id="overlayTitle">جاهز للعب؟</h2>
         <p id="overlayText">
@@ -794,7 +851,7 @@
   <!-- بطاقة الرصيد -->
   <div class="balance-card">
     <div class="balance-icon">
-      <img src="USDT_logo.png" alt="USDT">
+      <img src="USDT_Logo.png" alt="USDT">
     </div>
     <div class="balance-info">
       <div class="balance-label">رصيدك</div>
@@ -904,14 +961,14 @@
     /* ============================================
        الإعدادات
     ============================================ */
-    const GAME_DURATION = 20;                  // 20 ثانية
-    const REWARD_PER_WIN = 0.0005;             // ربح لكل فوز
-    const MAX_PLAYS = 10;                      // 10 مرات
-    const COOLDOWN = 3 * 60 * 60 * 1000;       // 3 ساعات
-    const MIN_WITHDRAW = 0.01;                 // 0.01 USDT
-    const ROBOT_SPEED = 0.25;                  // سرعة الروبوت (0-1)
-    const ITEM_SPAWN_RATE = 700;               // كل 700ms يسقط عنصر
-    const BOMB_CHANCE = 0.4;                   // 40% قنابل
+    const GAME_DURATION = 20;
+    const REWARD_PER_WIN = 0.0005;
+    const MAX_PLAYS = 10;
+    const COOLDOWN = 3 * 60 * 60 * 1000;
+    const MIN_WITHDRAW = 0.01;
+    const ROBOT_SPEED = 0.25;
+    const ITEM_SPAWN_RATE = 700;
+    const BOMB_CHANCE = 0.4;
 
     /* ============================================
        حالة اللعبة
@@ -927,8 +984,6 @@
       robotX: 50,
       targetX: 50,
       items: [],
-      lastItemTime: 0,
-      lastBombTime: 0,
       balance: parseFloat(localStorage.getItem('robotBalance') || '0'),
       wins: parseInt(localStorage.getItem('robotWins') || '0'),
       playsLeft: parseInt(localStorage.getItem('robotPlaysLeft') || String(MAX_PLAYS)),
@@ -941,8 +996,6 @@
     const board = document.getElementById('gameBoard');
     const robot = document.getElementById('robot');
     const overlay = document.getElementById('overlay');
-    const overlayTitle = document.getElementById('overlayTitle');
-    const overlayText = document.getElementById('overlayText');
     const startBtn = document.getElementById('startBtn');
     const scoreEl = document.getElementById('score');
     const timeEl = document.getElementById('time');
@@ -952,6 +1005,70 @@
     const withdrawBtn = document.getElementById('withdrawBtn');
     const withdrawText = document.getElementById('withdrawText');
     const frozenAmount = document.getElementById('frozenAmount');
+    const cooldownBar = document.getElementById('cooldownBar');
+    const cooldownTimer = document.getElementById('cooldownTimer');
+
+    /* ============================================
+       العداد التنازلي
+    ============================================ */
+    let cooldownInterval = null;
+
+    function updateCooldown() {
+      // إذا كانت المرات متوفرة، أخفِ العداد
+      if (state.playsLeft > 0) {
+        cooldownBar.style.display = 'none';
+        if (cooldownInterval) {
+          clearInterval(cooldownInterval);
+          cooldownInterval = null;
+        }
+        return;
+      }
+
+      const now = Date.now();
+      const remaining = COOLDOWN - (now - state.lastReset);
+
+      if (remaining <= 0) {
+        // انتهى الوقت → إعادة تعيين
+        state.playsLeft = MAX_PLAYS;
+        state.lastReset = now;
+        localStorage.setItem('robotPlaysLeft', MAX_PLAYS);
+        localStorage.setItem('robotLastReset', now);
+        updateUI();
+        cooldownBar.style.display = 'none';
+        
+        if (cooldownInterval) {
+          clearInterval(cooldownInterval);
+          cooldownInterval = null;
+        }
+
+        // تحديث الزر
+        const btn = document.getElementById('startBtn');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            ابدأ اللعب
+          `;
+        }
+        return;
+      }
+
+      // عرض العداد
+      cooldownBar.style.display = 'flex';
+
+      const hours = Math.floor(remaining / (60 * 60 * 1000));
+      const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+      const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+
+      cooldownTimer.textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function startCooldownWatcher() {
+      if (cooldownInterval) return;
+      cooldownInterval = setInterval(updateCooldown, 1000);
+      updateCooldown();
+    }
 
     /* ============================================
        إعادة التعيين كل 3 ساعات
@@ -973,6 +1090,8 @@
         localStorage.setItem('robotLastReset', now);
         localStorage.setItem('robotPlaysLeft', MAX_PLAYS);
       }
+
+      startCooldownWatcher();
     }
 
     /* ============================================
@@ -1004,7 +1123,6 @@
 
       if (state.playsLeft <= 0) return;
 
-      // إعادة تعيين
       state.score = 0;
       state.timeLeft = GAME_DURATION;
       state.running = true;
@@ -1015,34 +1133,30 @@
 
       localStorage.setItem('robotPlaysLeft', state.playsLeft);
 
-      // إخفاء overlay
+      // تشغيل العداد عند نفاد المرات
+      if (state.playsLeft <= 0) {
+        state.lastReset = Date.now();
+        localStorage.setItem('robotLastReset', state.lastReset);
+        startCooldownWatcher();
+      }
+
       overlay.classList.add('hidden');
 
-      // تنظيف العناصر السابقة
       document.querySelectorAll('.falling-item, .score-popup').forEach(el => el.remove());
       state.items = [];
 
-      // وضع الروبوت في المنتصف
       updateRobotPosition();
-
       updateUI();
 
-      // المؤقت
       state.timer = setInterval(() => {
         state.timeLeft--;
         updateUI();
-
         if (state.timeLeft <= 0) {
           endGame(true);
         }
       }, 1000);
 
-      // إسقاط العناصر
-      state.lastItemTime = 0;
-      state.lastBombTime = 0;
       state.spawner = setInterval(spawnItem, ITEM_SPAWN_RATE);
-
-      // بدء حلقة اللعبة
       state.animationFrame = requestAnimationFrame(gameLoop);
     }
 
@@ -1061,7 +1175,6 @@
       img.alt = isBomb ? 'bomb' : 'usdt';
       item.appendChild(img);
 
-      // موضع عشوائي
       const boardW = board.clientWidth;
       const itemW = 55;
       const x = Math.random() * (boardW - itemW);
@@ -1087,38 +1200,31 @@
     function gameLoop() {
       if (!state.running || state.gameOver) return;
 
-      const boardW = board.clientWidth;
       const boardH = board.clientHeight;
 
-      // تحديث موقع الروبوت (سلس)
       const dx = state.targetX - state.robotX;
       if (Math.abs(dx) > 0.5) {
         state.robotX += dx * ROBOT_SPEED;
         updateRobotPosition();
       }
 
-      // تحديث العناصر
       const robotRect = robot.getBoundingClientRect();
-      const boardRect = board.getBoundingClientRect();
 
       for (let i = state.items.length - 1; i >= 0; i--) {
         const item = state.items[i];
         item.y += item.speed;
         item.el.style.top = item.y + 'px';
 
-        // التحقق من التصادم
         const itemRect = item.el.getBoundingClientRect();
 
         if (checkCollision(robotRect, itemRect)) {
           if (item.isBomb) {
-            // 💥 القنبلة = خسارة
             explode(item.x, item.y);
             item.el.remove();
             state.items.splice(i, 1);
             endGame(false);
             return;
           } else {
-            // ✅ USDT = +1 نقطة
             state.score++;
             showScorePopup(item.x, item.y);
             item.el.remove();
@@ -1128,7 +1234,6 @@
           }
         }
 
-        // إذا خرج من الشاشة
         if (item.y > boardH) {
           item.el.remove();
           state.items.splice(i, 1);
@@ -1194,7 +1299,6 @@
       setTimeout(() => explosion.remove(), 600);
     }
 
-    // إضافة keyframes للانفجار
     const style = document.createElement('style');
     style.textContent = `
       @keyframes explodeAnim {
@@ -1206,7 +1310,7 @@
     document.head.appendChild(style);
 
     /* ============================================
-       تحريك الروبوت (لمس / ماوس)
+       تحريك الروبوت
     ============================================ */
     function moveRobot(e) {
       if (!state.running || state.gameOver) return;
@@ -1241,7 +1345,6 @@
       clearInterval(state.spawner);
       cancelAnimationFrame(state.animationFrame);
 
-      // تنظيف
       document.querySelectorAll('.falling-item').forEach(el => el.remove());
       state.items = [];
 
@@ -1251,7 +1354,6 @@
       let prizeText = '';
 
       if (survived) {
-        // نجح في البقاء 20 ثانية
         reward = REWARD_PER_WIN;
         state.balance += reward;
         state.wins++;
@@ -1265,7 +1367,6 @@
           <strong>+${reward.toFixed(4)} USDT</strong>
         `;
       } else {
-        // 💥 انفجار
         iconHTML = '💥';
         titleText = 'انفجرت!';
         prizeText = 'لم تنجح — حاول مرة أخرى!';
@@ -1273,7 +1374,6 @@
 
       updateUI();
 
-      // عرض النتيجة
       overlay.classList.remove('hidden');
       const content = overlay.querySelector('.overlay-content');
       content.innerHTML = `
@@ -1282,27 +1382,22 @@
         </div>
         <h2>${titleText}</h2>
         <p>${prizeText}</p>
-        <button class="start-btn" onclick="restartGame()">
+        <button class="start-btn" id="playAgainBtn">
           <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           ${state.playsLeft > 0 ? 'العب مرة أخرى' : 'انتهت المرات'}
         </button>
       `;
 
-      // تعطيل الزر إذا انتهت المرات
-      const btn = content.querySelector('.start-btn');
+      const btn = document.getElementById('playAgainBtn');
       if (state.playsLeft <= 0) {
         btn.disabled = true;
         btn.textContent = 'انتهت المرات — انتظر 3 ساعات';
+      } else {
+        btn.onclick = () => {
+          overlay.classList.add('hidden');
+          setTimeout(startGame, 100);
+        };
       }
-    }
-
-    /* ============================================
-       إعادة البدء
-    ============================================ */
-    function restartGame() {
-      checkReset();
-      if (state.playsLeft <= 0) return;
-      startGame();
     }
 
     /* ============================================
@@ -1360,7 +1455,6 @@
     function showSuccess(binanceId) {
       const withdrawnAmount = state.balance.toFixed(5);
 
-      // 🔄 تصفير الرصيد
       state.balance = 0;
       localStorage.setItem('robotBalance', 0);
       updateUI();
