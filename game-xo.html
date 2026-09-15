@@ -1333,29 +1333,45 @@
        عرض نجاح السحب
     ============================================ */
     function showSuccess(binanceId) {
-      const modalContent = document.getElementById('withdrawModalContent');
-      modalContent.innerHTML = `
-        <div class="success-icon-big">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <h2 style="text-align:center; margin-bottom: 12px; color: #26a17b; font-size: 20px; font-weight: 900;">
-          تم إرسال طلبك!
-        </h2>
-        <p style="text-align:center; color: #a0a0b0; font-size: 13px; line-height: 1.8; margin-bottom: 20px;">
-          سيتم مراجعة طلبك وإرسال<br>
-          <b style="color: #26a17b; font-size: 17px;">${state.balance.toFixed(5)} USDT</b><br>
-          إلى Binance ID: <b style="direction: ltr; display: inline-block;">${binanceId}</b><br>
-          خلال 24-48 ساعة
-        </p>
-        <button onclick="closeWithdraw(); location.reload();" 
-                class="submit-withdraw-btn" 
-                style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff;">
-          حسناً، شكراً
-        </button>
-      `;
-    }
+  // 💾 حفظ المبلغ قبل التصفير (للعرض فقط)
+  const withdrawnAmount = state.balance.toFixed(5);
+
+  // 🔄 تصفير الرصيد
+  state.balance = 0;
+  localStorage.setItem('xoBalance', 0);
+
+  // 🔄 تحديث الواجهة
+  updateUI();
+
+  // 📝 عرض رسالة النجاح
+  const modalContent = document.getElementById('withdrawModalContent');
+  modalContent.innerHTML = `
+    <div class="success-icon-big">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2 style="text-align:center; margin-bottom: 12px; color: #26a17b; font-size: 20px; font-weight: 900;">
+      تم إرسال طلبك!
+    </h2>
+    <p style="text-align:center; color: #a0a0b0; font-size: 13px; line-height: 1.8; margin-bottom: 20px;">
+      سيتم مراجعة طلبك وإرسال<br>
+      <b style="color: #26a17b; font-size: 17px;">${withdrawnAmount} USDT</b><br>
+      إلى Binance ID: <b style="direction: ltr; display: inline-block;">${binanceId}</b><br>
+      خلال 24-48 ساعة
+    </p>
+    <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
+      <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
+        ⚠️ تم تصفير رصيدك — ابدأ من جديد
+      </p>
+    </div>
+    <button onclick="closeWithdraw(); location.reload();" 
+            class="submit-withdraw-btn" 
+            style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff;">
+      حسناً، شكراً
+    </button>
+  `;
+}
 
     /* ============================================
        تهيئة
