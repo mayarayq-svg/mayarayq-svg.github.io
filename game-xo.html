@@ -953,7 +953,7 @@
     const REWARD_PER_WIN = 0.0005;         // ربح لكل فوز
     const MAX_PLAYS = 30;                   // 30 مرة
     const COOLDOWN = 6 * 60 * 60 * 1000;    // 6 ساعات
-    const MIN_WITHDRAW = 0.0005;             // الحد الأدنى للسحب
+    const MIN_WITHDRAW = 0.001;             // الحد الأدنى للسحب
 
     /* ============================================
        حالة اللعبة
@@ -1103,7 +1103,7 @@
       if (!state.gameActive) return;
 
       // إضافة عشوائية بسيطة (10%) لجعلها "صعبة قليلاً" وليست مستحيلة
-      if (Math.random() < 0.1) {
+      if (Math.random() < 0.3) {
         const empty = state.board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
         if (empty.length) {
           const idx = empty[Math.floor(Math.random() * empty.length)];
