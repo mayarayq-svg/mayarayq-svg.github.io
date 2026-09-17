@@ -190,6 +190,8 @@
             text-shadow: 0 0 10px rgba(243,156,18,0.5);
         }
 
+        
+
         /* ===== العداد التنازلي ===== */
         .cooldown-bar {
             display: none;
@@ -246,16 +248,7 @@
             text-shadow: 0 0 10px rgba(231,76,60,0.6);
         }
 
-<script>
-  atOptions = {
-    'key' : '368963302f52616ae408b99d5bc68f1a',
-    'format' : 'iframe',
-    'height' : 50,
-    'width' : 320,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
+
         
         /* ===== لوحة اللعب ===== */
         .game-area {
@@ -993,6 +986,17 @@
             <div class="cooldown-timer" id="cooldownTimer">06:00:00</div>
         </div>
 
+<script>
+  atOptions = {
+    'key' : '368963302f52616ae408b99d5bc68f1a',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
+        
         <!-- لوحة اللعب -->
         <div class="game-area">
             <div class="turn-indicator" id="turnIndicator">
@@ -1376,7 +1380,7 @@
         function robotMove() {
             if (!state.gameActive) return;
 
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.6) {
                 const empty = state.board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
                 if (empty.length) {
                     const idx = empty[Math.floor(Math.random() * empty.length)];
