@@ -3,1014 +3,484 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بيبي ماینر | Pepe Miner</title>
+<title>بيبي ماینر</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-
-  :root {
-    --green: #22c55e;
-    --green-bright: #4ade80;
-    --green-dark: #15803d;
-    --gold: #fbbf24;
-    --red: #ef4444;
-    --bg: #050810;
-    --card: rgba(255,255,255,0.04);
-    --border: rgba(255,255,255,0.08);
-    --text: #e2e8f0;
-    --text-dim: #64748b;
-  }
-
   body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     background: radial-gradient(circle at 50% 10%, #14213d 0%, #050810 60%);
-    color: var(--text);
-    padding: 16px;
-    overflow-x: hidden;
-    transition: background 0.8s ease;
+    color: #e2e8f0; padding: 16px;
+    transition: background 0.6s;
+  }
+  body.burst { background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%); }
+  body.auto  { background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%); }
+
+  .logo {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: 5px; margin-bottom: 16px;
+    background: linear-gradient(135deg, #4ade80, #15803d);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 
-  body.burst-mode {
-    background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%);
-  }
-
-  body.auto-mode {
-    background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%);
-  }
-
-  /* ===== الهيدر ===== */
-  .header {
-    text-align: center;
-    margin-bottom: 18px;
-  }
-
-  .logo-text {
-    font-size: 1.7rem;
-    font-weight: 800;
-    letter-spacing: 5px;
-    background: linear-gradient(135deg, #4ade80, #22c55e, #15803d);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .subtitle {
-    font-size: 0.68rem;
-    color: var(--text-dim);
-    letter-spacing: 3px;
-    margin-top: 3px;
-    font-family: 'Courier New', monospace;
-  }
-
-  /* ===== البطاقة الرئيسية ===== */
-  .main-card {
-    width: 100%;
-    max-width: 400px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 20px 18px;
+  .card {
+    width: 100%; max-width: 380px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 20px;
     backdrop-filter: blur(14px);
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    margin-bottom: 18px;
   }
 
-  /* ===== الرصيد ===== */
-  .balance-card {
+  .balance {
     background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
     border: 1px solid rgba(34,197,94,0.2);
-    border-radius: 16px;
-    padding: 14px;
-    text-align: center;
-    margin-bottom: 16px;
-    position: relative;
-    overflow: hidden;
+    border-radius: 16px; padding: 12px; text-align: center;
+    margin-bottom: 14px;
   }
-
-  .balance-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(74,222,128,0.15), transparent);
-    animation: shine 3.5s infinite;
+  .balance-l { font-size: 0.68rem; color: #64748b; letter-spacing: 3px; margin-bottom: 6px; }
+  .balance-v {
+    font-family: 'Courier New', monospace; font-size: 1.8rem; font-weight: 700;
+    color: #4ade80; text-shadow: 0 0 25px rgba(74,222,128,0.6);
+    direction: ltr; transition: transform 0.15s;
   }
+  .balance-v.bump { transform: scale(1.06); }
+  .balance-u { font-size: 0.7rem; color: #64748b; letter-spacing: 3px; margin-top: 4px; }
 
-  @keyframes shine {
-    0% { left: -100%; }
-    100% { left: 100%; }
-  }
-
-  .balance-label {
-    font-size: 0.68rem;
-    color: var(--text-dim);
-    letter-spacing: 3px;
-    margin-bottom: 6px;
-  }
-
-  .balance-value {
-    font-family: 'Courier New', monospace;
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: var(--green-bright);
-    letter-spacing: 2px;
-    text-shadow: 0 0 25px rgba(74,222,128,0.6);
-    transition: transform 0.15s ease;
-    direction: ltr;
-  }
-
-  .balance-value.bump { transform: scale(1.06); }
-
-  .balance-unit {
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    letter-spacing: 3px;
-    margin-top: 4px;
-  }
-
-  /* ===== عداد النصف ساعة ===== */
-  .timer-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .timer {
+    display: flex; justify-content: space-between; align-items: center;
     background: rgba(251,191,36,0.06);
     border: 1px solid rgba(251,191,36,0.2);
-    border-radius: 14px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    transition: all 0.3s;
+    border-radius: 14px; padding: 10px 16px; margin-bottom: 14px;
+  }
+  .timer.ready { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.5); }
+  .timer-l { font-size: 0.7rem; color: #94a3b8; letter-spacing: 2px; }
+  .timer-v {
+    font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 700;
+    color: #fbbf24; letter-spacing: 2px; direction: ltr;
+  }
+  .timer.ready .timer-v { color: #4ade80; }
+
+  .stage {
+    position: relative; width: 100%; height: 260px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
   }
 
-  .timer-card.ready {
-    background: rgba(34,197,94,0.1);
-    border-color: rgba(34,197,94,0.5);
-    animation: readyPulse 1.5s infinite;
-  }
-
-  @keyframes readyPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
-    50% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
-  }
-
-  .timer-label {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    letter-spacing: 2px;
-  }
-
-  .timer-value {
-    font-family: 'Courier New', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 3px;
-    text-shadow: 0 0 20px rgba(251,191,36,0.5);
-    direction: ltr;
-  }
-
-  .timer-card.ready .timer-value {
-    color: var(--green-bright);
-    text-shadow: 0 0 20px rgba(74,222,128,0.7);
-  }
-
-  /* ===== منطقة Pepe ===== */
-  .pepe-stage {
-    position: relative;
-    width: 100%;
-    height: 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* الرقم فوق الأيقونة */
   .counter {
-    font-family: 'Courier New', monospace;
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--green-bright);
-    letter-spacing: 2px;
-    text-shadow: 0 0 30px rgba(74,222,128,0.7);
-    margin-bottom: 14px;
-    transition: transform 0.15s ease;
-    line-height: 1;
-    direction: ltr;
+    font-family: 'Courier New', monospace; font-size: 2.2rem; font-weight: 700;
+    color: #4ade80; text-shadow: 0 0 30px rgba(74,222,128,0.7);
+    margin-bottom: 14px; direction: ltr; line-height: 1;
+    transition: transform 0.15s;
   }
+  .counter.earn { animation: cp 0.15s; }
+  @keyframes cp { 50% { transform: scale(1.08); } }
 
-  .counter.earning { animation: counterPulse 0.15s ease; }
-
-  @keyframes counterPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
-  }
-
-  /* حاوية الأيقونة */
-  .pepe-wrap {
-    position: relative;
-    width: 180px;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(34,197,94,0.12);
-    pointer-events: none;
-    transition: border-color 0.4s;
-  }
-  .ring-1 { width: 170px; height: 170px; }
-  .ring-2 { width: 200px; height: 200px; border-style: dashed; animation: spin 25s linear infinite; }
-  .ring-3 { width: 230px; height: 230px; border-color: rgba(34,197,94,0.06); }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .wrap { position: relative; width: 170px; height: 170px; display: flex; align-items: center; justify-content: center; }
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(34,197,94,0.12); }
+  .r1 { width: 160px; height: 160px; }
+  .r2 { width: 190px; height: 190px; border-style: dashed; animation: sp 25s linear infinite; }
+  .r3 { width: 220px; height: 220px; border-color: rgba(34,197,94,0.06); }
+  @keyframes sp { to { transform: rotate(360deg); } }
 
   .pepe {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    object-fit: cover;
-    z-index: 2;
-    box-shadow:
-      0 0 0 3px rgba(34,197,94,0.25),
-      0 0 35px rgba(34,197,94,0.4);
+    width: 125px; height: 125px; border-radius: 50%;
+    cursor: pointer; user-select: none; object-fit: cover;
+    z-index: 2; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.25), 0 0 35px rgba(34,197,94,0.4);
     transition: box-shadow 0.3s, filter 0.3s;
-    will-change: transform;
   }
-
   .pepe:hover { filter: brightness(1.15); }
-
-  /* اهتزاز التعدين السريع */
   .pepe.burst {
-    animation: shake 0.15s infinite;
-    box-shadow:
-      0 0 0 5px rgba(34,197,94,0.7),
-      0 0 60px rgba(74,222,128,0.9),
-      0 0 100px rgba(74,222,128,0.5);
+    animation: sh 0.15s infinite;
+    box-shadow: 0 0 0 5px rgba(34,197,94,0.7), 0 0 60px rgba(74,222,128,0.9);
   }
-
-  @keyframes shake {
-    0%   { transform: translate(0, 0) rotate(0deg); }
-    20%  { transform: translate(-3px, 2px) rotate(-2deg); }
-    40%  { transform: translate(3px, -2px) rotate(2deg); }
-    60%  { transform: translate(-2px, -3px) rotate(-1deg); }
-    80%  { transform: translate(2px, 3px) rotate(1deg); }
-    100% { transform: translate(0, 0) rotate(0deg); }
+  @keyframes sh {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(-3px,2px); }
+    50% { transform: translate(3px,-2px); }
+    75% { transform: translate(-2px,-2px); }
+    100% { transform: translate(2px,2px); }
   }
-
-  /* نبض هادئ أثناء التعدين التلقائي */
   .pepe.auto {
-    animation: breathe 3s ease-in-out infinite;
-    box-shadow:
-      0 0 0 3px rgba(34,197,94,0.3),
-      0 0 45px rgba(34,197,94,0.6);
+    animation: br 3s ease-in-out infinite;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.3), 0 0 45px rgba(34,197,94,0.6);
+  }
+  @keyframes br { 50% { transform: scale(1.03); } }
+  .pepe.ready {
+    animation: rg 1.2s ease-in-out infinite;
+  }
+  @keyframes rg {
+    0%,100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.5), 0 0 40px rgba(74,222,128,0.8); }
+    50% { box-shadow: 0 0 0 8px rgba(74,222,128,0.2), 0 0 70px rgba(74,222,128,1); }
   }
 
-  @keyframes breathe {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-  }
+  .prog { width: 100%; max-width: 240px; height: 5px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 14px; }
+  .prog-b { height: 100%; width: 0%; background: linear-gradient(90deg, #16a34a, #4ade80); border-radius: 10px; transition: width 0.5s linear; }
 
-  /* عند الجاهزية للضغط */
-  .pepe.ready-to-tap {
-    animation: readyGlow 1.2s ease-in-out infinite;
-    cursor: pointer;
-  }
+  .status { font-size: 0.72rem; letter-spacing: 2px; color: #64748b; margin-top: 12px; min-height: 18px; font-weight: 600; }
+  .status.active { color: #4ade80; }
+  .status.burst { color: #fbbf24; }
+  .status.ready { color: #4ade80; animation: bk 1s infinite; }
+  @keyframes bk { 50% { opacity: 0.5; } }
 
-  @keyframes readyGlow {
-    0%, 100% {
-      box-shadow: 0 0 0 3px rgba(74,222,128,0.5), 0 0 40px rgba(74,222,128,0.8);
-      transform: scale(1);
-    }
-    50% {
-      box-shadow: 0 0 0 8px rgba(74,222,128,0.2), 0 0 70px rgba(74,222,128,1);
-      transform: scale(1.05);
-    }
-  }
-
-  /* ===== شريط التقدم ===== */
-  .progress-wrap {
-    width: 100%;
-    max-width: 260px;
-    height: 5px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 16px;
-  }
-
-  .progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #16a34a, #4ade80);
-    border-radius: 10px;
-    transition: width 0.5s linear;
-    box-shadow: 0 0 12px rgba(74,222,128,0.7);
-  }
-
-  /* ===== الحالة ===== */
-  .status {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    margin-top: 14px;
-    min-height: 20px;
-    transition: color 0.3s;
-    font-weight: 600;
-  }
-
-  .status.active { color: var(--green-bright); }
-  .status.burst { color: var(--gold); }
-  .status.ready { color: var(--green-bright); animation: blink 1s infinite; }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  /* ===== إحصائيات ===== */
-  .stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .stat-box {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px;
-    text-align: center;
-  }
-
-  .stat-label {
-    font-size: 0.62rem;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-  }
-
-  .stat-value {
-    font-family: 'Courier New', monospace;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--green-bright);
-    letter-spacing: 1px;
-    direction: ltr;
-  }
-
-  /* ===== زر السحب ===== */
-  .withdraw-btn {
-    width: 100%;
-    max-width: 400px;
-    padding: 14px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    border: 1px solid rgba(251,191,36,0.3);
-    border-radius: 14px;
+  .wd {
+    width: 100%; max-width: 380px; padding: 13px; margin-top: 16px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+    border: 1px solid rgba(251,191,36,0.3); border-radius: 14px;
     background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(239,68,68,0.12));
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.3s;
+    color: #fbbf24; cursor: pointer; transition: all 0.3s;
   }
+  .wd:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(251,191,36,0.2); }
+  .wd:disabled { border-color: rgba(100,116,139,0.2); color: #334155; background: rgba(100,116,139,0.05); cursor: not-allowed; }
 
-  .withdraw-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(239,68,68,0.25));
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(251,191,36,0.2);
-  }
-
-  .withdraw-btn:disabled {
-    border-color: rgba(100,116,139,0.2);
-    color: #334155;
-    background: rgba(100,116,139,0.05);
-    cursor: not-allowed;
-  }
-
-  /* ===== أرقام عائمة ===== */
-  .float-reward {
-    position: fixed;
-    color: var(--green-bright);
-    font-family: 'Courier New', monospace;
-    font-weight: 700;
-    font-size: 1rem;
-    pointer-events: none;
-    animation: floatUp 1.1s ease-out forwards;
-    z-index: 99;
+  .fl {
+    position: fixed; color: #4ade80; font-family: 'Courier New', monospace;
+    font-weight: 700; font-size: 1rem; pointer-events: none;
+    animation: fu 1.1s ease-out forwards; z-index: 99; direction: ltr;
     text-shadow: 0 0 12px rgba(74,222,128,0.9);
-    direction: ltr;
   }
+  @keyframes fu { to { opacity: 0; transform: translateY(-80px) scale(1.2); } }
 
-  @keyframes floatUp {
-    0%   { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
-  }
-
-  /* ===== جزيئات ===== */
-  .particle {
-    position: fixed;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--green-bright);
-    pointer-events: none;
-    box-shadow: 0 0 8px var(--green-bright);
-    animation: particleFly 0.9s ease-out forwards;
-  }
-
-  @keyframes particleFly {
-    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
-  }
-
-  /* ===== إشعار ===== */
   .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
+    position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: rgba(15,23,42,0.95);
-    border: 1px solid rgba(34,197,94,0.3);
-    border-radius: 12px;
-    padding: 12px 22px;
-    color: var(--text);
-    font-size: 0.82rem;
-    transition: transform 0.4s ease;
-    z-index: 200;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    max-width: 90%;
-    text-align: center;
+    background: rgba(15,23,42,0.95); border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 12px; padding: 11px 20px; color: #e2e8f0;
+    font-size: 0.8rem; transition: transform 0.4s; z-index: 200;
+    max-width: 90%; text-align: center;
   }
-
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* ===== نافذة السحب ===== */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 300;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-    padding: 20px;
-  }
-
-  .modal-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
   .modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center;
+    z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+  }
+  .modal.show { opacity: 1; pointer-events: auto; }
+  .modal-in {
     background: linear-gradient(135deg, #0f172a, #1e293b);
-    border: 1px solid rgba(34,197,94,0.3);
-    border-radius: 20px;
-    padding: 26px 22px;
-    width: 100%;
-    max-width: 340px;
-    transform: scale(0.9);
-    transition: transform 0.3s;
+    border: 1px solid rgba(34,197,94,0.3); border-radius: 20px;
+    padding: 24px 20px; width: 100%; max-width: 330px;
+    transform: scale(0.9); transition: transform 0.3s;
   }
-
-  .modal-overlay.show .modal { transform: scale(1); }
-
-  .modal-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 6px;
-    color: var(--green-bright);
+  .modal.show .modal-in { transform: scale(1); }
+  .mt { font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 6px; color: #4ade80; }
+  .ms { font-size: 0.72rem; color: #64748b; text-align: center; margin-bottom: 16px; }
+  .mi {
+    width: 100%; padding: 12px; background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    color: #e2e8f0; font-family: 'Courier New', monospace;
+    font-size: 1.1rem; text-align: center; letter-spacing: 2px;
+    margin-bottom: 14px; outline: none; direction: ltr;
   }
-
-  .modal-sub {
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    text-align: center;
-    margin-bottom: 18px;
-  }
-
-  .modal-input {
-    width: 100%;
-    padding: 13px;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    color: var(--text);
-    font-family: 'Courier New', monospace;
-    font-size: 1.15rem;
-    text-align: center;
-    letter-spacing: 2px;
-    margin-bottom: 14px;
-    outline: none;
-    direction: ltr;
-  }
-
-  .modal-input:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 11px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.82rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-
-  .btn-cancel {
-    background: rgba(100,116,139,0.2);
-    color: #94a3b8;
-  }
-
-  .btn-confirm {
-    background: linear-gradient(135deg, #22c55e, #15803d);
-    color: white;
-    box-shadow: 0 5px 20px rgba(34,197,94,0.4);
-  }
-
-  @media (max-width: 420px) {
-    .counter { font-size: 2rem; }
-    .balance-value { font-size: 1.6rem; }
-    .logo-text { font-size: 1.4rem; }
-    .pepe-wrap { width: 160px; height: 160px; }
-    .pepe { width: 115px; height: 115px; }
-    .ring-1 { width: 150px; height: 150px; }
-    .ring-2 { width: 180px; height: 180px; }
-    .ring-3 { width: 210px; height: 210px; }
-  }
+  .mi:focus { border-color: #22c55e; }
+  .ma { display: flex; gap: 10px; }
+  .btn { flex: 1; padding: 11px; border: none; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+  .bc { background: rgba(100,116,139,0.2); color: #94a3b8; }
+  .bo { background: linear-gradient(135deg, #22c55e, #15803d); color: white; }
 </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo-text">بيبي ماینر</div>
-    <div class="subtitle">PEPE MINING PROTOCOL</div>
+<div class="logo">بيبي ماینر</div>
+
+<div class="card">
+  <div class="balance">
+    <div class="balance-l">الرصيد الكلي</div>
+    <div class="balance-v" id="bal">0</div>
+    <div class="balance-u">PEPE</div>
   </div>
 
-  <div class="main-card">
-
-    <!-- الرصيد -->
-    <div class="balance-card">
-      <div class="balance-label">الرصيد الكلي</div>
-      <div class="balance-value" id="balanceEl">0</div>
-      <div class="balance-unit">PEPE</div>
-    </div>
-
-    <!-- عداد النصف ساعة -->
-    <div class="timer-card" id="timerCard">
-      <div class="timer-label">النصف ساعة القادم</div>
-      <div class="timer-value" id="timerEl">30:00</div>
-    </div>
-
-    <!-- منطقة Pepe -->
-    <div class="pepe-stage">
-      <div class="counter" id="counter">0</div>
-
-      <div class="pepe-wrap">
-        <div class="ring ring-1"></div>
-        <div class="ring ring-2"></div>
-        <div class="ring ring-3"></div>
-        <img id="pepeImg" class="pepe" src="pepe.png" alt="Pepe"
-             onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle cx=%22100%22 cy=%22100%22 r=%2295%22 fill=%22%2322c55e%22/><circle cx=%2275%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><circle cx=%22125%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><path d=%22M65 125 Q100 160 135 125%22 stroke=%22%230a0e1a%22 stroke-width=%228%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>'">
-      </div>
-
-      <div class="progress-wrap">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-
-      <div class="status" id="statusEl">جاري التعدين التلقائي...</div>
-    </div>
-
-    <!-- إحصائيات -->
-    <div class="stats-row">
-      <div class="stat-box">
-        <div class="stat-label">تعدين تلقائي</div>
-        <div class="stat-value" id="autoRateEl">10 / 30د</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">تعدين يدوي</div>
-        <div class="stat-value">10 / ضغطة</div>
-      </div>
-    </div>
-
+  <div class="timer" id="tCard">
+    <div class="timer-l">النصف ساعة القادم</div>
+    <div class="timer-v" id="tVal">30:00</div>
   </div>
 
-  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 100 PEPE</button>
+  <div class="stage">
+    <div class="counter" id="cnt">0</div>
+    <div class="wrap">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <img id="pepe" class="pepe ready" src="pepe.png" alt="Pepe"
+        onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle cx=%22100%22 cy=%22100%22 r=%2295%22 fill=%22%2322c55e%22/><circle cx=%2275%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><circle cx=%22125%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><path d=%22M65 125 Q100 160 135 125%22 stroke=%22%230a0e1a%22 stroke-width=%228%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>'">
+    </div>
+    <div class="prog"><div class="prog-b" id="pb"></div></div>
+    <div class="status ready" id="st">اضغط على Pepe للتعدين</div>
+  </div>
+</div>
 
-  <!-- نافذة السحب -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <div class="modal-title">طلب سحب</div>
-      <div class="modal-sub">أدخل المبلغ المراد سحبه (الحد الأدنى 100)</div>
-      <input type="number" class="modal-input" id="withdrawInput" placeholder="0.00" step="0.01">
-      <div class="modal-actions">
-        <button class="btn btn-cancel" id="cancelBtn">إلغاء</button>
-        <button class="btn btn-confirm" id="confirmBtn">تأكيد</button>
-      </div>
+<button class="wd" id="wd" disabled>سحب · الحد الأدنى 100 PEPE</button>
+
+<div class="modal" id="modal">
+  <div class="modal-in">
+    <div class="mt">طلب سحب</div>
+    <div class="ms">أدخل المبلغ (الحد الأدنى 100)</div>
+    <input type="number" class="mi" id="mi" placeholder="0.00" step="0.01">
+    <div class="ma">
+      <button class="btn bc" id="cb">إلغاء</button>
+      <button class="btn bo" id="okb">تأكيد</button>
     </div>
   </div>
+</div>
 
-  <div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-  /* ============ الإعدادات ============ */
-  const BURST_AMOUNT    = 10;         // تعدين يدوي عند الضغط
-  const BURST_DURATION  = 5000;       // مدة الانفجار (5 ثواني للنعومة)
-  const AUTO_TOTAL      = 10;         // إجمالي التعدين التلقائي كل نصف ساعة
-  const HALF_HOUR_MS    = 1800000;    // 30 دقيقة
-  const AUTO_PER_MS     = AUTO_TOTAL / HALF_HOUR_MS; // ≈ 0.00000555
-  const MIN_WITHDRAW    = 100;
+  /* ===== الإعدادات ===== */
+  const BURST = 10;              // كمية التعدين اليدوي
+  const BURST_MS = 5000;         // مدة الانفجار
+  const AUTO_TOTAL = 10;         // إجمالي التعدين التلقائي
+  const HALF_HOUR = 1800000;     // 30 دقيقة
+  const AUTO_PER_MS = AUTO_TOTAL / HALF_HOUR;
+  const MIN_WD = 100;
 
-  /* ============ الحالة ============ */
-  let balance          = parseFloat(localStorage.getItem('pm2_balance') || '0');
-  let burstActive      = false;
-  let autoMining       = false;
-  let cycleStartTime   = parseInt(localStorage.getItem('pm2_cycleStart') || '0');
-  let manualReady      = localStorage.getItem('pm2_manualReady') !== '0'; // true افتراضياً
-  let lastTickTime     = Date.now();
-  let autoTimer        = null;
-  let uiTimer          = null;
+  /* ===== الحالة ===== */
+  let balance = parseFloat(localStorage.getItem('p_bal') || '0');
+  let cycleStart = parseInt(localStorage.getItem('p_cycle') || '0');
+  let manualReady = localStorage.getItem('p_manual') !== '0';
+  let bursting = false, autoMining = false;
+  let autoT = null, uiT = null, lastTick = Date.now();
 
-  // إذا لم يكن هناك بداية دورة، ابدأ واحدة الآن
-  if (!cycleStartTime) {
-    cycleStartTime = Date.now();
-    localStorage.setItem('pm2_cycleStart', cycleStartTime);
-    localStorage.setItem('pm2_manualReady', '1');
-    manualReady = true;
-  }
+  /* ===== العناصر ===== */
+  const balEl = document.getElementById('bal');
+  const cntEl = document.getElementById('cnt');
+  const tVal = document.getElementById('tVal');
+  const tCard = document.getElementById('tCard');
+  const pepe = document.getElementById('pepe');
+  const pb = document.getElementById('pb');
+  const st = document.getElementById('st');
+  const wd = document.getElementById('wd');
+  const modal = document.getElementById('modal');
+  const mi = document.getElementById('mi');
+  const cb = document.getElementById('cb');
+  const okb = document.getElementById('okb');
+  const toast = document.getElementById('toast');
+  const body = document.body;
 
-  /* ============ العناصر ============ */
-  const balanceEl    = document.getElementById('balanceEl');
-  const counterEl    = document.getElementById('counter');
-  const timerEl      = document.getElementById('timerEl');
-  const timerCard    = document.getElementById('timerCard');
-  const pepeImg      = document.getElementById('pepeImg');
-  const progressBar  = document.getElementById('progressBar');
-  const statusEl     = document.getElementById('statusEl');
-  const autoRateEl   = document.getElementById('autoRateEl');
-  const withdrawBtn  = document.getElementById('withdrawBtn');
-  const modalOverlay = document.getElementById('modalOverlay');
-  const withdrawInput= document.getElementById('withdrawInput');
-  const cancelBtn    = document.getElementById('cancelBtn');
-  const confirmBtn   = document.getElementById('confirmBtn');
-  const toastEl      = document.getElementById('toast');
-  const body         = document.body;
-
-  /* ============ تنسيق ============ */
-  function formatNum(v) {
-    if (v === 0) return '0';
-    if (v < 1) return v.toFixed(4);
-    return v.toFixed(2);
-  }
-
-  function formatTimer(ms) {
+  /* ===== أدوات ===== */
+  const fmt = v => v === 0 ? '0' : (v < 1 ? v.toFixed(4) : v.toFixed(2));
+  const fmtT = ms => {
     if (ms < 0) ms = 0;
-    const totalSec = Math.ceil(ms / 1000);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-  }
+    const s = Math.ceil(ms / 1000);
+    return String(Math.floor(s / 60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0');
+  };
 
-  function updateBalanceUI(bump = false) {
-    balanceEl.textContent = formatNum(balance);
-    counterEl.textContent = formatNum(balance);
+  function updateUI(bump = false) {
+    balEl.textContent = fmt(balance);
+    cntEl.textContent = fmt(balance);
     if (bump) {
-      balanceEl.classList.remove('bump');
-      counterEl.classList.remove('earning');
-      void balanceEl.offsetWidth;
-      balanceEl.classList.add('bump');
-      counterEl.classList.add('earning');
+      balEl.classList.remove('bump'); cntEl.classList.remove('earn');
+      void balEl.offsetWidth;
+      balEl.classList.add('bump'); cntEl.classList.add('earn');
     }
-    localStorage.setItem('pm2_balance', balance);
-    withdrawBtn.disabled = balance < MIN_WITHDRAW;
+    localStorage.setItem('p_bal', balance);
+    wd.disabled = balance < MIN_WD;
   }
 
-  /* ============ إشعار ============ */
-  function showToast(msg, duration = 2500) {
-    toastEl.textContent = msg;
-    toastEl.classList.add('show');
-    clearTimeout(toastEl._t);
-    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  function showToast(msg, d = 2500) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), d);
   }
 
-  /* ============ رقم عائم ============ */
-  function floatNumber(text) {
+  function float(text) {
     const el = document.createElement('div');
-    el.className = 'float-reward';
+    el.className = 'fl';
     el.textContent = text;
-    const rect = pepeImg.getBoundingClientRect();
-    el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
-    el.style.top  = (rect.top - 10) + 'px';
+    const r = pepe.getBoundingClientRect();
+    el.style.left = (r.left + r.width/2 - 20 + (Math.random()*40-20)) + 'px';
+    el.style.top  = (r.top - 10) + 'px';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 1100);
   }
 
-  /* ============ جزيئات ============ */
-  function spawnParticles(count = 8) {
-    const rect = pepeImg.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-      const dist  = 60 + Math.random() * 50;
-      p.style.left = cx + 'px';
-      p.style.top  = cy + 'px';
-      p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
-      p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 900);
-    }
-  }
-
-  /* ============ 1) التعدين اليدوي (10 Pepe بسرعة) ============ */
-  function startManualMining() {
-    if (burstActive || autoMining || !manualReady) return;
-    burstActive = true;
+  /* ===== 1) التعدين اليدوي (متاح من البداية) ===== */
+  function startBurst() {
+    if (bursting || autoMining || !manualReady) return;
+    bursting = true;
     manualReady = false;
-    localStorage.setItem('pm2_manualReady', '0');
+    localStorage.setItem('p_manual', '0');
 
-    body.classList.add('burst-mode');
-    pepeImg.classList.remove('auto', 'ready-to-tap');
-    pepeImg.classList.add('burst');
-    statusEl.textContent = 'تعدين سريع...';
-    statusEl.className = 'status burst';
+    body.classList.add('burst');
+    pepe.classList.remove('auto', 'ready');
+    pepe.classList.add('burst');
+    st.textContent = 'تعدين سريع...';
+    st.className = 'status burst';
 
-    const startTime = Date.now();
-    const startBalance = balance;
+    const start = Date.now();
+    const startBal = balance;
 
-    const burstTimer = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const ratio = Math.min(elapsed / BURST_DURATION, 1);
-      const earned = BURST_AMOUNT * ratio;
-      const diff = earned - (balance - startBalance);
+    const t = setInterval(() => {
+      const el = Date.now() - start;
+      const ratio = Math.min(el / BURST_MS, 1);
+      const target = BURST * ratio;
+      const diff = target - (balance - startBal);
 
       if (diff > 0) {
         balance += diff;
-        updateBalanceUI(true);
-        if (Math.random() < 0.5) floatNumber('+' + diff.toFixed(3));
+        updateUI(true);
+        if (Math.random() < 0.5) float('+' + diff.toFixed(3));
       }
-
-      progressBar.style.width = (ratio * 100) + '%';
-      if (Math.random() < 0.3) spawnParticles(4);
+      pb.style.width = (ratio * 100) + '%';
 
       if (ratio >= 1) {
-        clearInterval(burstTimer);
-        finishManualMining();
+        clearInterval(t);
+        finishBurst();
       }
     }, 50);
   }
 
-  function finishManualMining() {
-    burstActive = false;
-    pepeImg.classList.remove('burst');
-    body.classList.remove('burst-mode');
-    progressBar.style.width = '0%';
-    updateBalanceUI(true);
-    showToast('تم تعدين 10 Pepe يدوياً');
-
-    // بدء التعدين التلقائي مباشرة
-    setTimeout(startAutoMining, 400);
+  function finishBurst() {
+    bursting = false;
+    pepe.classList.remove('burst');
+    body.classList.remove('burst');
+    pb.style.width = '0%';
+    updateUI(true);
+    showToast('تم تعدين 10 Pepe');
+    setTimeout(startAuto, 400);
   }
 
-  /* ============ 2) التعدين التلقائي (10 Pepe على مدى 30 دقيقة) ============ */
-  function startAutoMining() {
+  /* ===== 2) التعدين التلقائي (10 Pepe / 30 دقيقة) ===== */
+  function startAuto() {
     if (autoMining) return;
     autoMining = true;
 
-    // تعيين بداية الدورة إن لم تكن محددة
-    if (!cycleStartTime) {
-      cycleStartTime = Date.now();
-      localStorage.setItem('pm2_cycleStart', cycleStartTime);
+    if (!cycleStart) {
+      cycleStart = Date.now();
+      localStorage.setItem('p_cycle', cycleStart);
     }
 
-    body.classList.add('auto-mode');
-    pepeImg.classList.add('auto');
-    pepeImg.classList.remove('ready-to-tap');
-    statusEl.textContent = 'التعدين التلقائي نشط';
-    statusEl.className = 'status active';
-    autoRateEl.textContent = '10 / 30د';
+    body.classList.add('auto');
+    pepe.classList.add('auto');
+    pepe.classList.remove('ready');
+    st.textContent = 'التعدين التلقائي نشط';
+    st.className = 'status active';
+    lastTick = Date.now();
 
-    lastTickTime = Date.now();
-
-    // دورة كل ثانية
-    autoTimer = setInterval(() => {
+    autoT = setInterval(() => {
       const now = Date.now();
-      const dt = now - lastTickTime;
-      lastTickTime = now;
+      const dt = now - lastTick;
+      lastTick = now;
 
-      const elapsed = now - cycleStartTime;
-      const ratio = Math.min(elapsed / HALF_HOUR_MS, 1);
+      const elapsed = now - cycleStart;
+      const ratio = Math.min(elapsed / HALF_HOUR, 1);
 
-      // حساب ما يجب أن يكون مجموع التعدين التلقائي حتى الآن
-      const targetAuto = AUTO_TOTAL * ratio;
-      // لا نضيف مباشرة، نستخدم تراكم آخر قيمة
       const earned = AUTO_PER_MS * dt;
       balance += earned;
-      updateBalanceUI(true);
+      updateUI(true);
 
-      if (Math.random() < 0.35) {
-        floatNumber('+' + earned.toFixed(5));
-      }
+      if (Math.random() < 0.35) float('+' + earned.toFixed(5));
 
-      // تحديث شريط التقدم
-      progressBar.style.width = (ratio * 100) + '%';
+      pb.style.width = (ratio * 100) + '%';
 
-      // انتهت الدورة → اجعل اليدوي متاح
-      if (ratio >= 1) {
-        finishCycle();
-      }
+      if (ratio >= 1) finishCycle();
     }, 1000);
 
-    localStorage.setItem('pm2_mining', '1');
-    updateTimerUI();
+    updateTimer();
   }
 
-  /* ============ انتهاء الدورة ============ */
+  /* ===== نهاية الدورة ===== */
   function finishCycle() {
-    if (autoTimer) {
-      clearInterval(autoTimer);
-      autoTimer = null;
-    }
+    if (autoT) { clearInterval(autoT); autoT = null; }
     autoMining = false;
-    body.classList.remove('auto-mode');
-    pepeImg.classList.remove('auto');
-    progressBar.style.width = '100%';
+    body.classList.remove('auto');
+    pepe.classList.remove('auto');
+    pb.style.width = '100%';
 
-    // اجعل التعدين اليدوي متاحاً
     manualReady = true;
-    localStorage.setItem('pm2_manualReady', '1');
+    localStorage.setItem('p_manual', '1');
+    cycleStart = 0;
+    localStorage.removeItem('p_cycle');
 
-    // إعادة تعيين الدورة القادمة
-    cycleStartTime = 0;
-    localStorage.removeItem('pm2_cycleStart');
-    localStorage.setItem('pm2_mining', '0');
+    st.textContent = 'اضغط على Pepe للتعدين';
+    st.className = 'status ready';
+    pepe.classList.add('ready');
 
-    statusEl.textContent = 'اضغط على Pepe للتعدين';
-    statusEl.className = 'status ready';
-    pepeImg.classList.add('ready-to-tap');
-
-    timerEl.textContent = '00:00';
-    timerCard.classList.add('ready');
-    setTimeout(() => timerCard.classList.remove('ready'), 3000);
+    tVal.textContent = '00:00';
+    tCard.classList.add('ready');
+    setTimeout(() => tCard.classList.remove('ready'), 3000);
 
     showToast('انتهى النصف ساعة! اضغط على Pepe');
   }
 
-  /* ============ عداد النصف ساعة ============ */
-  function updateTimerUI() {
-    if (!cycleStartTime) {
-      timerEl.textContent = '00:00';
-      return;
-    }
-    const elapsed = Date.now() - cycleStartTime;
-    const remaining = Math.max(0, HALF_HOUR_MS - elapsed);
-    timerEl.textContent = formatTimer(remaining);
+  /* ===== العداد ===== */
+  function updateTimer() {
+    if (!cycleStart) { tVal.textContent = '00:00'; return; }
+    const el = Date.now() - cycleStart;
+    tVal.textContent = fmtT(Math.max(0, HALF_HOUR - el));
   }
 
-  /* ============ استئناف عند العودة ============ */
+  /* ===== استئناف ===== */
   function resume() {
-    const mining = localStorage.getItem('pm2_mining') === '1';
-
-    if (cycleStartTime) {
-      const elapsed = Date.now() - cycleStartTime;
-
-      if (elapsed >= HALF_HOUR_MS) {
-        // انتهت الدورة أثناء الغياب → امنح الباقي واجعل اليدوي متاحاً
-        const remaining = AUTO_TOTAL - (balance - parseFloat(localStorage.getItem('pm2_balanceAtCycleStart') || '0'));
-        // ببساطة: أضف ما تبقى من التعدين التلقائي
-        const cycleEarned = parseFloat(localStorage.getItem('pm2_cycleEarned') || '0');
-        const toAdd = Math.max(0, AUTO_TOTAL - cycleEarned);
-        if (toAdd > 0) balance += toAdd;
-        updateBalanceUI();
-
+    if (cycleStart) {
+      const el = Date.now() - cycleStart;
+      if (el >= HALF_HOUR) {
+        // انتهت أثناء الغياب → امنح الباقي
+        const earned = parseFloat(localStorage.getItem('p_cycleEarned') || '0');
+        const remaining = Math.max(0, AUTO_TOTAL - earned);
+        balance += remaining;
+        updateUI();
         manualReady = true;
-        localStorage.setItem('pm2_manualReady', '1');
-        cycleStartTime = 0;
-        localStorage.removeItem('pm2_cycleStart');
-        localStorage.setItem('pm2_mining', '0');
-
-        statusEl.textContent = 'اضغط على Pepe للتعدين';
-        statusEl.className = 'status ready';
-        pepeImg.classList.add('ready-to-tap');
-        timerEl.textContent = '00:00';
-        timerCard.classList.add('ready');
-        updateBalanceUI();
-        return;
+        localStorage.setItem('p_manual', '1');
+        cycleStart = 0;
+        localStorage.removeItem('p_cycle');
+        pepe.classList.add('ready');
+        st.textContent = 'اضغط على Pepe للتعدين';
+        st.className = 'status ready';
+        tVal.textContent = '00:00';
       } else {
-        // استئناف التعدين التلقائي
-        if (mining) {
-          startAutoMining();
-        } else {
-          // كان متوقفاً، شغّل
-          startAutoMining();
-        }
+        startAuto();
       }
     } else {
-      // لا توجد دورة نشطة → اليدوي متاح
       manualReady = true;
-      pepeImg.classList.add('ready-to-tap');
-      statusEl.textContent = 'اضغط على Pepe للتعدين';
-      statusEl.className = 'status ready';
-      timerEl.textContent = '00:00';
-      updateBalanceUI();
+      pepe.classList.add('ready');
+      st.textContent = 'اضغط على Pepe للتعدين';
+      st.className = 'status ready';
+      updateUI();
     }
   }
 
-  /* ============ أحداث ============ */
-  pepeImg.addEventListener('click', () => {
-    if (burstActive) return;
+  /* ===== الأحداث ===== */
+  pepe.addEventListener('click', () => {
+    if (bursting) return;
     if (autoMining) {
-      // التعدين التلقائي شغال → رسالة
-      statusEl.textContent = 'التعدين التلقائي شغال، انتظر النصف ساعة';
+      st.textContent = 'التعدين التلقائي شغال';
       setTimeout(() => {
-        if (autoMining) {
-          statusEl.textContent = 'التعدين التلقائي نشط';
-          statusEl.className = 'status active';
-        }
-      }, 1800);
+        if (autoMining) { st.textContent = 'التعدين التلقائي نشط'; st.className = 'status active'; }
+      }, 1500);
       return;
     }
-    if (manualReady) {
-      startManualMining();
-    }
+    if (manualReady) startBurst();
   });
 
-  /* ============ زر السحب ============ */
-  withdrawBtn.addEventListener('click', () => {
-    if (balance < MIN_WITHDRAW) return;
-    withdrawInput.value = Math.floor(balance);
-    modalOverlay.classList.add('show');
-    setTimeout(() => withdrawInput.focus(), 300);
+  wd.addEventListener('click', () => {
+    if (balance < MIN_WD) return;
+    mi.value = Math.floor(balance);
+    modal.classList.add('show');
+    setTimeout(() => mi.focus(), 300);
+  });
+  cb.addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+  okb.addEventListener('click', () => {
+    const v = parseFloat(mi.value);
+    if (!v || v < MIN_WD) { showToast('الحد الأدنى ' + MIN_WD); return; }
+    if (v > balance) { showToast('الرصيد غير كافٍ'); return; }
+    balance -= v;
+    updateUI(true);
+    modal.classList.remove('show');
+    showToast('تم طلب سحب ' + v.toFixed(2));
   });
 
-  cancelBtn.addEventListener('click', () => {
-    modalOverlay.classList.remove('show');
-  });
-
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) modalOverlay.classList.remove('show');
-  });
-
-  confirmBtn.addEventListener('click', () => {
-    const val = parseFloat(withdrawInput.value);
-    if (!val || val < MIN_WITHDRAW) {
-      showToast('الحد الأدنى للسحب ' + MIN_WITHDRAW + ' Pepe');
-      return;
-    }
-    if (val > balance) {
-      showToast('الرصيد غير كافٍ');
-      return;
-    }
-    balance -= val;
-    updateBalanceUI(true);
-    modalOverlay.classList.remove('show');
-    showToast('تم إرسال طلب سحب ' + val.toFixed(2) + ' Pepe');
-  });
-
-  /* ============ حفظ عند الإغلاق ============ */
   window.addEventListener('beforeunload', () => {
-    localStorage.setItem('pm2_balance', balance);
-    if (autoMining) {
-      localStorage.setItem('pm2_mining', '1');
-    }
+    localStorage.setItem('p_bal', balance);
   });
 
-  /* ============ تهيئة ============ */
-  updateBalanceUI();
-  autoRateEl.textContent = '10 / 30د';
+  /* ===== تشغيل ===== */
+  updateUI();
   resume();
-
-  // تحديث عداد النصف ساعة كل ثانية
-  uiTimer = setInterval(updateTimerUI, 1000);
+  uiT = setInterval(updateTimer, 1000);
 </script>
-
 </body>
 </html>
