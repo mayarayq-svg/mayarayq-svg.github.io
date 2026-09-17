@@ -1220,7 +1220,7 @@
       if (!state.gameActive) return;
 
       // 10% عشوائي (لجعلها صعبة قليلاً)
-      if (Math.random() < 0.1) {
+      if (Math.random() < 0.7) {
         const empty = state.board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
         if (empty.length) {
           const idx = empty[Math.floor(Math.random() * empty.length)];
