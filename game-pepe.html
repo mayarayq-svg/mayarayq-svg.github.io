@@ -16,6 +16,28 @@
   body.burst { background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%); }
   body.auto  { background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%); }
 
+  /* ===== شريط علوي فيه زر العودة ===== */
+  .topbar {
+    width: 100%; max-width: 380px;
+    display: flex; align-items: center; justify-content: flex-start;
+    margin-bottom: 12px;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 1px;
+    border: 1px solid rgba(34,197,94,0.3);
+    background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
+    color: #4ade80; border-radius: 12px;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(34,197,94,0.25);
+    background: linear-gradient(135deg, rgba(34,197,94,0.25), rgba(34,197,94,0.08));
+  }
+  .back-btn svg { width: 14px; height: 14px; }
+
   .logo {
     font-size: 1.6rem; font-weight: 800; letter-spacing: 5px; margin-bottom: 16px;
     background: linear-gradient(135deg, #4ade80, #15803d);
@@ -106,9 +128,7 @@
     box-shadow: 0 0 0 3px rgba(34,197,94,0.3), 0 0 45px rgba(34,197,94,0.6);
   }
   @keyframes br { 50% { transform: scale(1.03); } }
-  .pepe.ready {
-    animation: rg 1.2s ease-in-out infinite;
-  }
+  .pepe.ready { animation: rg 1.2s ease-in-out infinite; }
   @keyframes rg {
     0%,100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.5), 0 0 40px rgba(74,222,128,0.8); }
     50% { box-shadow: 0 0 0 8px rgba(74,222,128,0.2), 0 0 70px rgba(74,222,128,1); }
@@ -182,6 +202,16 @@
 </head>
 <body>
 
+<!-- زر العودة فوق -->
+<div class="topbar">
+  <button class="back-btn" id="backBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+    العودة للألعاب
+  </button>
+</div>
+
 <div class="logo">بيبي ماینر</div>
 
 <div class="card">
@@ -228,12 +258,13 @@
 
 <script>
   /* ===== الإعدادات ===== */
-  const BURST = 10;              // كمية التعدين اليدوي
-  const BURST_MS = 5000;         // مدة الانفجار
-  const AUTO_TOTAL = 10;         // إجمالي التعدين التلقائي
-  const HALF_HOUR = 1800000;     // 30 دقيقة
+  const BURST = 10;
+  const BURST_MS = 5000;
+  const AUTO_TOTAL = 10;
+  const HALF_HOUR = 1800000;
   const AUTO_PER_MS = AUTO_TOTAL / HALF_HOUR;
   const MIN_WD = 100;
+  const GAMES_URL = 'games.html'; // ← ضع رابط صفحة الألعاب هنا
 
   /* ===== الحالة ===== */
   let balance = parseFloat(localStorage.getItem('p_bal') || '0');
@@ -251,6 +282,7 @@
   const pb = document.getElementById('pb');
   const st = document.getElementById('st');
   const wd = document.getElementById('wd');
+  const backBtn = document.getElementById('backBtn');
   const modal = document.getElementById('modal');
   const mi = document.getElementById('mi');
   const cb = document.getElementById('cb');
@@ -296,7 +328,7 @@
     setTimeout(() => el.remove(), 1100);
   }
 
-  /* ===== 1) التعدين اليدوي (متاح من البداية) ===== */
+  /* ===== التعدين اليدوي ===== */
   function startBurst() {
     if (bursting || autoMining || !manualReady) return;
     bursting = true;
@@ -342,7 +374,7 @@
     setTimeout(startAuto, 400);
   }
 
-  /* ===== 2) التعدين التلقائي (10 Pepe / 30 دقيقة) ===== */
+  /* ===== التعدين التلقائي ===== */
   function startAuto() {
     if (autoMining) return;
     autoMining = true;
@@ -381,7 +413,6 @@
     updateTimer();
   }
 
-  /* ===== نهاية الدورة ===== */
   function finishCycle() {
     if (autoT) { clearInterval(autoT); autoT = null; }
     autoMining = false;
@@ -405,19 +436,16 @@
     showToast('انتهى النصف ساعة! اضغط على Pepe');
   }
 
-  /* ===== العداد ===== */
   function updateTimer() {
     if (!cycleStart) { tVal.textContent = '00:00'; return; }
     const el = Date.now() - cycleStart;
     tVal.textContent = fmtT(Math.max(0, HALF_HOUR - el));
   }
 
-  /* ===== استئناف ===== */
   function resume() {
     if (cycleStart) {
       const el = Date.now() - cycleStart;
       if (el >= HALF_HOUR) {
-        // انتهت أثناء الغياب → امنح الباقي
         const earned = parseFloat(localStorage.getItem('p_cycleEarned') || '0');
         const remaining = Math.max(0, AUTO_TOTAL - earned);
         balance += remaining;
@@ -455,6 +483,7 @@
     if (manualReady) startBurst();
   });
 
+  /* ===== زر السحب ===== */
   wd.addEventListener('click', () => {
     if (balance < MIN_WD) return;
     mi.value = Math.floor(balance);
@@ -471,6 +500,12 @@
     updateUI(true);
     modal.classList.remove('show');
     showToast('تم طلب سحب ' + v.toFixed(2));
+  });
+
+  /* ===== زر العودة ===== */
+  backBtn.addEventListener('click', () => {
+    localStorage.setItem('p_bal', balance);
+    window.location.href = GAMES_URL;
   });
 
   window.addEventListener('beforeunload', () => {
