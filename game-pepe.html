@@ -601,8 +601,8 @@
     </div>
 
     <div class="timer-card">
-      <div class="timer-label">الوقت المتبقي للساعة</div>
-      <div class="timer-value" id="timerEl">00:00:00</div>
+      <div class="timer-label">الوقت المتبقي للدورة</div>
+      <div class="timer-value" id="timerEl">30:00</div>
     </div>
 
     <div class="pepe-stage">
@@ -626,7 +626,7 @@
     <div class="stats-row">
       <div class="stat-box">
         <div class="stat-label">معدل التعدين</div>
-        <div class="stat-value" id="rateEl">1 / ساعة</div>
+        <div class="stat-value" id="rateEl">20 / نصف ساعة</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">حالة النظام</div>
@@ -636,7 +636,7 @@
 
   </div>
 
-  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 100 PEPE</button>
+  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 10 PEPE</button>
 
   <!-- نافذة السحب -->
   <div class="modal-overlay" id="modalOverlay">
@@ -700,12 +700,12 @@
   }
 
   /* ============ الإعدادات ============ */
-  const BURST_AMOUNT    = 10;
-  const BURST_DURATION  = 10000;
-  const AUTO_RATE_HOUR  = 1;
-  const AUTO_PER_SEC    = AUTO_RATE_HOUR / 3600;
-  const MIN_WITHDRAW    = 100;
-  const HOUR_MS         = 3600000;
+  const BURST_AMOUNT        = 10;                     // 10 PEPE عند الانفجار الأول
+  const BURST_DURATION      = 10000;                  // 10 ثواني
+  const AUTO_RATE_HALF_HOUR = 20;                     // 20 PEPE كل نصف ساعة
+  const AUTO_PERIOD_MS      = 30 * 60 * 1000;         // 30 دقيقة = نصف ساعة
+  const AUTO_PER_SEC        = AUTO_RATE_HALF_HOUR / (30 * 60);  // 20 / 1800 = 0.0111...
+  const MIN_WITHDRAW        = 10;                     // الحد الأدنى 10 PEPE
 
   /* ============ الحالة ============ */
   let balance         = parseFloat(localStorage.getItem('pm_balance') || '0');
@@ -745,11 +745,9 @@
   function formatTime(ms) {
     if (ms < 0) ms = 0;
     const totalSec = Math.floor(ms / 1000);
-    const h = Math.floor(totalSec / 3600);
-    const m = Math.floor((totalSec % 3600) / 60);
+    const m = Math.floor(totalSec / 60);
     const s = totalSec % 60;
-    return String(h).padStart(2, '0') + ':' +
-           String(m).padStart(2, '0') + ':' +
+    return String(m).padStart(2, '0') + ':' +
            String(s).padStart(2, '0');
   }
 
@@ -869,7 +867,7 @@
     statusEl.className = 'status active';
     sysStatusEl.textContent = 'نشط';
     sysStatusEl.style.color = '#4ade80';
-    rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+    rateEl.textContent = AUTO_RATE_HALF_HOUR + ' / نصف ساعة';
 
     lastTickTime = Date.now();
 
@@ -883,32 +881,34 @@
       updateBalanceUI(true);
 
       if (Math.random() < 0.35) {
-        floatNumber('+' + earned.toFixed(5));
+        floatNumber('+' + earned.toFixed(4));
       }
     }, 1000);
 
     localStorage.setItem('pm_mining', '1');
-    updateHourTimer();
+    updatePeriodTimer();
   }
 
-  /* ============ عداد الساعة ============ */
-  function updateHourTimer() {
+  /* ============ عداد الدورة (نصف ساعة) ============ */
+  function updatePeriodTimer() {
     if (!autoStartTime) {
-      timerEl.textContent = '00:00:00';
+      timerEl.textContent = '30:00';
       return;
     }
     const elapsed = Date.now() - autoStartTime;
-    const remaining = Math.max(0, HOUR_MS - elapsed);
+    const remaining = Math.max(0, AUTO_PERIOD_MS - elapsed);
     timerEl.textContent = formatTime(remaining);
 
     if (remaining <= 0 && autoMining) {
       autoStartTime = Date.now();
       localStorage.setItem('pm_autoStart', autoStartTime);
-      showToast('انتهت الساعة! بدأت دورة جديدة +1 Pepe');
+      balance += AUTO_RATE_HALF_HOUR;
+      updateBalanceUI(true);
+      showToast('انتهت الدورة! +' + AUTO_RATE_HALF_HOUR + ' Pepe');
     }
   }
 
-  setInterval(updateHourTimer, 1000);
+  setInterval(updatePeriodTimer, 1000);
 
   /* ============ استئناف ============ */
   function resume() {
@@ -917,7 +917,7 @@
       startAutoMining();
     } else {
       updateBalanceUI();
-      rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+      rateEl.textContent = AUTO_RATE_HALF_HOUR + ' / نصف ساعة';
       sysStatusEl.textContent = 'جاهز';
       sysStatusEl.style.color = '#4ade80';
     }
@@ -1052,11 +1052,11 @@
 
   /* ============ تهيئة ============ */
   updateBalanceUI();
-  rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+  rateEl.textContent = AUTO_RATE_HALF_HOUR + ' / نصف ساعة';
   sysStatusEl.textContent = 'جاهز';
   sysStatusEl.style.color = '#4ade80';
   resume();
-  updateHourTimer();
+  updatePeriodTimer();
 </script>
 
 </body>
