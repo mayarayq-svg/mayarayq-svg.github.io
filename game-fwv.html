@@ -887,36 +887,54 @@
            🎁 العدو الضخم الخاص
         ============================================ */
         function spawnBonusBoss() {
-            if (!enemyLoaded) return;
+    if (!enemyLoaded) return;
 
-            const targetWidth = Math.min(arena.width * 0.35, 200);
-            const aspect = enemyImg.width / enemyImg.height;
-            const w = targetWidth;
-            const h = w / aspect;
+    const targetWidth = Math.min(arena.width * 0.35, 200);
+    const aspect = enemyImg.width / enemyImg.height;
+    const w = targetWidth;
+    const h = w / aspect;
 
-            enemies.push({
-                x: arena.width + w / 2,
-                y: arena.height / 2,
-                size: w,
-                width: w,
-                height: h,
-                speed: 0.6,
-                hp: 5,
-                maxHp: 5,
-                hitFlash: 0,
-                isBoss: true,
-                isBonusBoss: true,
-                movePhase: 0,
-                moveTimer: 0,
-                baseY: arena.height / 2,
-                shootTimer: 45,
-                shootCooldown: 45,
-                stopped: false,
-                stopX: arena.width * 0.7,
-                recoil: 0
-            });
+    enemies.push({
+        x: arena.width + w / 2,
+        y: arena.height / 2,
+        size: w,
+        width: w,
+        height: h,
+        speed: 0.6,
+        hp: 5,
+        maxHp: 5,
+        hitFlash: 0,
+        isBoss: true,
+        isBonusBoss: true,
+        useEnemyImg: true,  // ✅ استخدام صورة USDX.png
+        movePhase: 0,
+        moveTimer: 0,
+        baseY: arena.height / 2,
+        shootTimer: 45,
+        shootCooldown: 45,
+        stopped: false,
+        stopX: arena.width * 0.7,
+        recoil: 0
+    });
 
-            bossActive = true;
+    bossActive = true;
+
+    // 🎉 مؤثر بصري
+    for (let k = 0; k < 30; k++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 3 + Math.random() * 8;
+        explosions.push({
+            x: arena.width + w / 2,
+            y: arena.height / 2,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 25,
+            maxLife: 40,
+            size: 3 + Math.random() * 4,
+            color: '#f39c12'
+        });
+    }
+}
 
             // 🎉 مؤثر بصري
             for (let k = 0; k < 30; k++) {
@@ -1422,36 +1440,52 @@
             });
 
             enemies.forEach(e => {
-                const img = e.isBoss ? bossImg : enemyImg;
-                const isLoaded = e.isBoss ? bossLoaded : enemyLoaded;
-                if (!isLoaded) return;
+    // ✅ تحديد الصورة الصحيحة
+    let img, isLoaded;
+    if (e.isBonusBoss) {
+        img = enemyImg;        // ← USDX.png للعدو الضخم الخاص
+        isLoaded = enemyLoaded;
+    } else if (e.isBoss) {
+        img = bossImg;         // ← USDTX.png للزعيم العادي
+        isLoaded = bossLoaded;
+    } else {
+        img = enemyImg;        // ← USDX.png للعدو العادي
+        isLoaded = enemyLoaded;
+    }
+    
+    if (!isLoaded) return;
 
-                ctx.save();
-                if (e.isBoss && e.isBonusBoss) {
-                    // 👹 العدو الضخم الخاص — توهج ذهبي
-                    ctx.translate(e.x, e.y);
-                    ctx.shadowBlur = 25;
-                    ctx.shadowColor = '#f39c12';
-                    if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
-                    ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                } else if (e.isBoss) {
-                    ctx.translate(e.x, e.y);
-                    ctx.shadowBlur = 15;
-                    ctx.shadowColor = '#0a3d1a';
-                    if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
-                    ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                } else {
-                    ctx.translate(e.x, e.y);
-                    if (e.hitFlash > 0) {
-                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                        ctx.globalAlpha = 0.6;
-                        ctx.globalCompositeOperation = 'lighter';
-                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                    } else {
-                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                    }
-                }
-                ctx.restore();
+    ctx.save();
+    if (e.isBonusBoss) {
+        // 👹 العدو الضخم الخاص — توهج ذهبي + صورة USDX
+        ctx.translate(e.x, e.y);
+        ctx.shadowBlur = 30;
+        ctx.shadowColor = '#f39c12';
+        if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
+        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+        // طبقة إضافية للتوهج
+        ctx.globalAlpha = 0.4;
+        ctx.shadowBlur = 50;
+        ctx.shadowColor = '#f39c12';
+        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+    } else if (e.isBoss) {
+        ctx.translate(e.x, e.y);
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#0a3d1a';
+        if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
+        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+    } else {
+        ctx.translate(e.x, e.y);
+        if (e.hitFlash > 0) {
+            ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+            ctx.globalAlpha = 0.6;
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+        } else {
+            ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+        }
+    }
+    ctx.restore();
 
                 if (e.isBoss) {
                     const barW = e.width * 0.9;
