@@ -235,7 +235,7 @@
 
     <script>
         /* ============================================
-           🔒 المفاتيح المشفرة (مخفية)
+           🔒 المفاتيح المشفرة
         ============================================ */
         const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
         const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
@@ -265,6 +265,12 @@
         const BOSS_KILL_VALUE = 0.00005;
         const WITHDRAW_COOLDOWN = 24 * 60 * 60 * 1000;
 
+        // 💾 دالة حفظ الرصيد
+        function saveBalance() {
+            localStorage.setItem('fwvBalance', usdtScore);
+            localStorage.setItem('fwvBossKills', bossKilled);
+        }
+
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d', { alpha: false });
         let DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -281,9 +287,10 @@
         bossImg.onload = () => { bossLoaded = true; };
         bossImg.src = 'USDTX.png';
 
-        let usdtScore = 0;
-        let displayedScore = 0;
-        let bossKilled = 0;
+        // 💾 قراءة الرصيد من الذاكرة
+        let usdtScore = parseFloat(localStorage.getItem('fwvBalance') || '0');
+        let displayedScore = usdtScore;
+        let bossKilled = parseInt(localStorage.getItem('fwvBossKills') || '0');
         let enemiesKilled = 0;
         const ENEMIES_PER_BOSS = 25;
 
@@ -666,10 +673,11 @@
             enemies.length = 0; explosions.length = 0; smokeParticles.length = 0;
 
             enemySpawnTimer = 0;
-            bossKilled = 0; enemiesKilled = 0; bossActive = false;
+            // ✅ لا نصفر bossKilled و usdtScore - محفوظة
+            enemiesKilled = 0;
+            bossActive = false;
             shipHP.current = shipHP.max;
             shipHP.hitFlash = 0; shipHP.invulnerable = 0;
-            usdtScore = 0; displayedScore = 0;
             updateWithdrawBtn();
         }
 
@@ -930,6 +938,7 @@
                             }
                             enemies.splice(j, 1);
                             if (!e.isBoss && enemiesKilled % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
+                            saveBalance();  // 💾 حفظ
                             updateWithdrawBtn();
                         }
                         hit = true;
@@ -1005,6 +1014,7 @@
                             }
                             enemies.splice(j, 1);
                             if (!e.isBoss && enemiesKilled % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
+                            saveBalance();  // 💾 حفظ
                             updateWithdrawBtn();
                         }
                     }
@@ -1069,6 +1079,7 @@
 
         function endGame() {
             gameState = 'gameover';
+            saveBalance();  // 💾 حفظ أخير عند الموت
             setTimeout(() => {
                 gameState = 'select';
                 updateWithdrawBtn();
@@ -1381,7 +1392,7 @@
         }
 
         /* ============================================
-           السحب (مع المفتاح المشفر)
+           السحب
         ============================================ */
         function openWithdraw() {
             if (isWithdrawLocked()) return;
@@ -1407,7 +1418,6 @@
             const form = event.target;
             const formData = new FormData(form);
 
-            // 🔒 إضافة المفتاح والإيميل المشفرين
             formData.set('apiKey', _dk());
             formData.set('email', _de());
 
@@ -1435,8 +1445,11 @@
         function showSuccess(type) {
             const amt = usdtScore.toFixed(4);
             const sy = Math.round(usdtScore * SYP_RATE);
+            // 💾 تصفير وحفظ
             usdtScore = 0;
             displayedScore = 0;
+            bossKilled = 0;
+            saveBalance();
             updateWithdrawBtn();
             lastWithdrawTime = Date.now();
             localStorage.setItem('fwvLastWithdraw', lastWithdrawTime);
