@@ -1,1308 +1,510 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a15">
-    <title>لعبة X O — اربح USDT | PAID PLUS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            user-select: none; -webkit-user-select: none;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: linear-gradient(160deg, #0a0a15 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: 
-                radial-gradient(2px 2px at 20% 30%, rgba(106,17,203,0.3), transparent),
-                radial-gradient(2px 2px at 60% 70%, rgba(37,117,252,0.3), transparent),
-                radial-gradient(1px 1px at 50% 50%, rgba(46,204,113,0.3), transparent),
-                radial-gradient(1px 1px at 80% 10%, rgba(155,89,182,0.3), transparent);
-            background-size: 200% 200%;
-            animation: bgMove 20s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        @keyframes bgMove {
-            0%, 100% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-        }
-
-        body > * { position: relative; z-index: 1; }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 18px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(106,17,203,0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .logo {
-            font-size: 17px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .back-btn {
-            color: #fff;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 800;
-            padding: 7px 14px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 18px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            z-index: 2;
-        }
-        .back-btn:active { transform: scale(0.94); }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
-        .stat {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
-            padding: 10px 6px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-label {
-            font-size: 10px;
-            color: #a0a0b0;
-            display: block;
-            margin-bottom: 3px;
-            font-weight: 700;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 900;
-            direction: ltr;
-            display: block;
-            line-height: 1;
-        }
-
-        .stat-value.win { color: #2ecc71; text-shadow: 0 0 10px rgba(46,204,113,0.5); }
-        .stat-value.lose { color: #e74c3c; text-shadow: 0 0 10px rgba(231,76,60,0.5); }
-        .stat-value.tie { color: #f39c12; text-shadow: 0 0 10px rgba(243,156,18,0.5); }
-
-        .plays-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(243,156,18,0.15), rgba(243,156,18,0.05));
-            border: 1px solid rgba(243,156,18,0.35);
-            border-radius: 14px;
-            padding: 10px 16px;
-            backdrop-filter: blur(10px);
-        }
-
-        .plays-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #f39c12;
-            font-weight: 800;
-            font-size: 12px;
-        }
-
-        .plays-label svg { width: 15px; height: 15px; }
-
-        .plays-count {
-            font-size: 17px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            text-shadow: 0 0 10px rgba(243,156,18,0.5);
-        }
-
-        .cooldown-bar {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(192,57,43,0.05));
-            border: 1px solid rgba(231,76,60,0.4);
-            border-radius: 14px;
-            padding: 10px 16px;
-            backdrop-filter: blur(10px);
-            animation: cooldownPulse 2s ease-in-out infinite;
-        }
-
-        .cooldown-bar.show { display: flex; }
-
-        @keyframes cooldownPulse {
-            0%, 100% { border-color: rgba(231,76,60,0.4); }
-            50% { border-color: rgba(231,76,60,0.7); }
-        }
-
-        .cooldown-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #e74c3c;
-            font-weight: 800;
-            font-size: 11px;
-        }
-
-        .cooldown-label svg { width: 14px; height: 14px; }
-
-        .cooldown-timer {
-            font-size: 15px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(231,76,60,0.6);
-        }
-
-        .game-area {
-            background: 
-                radial-gradient(circle at 50% 0%, rgba(106,17,203,0.2), transparent 60%),
-                linear-gradient(180deg, rgba(26,26,46,0.95), rgba(15,15,26,0.95));
-            border-radius: 22px;
-            padding: 22px 18px;
-            border: 2px solid rgba(106,17,203,0.35);
-            box-shadow: 0 20px 60px rgba(106,17,203,0.25);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .turn-indicator {
-            margin-bottom: 18px;
-            font-size: 16px;
-            font-weight: 900;
-            min-height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .turn-indicator .you { color: #2ecc71; text-shadow: 0 0 15px rgba(46,204,113,0.8); }
-        .turn-indicator .robot { color: #e74c3c; text-shadow: 0 0 15px rgba(231,76,60,0.8); }
-
-        .board-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            max-width: 300px;
-            margin: 0 auto 18px;
-            aspect-ratio: 1 / 1;
-        }
-
-        .cell {
-            background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-            border: 2px solid rgba(106,17,203,0.3);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cell:not(.taken):not(.disabled):active {
-            transform: scale(0.95);
-            background: rgba(106,17,203,0.2);
-        }
-
-        .cell.taken { cursor: not-allowed; }
-        .cell.disabled { cursor: not-allowed; opacity: 0.5; }
-
-        .cell.x {
-            color: #2ecc71;
-            border-color: #2ecc71;
-            background: linear-gradient(135deg, rgba(46,204,113,0.15), rgba(46,204,113,0.05));
-            text-shadow: 0 0 20px rgba(46,204,113,0.8);
-            animation: popIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .cell.o {
-            color: #e74c3c;
-            border-color: #e74c3c;
-            background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(231,76,60,0.05));
-            text-shadow: 0 0 20px rgba(231,76,60,0.8);
-            animation: popIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            70% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .cell.win {
-            background: linear-gradient(135deg, rgba(46,204,113,0.4), rgba(38,161,123,0.4));
-            border-color: #2ecc71;
-            animation: winPulse 0.6s infinite;
-            box-shadow: 0 0 30px rgba(46,204,113,0.6);
-        }
-
-        @keyframes winPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .start-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: #fff;
-            border: none;
-            padding: 14px 36px;
-            border-radius: 30px;
-            font-weight: 900;
-            font-size: 15px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.3s;
-            box-shadow: 0 12px 30px rgba(106,17,203,0.5);
-        }
-
-        .start-btn:active { transform: scale(0.95); }
-        .start-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .start-btn svg { width: 16px; height: 16px; }
-
-        .balance-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            border-radius: 18px;
-            padding: 14px 18px;
-            box-shadow: 0 15px 35px rgba(38,161,123,0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 50%;
-            top: -70px;
-            right: -40px;
-        }
-
-        .balance-icon {
-            width: 45px;
-            height: 45px;
-            background: rgba(255,255,255,0.25);
-            border-radius: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .balance-icon img { width: 100%; height: 100%; object-fit: contain; }
-
-        .balance-info { flex: 1; position: relative; z-index: 2; }
-
-        .balance-label {
-            font-size: 10px;
-            color: rgba(255,255,255,0.9);
-            font-weight: 700;
-            margin-bottom: 3px;
-        }
-
-        .balance-value {
-            font-size: 20px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-            line-height: 1;
-        }
-
-        .balance-symbol { font-size: 11px; opacity: 0.9; }
-
-        .withdraw-btn {
-            background: #fff;
-            color: #26a17b;
-            border: none;
-            padding: 11px 16px;
-            border-radius: 13px;
-            font-weight: 900;
-            font-size: 12px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            position: relative;
-            z-index: 2;
-            flex-shrink: 0;
-        }
-
-        .withdraw-btn:not(:disabled):active { transform: scale(0.94); }
-
-        .withdraw-btn:disabled {
-            background: rgba(255,255,255,0.35);
-            color: rgba(255,255,255,0.7);
-            cursor: not-allowed;
-        }
-
-        .withdraw-btn svg { width: 14px; height: 14px; }
-
-        .result-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(10,10,21,0.92);
-            backdrop-filter: blur(15px);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .result-overlay.show {
-            display: flex;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .result-box {
-            background: linear-gradient(160deg, #1a1a2e, #0f0f1a);
-            border-radius: 26px;
-            padding: 32px 28px;
-            text-align: center;
-            max-width: 360px;
-            width: 100%;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.7);
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .result-icon {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            animation: popIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .result-icon.win {
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            box-shadow: 0 15px 40px rgba(38,161,123,0.6);
-        }
-
-        .result-icon.lose {
-            background: linear-gradient(135deg, #c0392b, #e74c3c);
-            box-shadow: 0 15px 40px rgba(231,76,60,0.6);
-        }
-
-        .result-icon.tie {
-            background: linear-gradient(135deg, #d35400, #f39c12);
-            box-shadow: 0 15px 40px rgba(243,156,18,0.6);
-        }
-
-        .result-title {
-            font-size: 26px;
-            font-weight: 900;
-            margin-bottom: 10px;
-        }
-
-        .result-title.win { color: #2ecc71; text-shadow: 0 0 20px rgba(46,204,113,0.6); }
-        .result-title.lose { color: #e74c3c; text-shadow: 0 0 20px rgba(231,76,60,0.6); }
-        .result-title.tie { color: #f39c12; text-shadow: 0 0 20px rgba(243,156,18,0.6); }
-
-        .result-prize {
-            font-size: 14px;
-            color: #a0a0b0;
-            margin-bottom: 22px;
-            line-height: 1.7;
-        }
-
-        .result-prize strong {
-            display: block;
-            font-size: 24px;
-            color: #2ecc71;
-            margin-top: 8px;
-            direction: ltr;
-            text-shadow: 0 0 15px rgba(46,204,113,0.6);
-        }
-
-        .result-btn {
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: #fff;
-            border: none;
-            padding: 14px 40px;
-            border-radius: 30px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 12px 30px rgba(106,17,203,0.5);
-        }
-
-        .result-btn:active { transform: scale(0.95); }
-
-        .withdraw-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            backdrop-filter: blur(15px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            padding: 15px;
-            overflow-y: auto;
-        }
-
-        .withdraw-modal.show { display: flex; }
-
-        .withdraw-content {
-            background: linear-gradient(160deg, #1a1a2e, #0f0f1a);
-            border-radius: 24px;
-            padding: 26px 22px;
-            max-width: 420px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-            color: #fff;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            width: 34px;
-            height: 34px;
-            background: rgba(255,255,255,0.08);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close svg { width: 16px; height: 16px; color: #fff; }
-
-        .modal-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 900;
-            margin-bottom: 18px;
-        }
-
-        .frozen-balance {
-            background: linear-gradient(135deg, rgba(38,161,123,0.15), rgba(46,204,113,0.05));
-            border: 2px solid rgba(38,161,123,0.35);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            margin-bottom: 18px;
-        }
-
-        .frozen-label {
-            font-size: 11px;
-            color: #a0a0b0;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .frozen-amount {
-            font-size: 26px;
-            font-weight: 900;
-            color: #26a17b;
-            direction: ltr;
-            line-height: 1;
-            text-shadow: 0 0 15px rgba(38,161,123,0.5);
-        }
-
-        .frozen-amount small { font-size: 12px; opacity: 0.85; }
-
-        .form-group { margin-bottom: 14px; }
-
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            font-weight: 800;
-            margin-bottom: 6px;
-            color: #fff;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 13px 15px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #f0b90b;
-            box-shadow: 0 0 0 4px rgba(240,185,11,0.15);
-        }
-
-        .form-group input::placeholder { color: rgba(255,255,255,0.3); }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #f0b90b, #fcd535);
-            color: #1a1a2e;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            font-weight: 900;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 16px;
-            box-shadow: 0 12px 30px rgba(240,185,11,0.4);
-        }
-
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .success-box { text-align: center; padding: 10px 0; }
-        .success-icon {
-            width: 75px; height: 75px; margin: 0 auto 18px;
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .success-icon svg { width: 38px; height: 38px; color: #fff; }
-        .success-title { font-size: 19px; font-weight: 900; color: #26a17b; margin-bottom: 10px; }
-        .success-text { font-size: 12px; color: #a0a0b0; line-height: 1.8; margin-bottom: 16px; }
-        .success-text b { color: #26a17b; }
-
-        @media (max-width: 400px) {
-            .container { padding: 10px; gap: 10px; }
-            .board-grid { max-width: 270px; gap: 8px; }
-            .cell { font-size: 42px; border-radius: 14px; }
-            .balance-value { font-size: 18px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بيبي ماینر</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 10%, #14213d 0%, #050810 60%);
+    color: #e2e8f0; padding: 16px;
+    transition: background 0.6s;
+  }
+  body.burst { background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%); }
+  body.auto  { background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%); }
+
+  .logo {
+    font-size: 1.6rem; font-weight: 800; letter-spacing: 5px; margin-bottom: 16px;
+    background: linear-gradient(135deg, #4ade80, #15803d);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .card {
+    width: 100%; max-width: 380px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 20px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .balance {
+    background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 16px; padding: 12px; text-align: center;
+    margin-bottom: 14px;
+  }
+  .balance-l { font-size: 0.68rem; color: #64748b; letter-spacing: 3px; margin-bottom: 6px; }
+  .balance-v {
+    font-family: 'Courier New', monospace; font-size: 1.8rem; font-weight: 700;
+    color: #4ade80; text-shadow: 0 0 25px rgba(74,222,128,0.6);
+    direction: ltr; transition: transform 0.15s;
+  }
+  .balance-v.bump { transform: scale(1.06); }
+  .balance-u { font-size: 0.7rem; color: #64748b; letter-spacing: 3px; margin-top: 4px; }
+
+  .timer {
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 14px; padding: 10px 16px; margin-bottom: 14px;
+  }
+  .timer.ready { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.5); }
+  .timer-l { font-size: 0.7rem; color: #94a3b8; letter-spacing: 2px; }
+  .timer-v {
+    font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 700;
+    color: #fbbf24; letter-spacing: 2px; direction: ltr;
+  }
+  .timer.ready .timer-v { color: #4ade80; }
+
+  .stage {
+    position: relative; width: 100%; height: 260px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+
+  .counter {
+    font-family: 'Courier New', monospace; font-size: 2.2rem; font-weight: 700;
+    color: #4ade80; text-shadow: 0 0 30px rgba(74,222,128,0.7);
+    margin-bottom: 14px; direction: ltr; line-height: 1;
+    transition: transform 0.15s;
+  }
+  .counter.earn { animation: cp 0.15s; }
+  @keyframes cp { 50% { transform: scale(1.08); } }
+
+  .wrap { position: relative; width: 170px; height: 170px; display: flex; align-items: center; justify-content: center; }
+  .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(34,197,94,0.12); }
+  .r1 { width: 160px; height: 160px; }
+  .r2 { width: 190px; height: 190px; border-style: dashed; animation: sp 25s linear infinite; }
+  .r3 { width: 220px; height: 220px; border-color: rgba(34,197,94,0.06); }
+  @keyframes sp { to { transform: rotate(360deg); } }
+
+  .pepe {
+    width: 125px; height: 125px; border-radius: 50%;
+    cursor: pointer; user-select: none; object-fit: cover;
+    z-index: 2; -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.25), 0 0 35px rgba(34,197,94,0.4);
+    transition: box-shadow 0.3s, filter 0.3s;
+  }
+  .pepe:hover { filter: brightness(1.15); }
+  .pepe.burst {
+    animation: sh 0.15s infinite;
+    box-shadow: 0 0 0 5px rgba(34,197,94,0.7), 0 0 60px rgba(74,222,128,0.9);
+  }
+  @keyframes sh {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(-3px,2px); }
+    50% { transform: translate(3px,-2px); }
+    75% { transform: translate(-2px,-2px); }
+    100% { transform: translate(2px,2px); }
+  }
+  .pepe.auto {
+    animation: br 3s ease-in-out infinite;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.3), 0 0 45px rgba(34,197,94,0.6);
+  }
+  @keyframes br { 50% { transform: scale(1.03); } }
+  .pepe.ready { animation: rg 1.2s ease-in-out infinite; }
+  @keyframes rg {
+    0%,100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.5), 0 0 40px rgba(74,222,128,0.8); }
+    50% { box-shadow: 0 0 0 8px rgba(74,222,128,0.2), 0 0 70px rgba(74,222,128,1); }
+  }
+
+  .prog { width: 100%; max-width: 240px; height: 5px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 14px; }
+  .prog-b { height: 100%; width: 0%; background: linear-gradient(90deg, #16a34a, #4ade80); border-radius: 10px; transition: width 0.5s linear; }
+
+  .status { font-size: 0.72rem; letter-spacing: 2px; color: #64748b; margin-top: 12px; min-height: 18px; font-weight: 600; }
+  .status.active { color: #4ade80; }
+  .status.burst { color: #fbbf24; }
+  .status.ready { color: #4ade80; animation: bk 1s infinite; }
+  @keyframes bk { 50% { opacity: 0.5; } }
+
+  /* ===== أزرار أسفل ===== */
+  .actions {
+    width: 100%; max-width: 380px;
+    display: flex; gap: 10px; margin-top: 16px;
+  }
+  .btn-action {
+    flex: 1; padding: 13px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+    border-radius: 14px; cursor: pointer; transition: all 0.3s;
+    border: 1px solid;
+  }
+  .wd {
+    border-color: rgba(251,191,36,0.3);
+    background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(239,68,68,0.12));
+    color: #fbbf24;
+  }
+  .wd:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(251,191,36,0.2); }
+  .wd:disabled { border-color: rgba(100,116,139,0.2); color: #334155; background: rgba(100,116,139,0.05); cursor: not-allowed; }
+
+  .back {
+    border-color: rgba(34,197,94,0.3);
+    background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
+    color: #4ade80;
+  }
+  .back:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(34,197,94,0.2); }
+
+  .fl {
+    position: fixed; color: #4ade80; font-family: 'Courier New', monospace;
+    font-weight: 700; font-size: 1rem; pointer-events: none;
+    animation: fu 1.1s ease-out forwards; z-index: 99; direction: ltr;
+    text-shadow: 0 0 12px rgba(74,222,128,0.9);
+  }
+  @keyframes fu { to { opacity: 0; transform: translateY(-80px) scale(1.2); } }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(15,23,42,0.95); border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 12px; padding: 11px 20px; color: #e2e8f0;
+    font-size: 0.8rem; transition: transform 0.4s; z-index: 200;
+    max-width: 90%; text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center;
+    z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+  }
+  .modal.show { opacity: 1; pointer-events: auto; }
+  .modal-in {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border: 1px solid rgba(34,197,94,0.3); border-radius: 20px;
+    padding: 24px 20px; width: 100%; max-width: 330px;
+    transform: scale(0.9); transition: transform 0.3s;
+  }
+  .modal.show .modal-in { transform: scale(1); }
+  .mt { font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 6px; color: #4ade80; }
+  .ms { font-size: 0.72rem; color: #64748b; text-align: center; margin-bottom: 16px; }
+  .mi {
+    width: 100%; padding: 12px; background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    color: #e2e8f0; font-family: 'Courier New', monospace;
+    font-size: 1.1rem; text-align: center; letter-spacing: 2px;
+    margin-bottom: 14px; outline: none; direction: ltr;
+  }
+  .mi:focus { border-color: #22c55e; }
+  .ma { display: flex; gap: 10px; }
+  .btn { flex: 1; padding: 11px; border: none; border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+  .bc { background: rgba(100,116,139,0.2); color: #94a3b8; }
+  .bo { background: linear-gradient(135deg, #22c55e, #15803d); color: white; }
+</style>
 </head>
 <body>
 
-    <div class="container">
+<div class="logo">بيبي ماینر</div>
 
-        <div class="header">
-            <span class="logo">PAID PLUS</span>
-            <a href="games.html" class="back-btn">← الألعاب</a>
-        </div>
+<div class="card">
+  <div class="balance">
+    <div class="balance-l">الرصيد الكلي</div>
+    <div class="balance-v" id="bal">0</div>
+    <div class="balance-u">PEPE</div>
+  </div>
 
+  <div class="timer" id="tCard">
+    <div class="timer-l">النصف ساعة القادم</div>
+    <div class="timer-v" id="tVal">30:00</div>
+  </div>
+
+  <div class="stage">
+    <div class="counter" id="cnt">0</div>
+    <div class="wrap">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <img id="pepe" class="pepe ready" src="pepe.png" alt="Pepe"
+        onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle cx=%22100%22 cy=%22100%22 r=%2295%22 fill=%22%2322c55e%22/><circle cx=%2275%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><circle cx=%22125%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><path d=%22M65 125 Q100 160 135 125%22 stroke=%22%230a0e1a%22 stroke-width=%228%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>'">
+    </div>
+    <div class="prog"><div class="prog-b" id="pb"></div></div>
+    <div class="status ready" id="st">اضغط على Pepe للتعدين</div>
+  </div>
+</div>
+
+<div class="actions">
+  <button class="btn-action wd" id="wd" disabled>سحب · 100</button>
+  <button class="btn-action back" id="backBtn">العودة للألعاب</button>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-in">
+    <div class="mt">طلب سحب</div>
+    <div class="ms">أدخل المبلغ (الحد الأدنى 100)</div>
+    <input type="number" class="mi" id="mi" placeholder="0.00" step="0.01">
+    <div class="ma">
+      <button class="btn bc" id="cb">إلغاء</button>
+      <button class="btn bo" id="okb">تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-  atOptions = {
-    'key' : '368963302f52616ae408b99d5bc68f1a',
-    'format' : 'iframe',
-    'height' : 50,
-    'width' : 320,
-    'params' : {}
+  /* ===== الإعدادات ===== */
+  const BURST = 10;
+  const BURST_MS = 5000;
+  const AUTO_TOTAL = 10;
+  const HALF_HOUR = 1800000;
+  const AUTO_PER_MS = AUTO_TOTAL / HALF_HOUR;
+  const MIN_WD = 100;
+  const GAMES_URL = 'games.html'; // ← ضع رابط صفحة الألعاب هنا
+
+  /* ===== الحالة ===== */
+  let balance = parseFloat(localStorage.getItem('p_bal') || '0');
+  let cycleStart = parseInt(localStorage.getItem('p_cycle') || '0');
+  let manualReady = localStorage.getItem('p_manual') !== '0';
+  let bursting = false, autoMining = false;
+  let autoT = null, uiT = null, lastTick = Date.now();
+
+  /* ===== العناصر ===== */
+  const balEl = document.getElementById('bal');
+  const cntEl = document.getElementById('cnt');
+  const tVal = document.getElementById('tVal');
+  const tCard = document.getElementById('tCard');
+  const pepe = document.getElementById('pepe');
+  const pb = document.getElementById('pb');
+  const st = document.getElementById('st');
+  const wd = document.getElementById('wd');
+  const backBtn = document.getElementById('backBtn');
+  const modal = document.getElementById('modal');
+  const mi = document.getElementById('mi');
+  const cb = document.getElementById('cb');
+  const okb = document.getElementById('okb');
+  const toast = document.getElementById('toast');
+  const body = document.body;
+
+  /* ===== أدوات ===== */
+  const fmt = v => v === 0 ? '0' : (v < 1 ? v.toFixed(4) : v.toFixed(2));
+  const fmtT = ms => {
+    if (ms < 0) ms = 0;
+    const s = Math.ceil(ms / 1000);
+    return String(Math.floor(s / 60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0');
   };
-</script>
-<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
 
-        
-        <div class="stats">
-            <div class="stat">
-                <span class="stat-label">فوز</span>
-                <span class="stat-value win" id="wins">0</span>
-            </div>
-            <div class="stat">
-                <span class="stat-label">خسارة</span>
-                <span class="stat-value lose" id="losses">0</span>
-            </div>
-            <div class="stat">
-                <span class="stat-label">تعادل</span>
-                <span class="stat-value tie" id="ties">0</span>
-            </div>
-        </div>
-
-        <div class="plays-bar">
-            <div class="plays-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-                مرات متبقية
-            </div>
-            <div class="plays-count" id="playsLeft">30</div>
-        </div>
-
-        <div class="cooldown-bar" id="cooldownBar">
-            <div class="cooldown-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                المرات القادمة بعد
-            </div>
-            <div class="cooldown-timer" id="cooldownTimer">06:00:00</div>
-        </div>
-
-        <div class="game-area">
-            <div class="turn-indicator" id="turnIndicator">
-                اضغط "ابدأ اللعب" للبدء
-            </div>
-
-            <div class="board-grid" id="boardGrid">
-                <div class="cell" data-index="0"></div>
-                <div class="cell" data-index="1"></div>
-                <div class="cell" data-index="2"></div>
-                <div class="cell" data-index="3"></div>
-                <div class="cell" data-index="4"></div>
-                <div class="cell" data-index="5"></div>
-                <div class="cell" data-index="6"></div>
-                <div class="cell" data-index="7"></div>
-                <div class="cell" data-index="8"></div>
-            </div>
-
-            <button class="start-btn" id="startBtn" onclick="startGame()">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-                ابدأ اللعب
-            </button>
-        </div>
-
-        <div class="balance-card">
-            <div class="balance-icon">
-                <img src="USDT_Logo.png" alt="USDT">
-            </div>
-            <div class="balance-info">
-                <div class="balance-label">رصيدك</div>
-                <div class="balance-value">
-                    <span id="balanceAmount">0.00000</span>
-                    <span class="balance-symbol">USDT</span>
-                </div>
-            </div>
-            <button class="withdraw-btn" id="withdrawBtn" onclick="openWithdraw()" disabled>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <span id="withdrawText">السحب</span>
-            </button>
-        </div>
-
-    </div>
-
-    <!-- نافذة النتيجة -->
-    <div class="result-overlay" id="resultOverlay">
-        <div class="result-box">
-            <div class="result-icon" id="resultIcon"></div>
-            <div class="result-title" id="resultTitle"></div>
-            <div class="result-prize" id="resultPrize"></div>
-            <button class="result-btn" onclick="closeResult()">حسناً</button>
-        </div>
-    </div>
-
-    <!-- نافذة السحب -->
-    <div class="withdraw-modal" id="withdrawModal">
-        <div class="withdraw-content" id="withdrawContent">
-            <button class="modal-close" onclick="closeWithdraw()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-
-            <div class="modal-title">طلب سحب إلى Binance</div>
-
-            <div class="frozen-balance">
-                <div class="frozen-label">المبلغ المتاح للسحب</div>
-                <div class="frozen-amount"><span id="binanceAmount">0.00</span> <small>USDT</small></div>
-            </div>
-
-            <form id="formBinance" onsubmit="submitWithdraw(event, 'binance')">
-                <input type="hidden" name="subject" value="طلب سحب USDT - لعبة XO - بينانس" />
-                <div class="form-group">
-                    <label>Binance ID</label>
-                    <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
-                </div>
-                <input type="hidden" name="message" id="msgBinance" />
-                <button type="submit" class="submit-btn" id="submitBinance">إرسال طلب السحب</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        /* ============================================
-           🔒 المفاتيح المشفرة
-        ============================================ */
-        const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
-        const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
-        const _K3 = [53, 99, 52, 56];
-        const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
-
-        function _dk() {
-            let s = '';
-            for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
-            for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
-            for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
-            return s;
-        }
-
-        function _de() {
-            let s = '';
-            for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
-            return s;
-        }
-
-        /* ============================================
-           الإعدادات
-        ============================================ */
-        const REWARD_PER_WIN = 0.0005;
-        const MAX_PLAYS = 30;
-        const COOLDOWN = 6 * 60 * 60 * 1000;
-        const MIN_WITHDRAW = 0.01;
-
-        /* ============================================
-           حالة اللعبة (مع الحفظ)
-        ============================================ */
-        let state = {
-            board: ['', '', '', '', '', '', '', '', ''],
-            playerTurn: true,
-            gameActive: false,
-            moves: 0,
-            balance: parseFloat(localStorage.getItem('xoBalance') || '0'),
-            wins: parseInt(localStorage.getItem('xoWins') || '0'),
-            losses: parseInt(localStorage.getItem('xoLosses') || '0'),
-            ties: parseInt(localStorage.getItem('xoTies') || '0'),
-            playsLeft: parseInt(localStorage.getItem('xoPlaysLeft') || String(MAX_PLAYS)),
-            lastReset: parseInt(localStorage.getItem('xoLastReset') || '0')
-        };
-
-        let lastWithdrawTime = parseInt(localStorage.getItem('xoLastWithdraw') || '0');
-        let cooldownInterval = null;
-
-        /* ============================================
-           حفظ الحالة
-        ============================================ */
-        function saveState() {
-            localStorage.setItem('xoBalance', state.balance);
-            localStorage.setItem('xoWins', state.wins);
-            localStorage.setItem('xoLosses', state.losses);
-            localStorage.setItem('xoTies', state.ties);
-            localStorage.setItem('xoPlaysLeft', state.playsLeft);
-            localStorage.setItem('xoLastReset', state.lastReset);
-        }
-
-        /* ============================================
-           العناصر
-        ============================================ */
-        const cells = document.querySelectorAll('.cell');
-        const turnIndicator = document.getElementById('turnIndicator');
-        const startBtn = document.getElementById('startBtn');
-        const balanceEl = document.getElementById('balanceAmount');
-        const winsEl = document.getElementById('wins');
-        const lossesEl = document.getElementById('losses');
-        const tiesEl = document.getElementById('ties');
-        const playsLeftEl = document.getElementById('playsLeft');
-        const withdrawBtn = document.getElementById('withdrawBtn');
-        const withdrawText = document.getElementById('withdrawText');
-        const cooldownBar = document.getElementById('cooldownBar');
-        const cooldownTimer = document.getElementById('cooldownTimer');
-
-        /* ============================================
-           العداد التنازلي
-        ============================================ */
-        function updateCooldown() {
-            if (state.playsLeft > 0) {
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) {
-                    clearInterval(cooldownInterval);
-                    cooldownInterval = null;
-                }
-                return;
-            }
-
-            const now = Date.now();
-            const remaining = COOLDOWN - (now - state.lastReset);
-
-            if (remaining <= 0) {
-                state.playsLeft = MAX_PLAYS;
-                state.lastReset = now;
-                saveState();
-                updateUI();
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) {
-                    clearInterval(cooldownInterval);
-                    cooldownInterval = null;
-                }
-                startBtn.disabled = false;
-                startBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    ابدأ اللعب
-                `;
-                return;
-            }
-
-            cooldownBar.classList.add('show');
-
-            const h = Math.floor(remaining / 3600000);
-            const m = Math.floor((remaining % 3600000) / 60000);
-            const s = Math.floor((remaining % 60000) / 1000);
-            cooldownTimer.textContent = 
-                `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        function startCooldownWatcher() {
-            if (cooldownInterval) return;
-            cooldownInterval = setInterval(updateCooldown, 1000);
-            updateCooldown();
-        }
-
-        function checkReset() {
-            const now = Date.now();
-
-            if (state.lastReset === 0) {
-                state.lastReset = now;
-                state.playsLeft = MAX_PLAYS;
-                saveState();
-            } else if (now - state.lastReset >= COOLDOWN) {
-                state.playsLeft = MAX_PLAYS;
-                state.lastReset = now;
-                saveState();
-            }
-
-            startCooldownWatcher();
-        }
-
-        /* ============================================
-           تحديث الواجهة
-        ============================================ */
-        function updateUI() {
-            balanceEl.textContent = state.balance.toFixed(5);
-            winsEl.textContent = state.wins;
-            lossesEl.textContent = state.losses;
-            tiesEl.textContent = state.ties;
-            playsLeftEl.textContent = state.playsLeft;
-
-            if (state.balance >= MIN_WITHDRAW) {
-                withdrawBtn.disabled = false;
-                withdrawText.textContent = 'سحب';
-            } else {
-                withdrawBtn.disabled = true;
-                withdrawText.textContent = 'الحد 0.01';
-            }
-        }
-
-        /* ============================================
-           بدء اللعبة
-        ============================================ */
-        function startGame() {
-            checkReset();
-
-            if (state.playsLeft <= 0) return;
-
-            state.board = ['', '', '', '', '', '', '', '', ''];
-            state.playerTurn = true;
-            state.gameActive = true;
-            state.moves = 0;
-            state.playsLeft--;
-
-            if (state.playsLeft <= 0) {
-                state.lastReset = Date.now();
-                startCooldownWatcher();
-            }
-
-            saveState();
-
-            cells.forEach(cell => {
-                cell.textContent = '';
-                cell.className = 'cell';
-            });
-
-            turnIndicator.innerHTML = 'دورك — <span class="you">X</span>';
-            startBtn.disabled = true;
-            startBtn.textContent = 'جارية الآن';
-            updateUI();
-        }
-
-        /* ============================================
-           الأحداث
-        ============================================ */
-        cells.forEach(cell => {
-            cell.addEventListener('click', () => handleClick(cell));
-        });
-
-        function handleClick(cell) {
-            if (!state.gameActive || !state.playerTurn) return;
-
-            const index = parseInt(cell.dataset.index);
-            if (state.board[index] !== '') return;
-
-            state.board[index] = 'X';
-            cell.textContent = 'X';
-            cell.classList.add('x', 'taken');
-            state.moves++;
-
-            if (checkWin('X')) {
-                endGame('win');
-                return;
-            }
-
-            if (state.moves === 9) {
-                endGame('tie');
-                return;
-            }
-
-            state.playerTurn = false;
-            turnIndicator.innerHTML = 'دور الروبوت — <span class="robot">O</span>';
-            setTimeout(robotMove, 500);
-        }
-
-        function robotMove() {
-            if (!state.gameActive) return;
-
-            if (Math.random() < 0.1) {
-                const empty = state.board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
-                if (empty.length) {
-                    const idx = empty[Math.floor(Math.random() * empty.length)];
-                    makeRobotMove(idx);
-                    return;
-                }
-            }
-
-            const index = getBestMove();
-            if (index === -1) return;
-            makeRobotMove(index);
-        }
-
-        function makeRobotMove(index) {
-            state.board[index] = 'O';
-            const cell = document.querySelector(`[data-index="${index}"]`);
-            cell.textContent = 'O';
-            cell.classList.add('o', 'taken');
-            state.moves++;
-
-            if (checkWin('O')) {
-                endGame('lose');
-                return;
-            }
-
-            if (state.moves === 9) {
-                endGame('tie');
-                return;
-            }
-
-            state.playerTurn = true;
-            turnIndicator.innerHTML = 'دورك — <span class="you">X</span>';
-        }
-
-        function getBestMove() {
-            const b = state.board;
-
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === '') {
-                    b[i] = 'O';
-                    if (checkWin('O', true)) { b[i] = ''; return i; }
-                    b[i] = '';
-                }
-            }
-
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === '') {
-                    b[i] = 'X';
-                    if (checkWin('X', true)) { b[i] = ''; return i; }
-                    b[i] = '';
-                }
-            }
-
-            if (b[4] === '') return 4;
-
-            const corners = [0, 2, 6, 8].filter(i => b[i] === '');
-            if (corners.length) return corners[Math.floor(Math.random() * corners.length)];
-
-            const empty = b.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
-            return empty.length ? empty[Math.floor(Math.random() * empty.length)] : -1;
-        }
-
-        function checkWin(player, justCheck = false) {
-            const b = state.board;
-            const lines = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
-
-            for (const line of lines) {
-                if (b[line[0]] === player && b[line[1]] === player && b[line[2]] === player) {
-                    if (!justCheck) {
-                        line.forEach(i => cells[i].classList.add('win'));
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /* ============================================
-           إنهاء اللعبة
-        ============================================ */
-        function endGame(result) {
-            state.gameActive = false;
-            cells.forEach(c => c.classList.add('disabled'));
-
-            let iconHTML = '';
-            let titleText = '';
-            let prizeText = '';
-
-            if (result === 'win') {
-                state.balance += REWARD_PER_WIN;
-                state.wins++;
-
-                iconHTML = '🏆';
-                titleText = 'فزت!';
-                prizeText = `
-                    ربحت جائزة!
-                    <strong>+${REWARD_PER_WIN.toFixed(4)} USDT</strong>
-                `;
-            } else if (result === 'lose') {
-                state.losses++;
-                iconHTML = '😢';
-                titleText = 'خسرت';
-                prizeText = 'حاول مرة أخرى!';
-            } else {
-                state.ties++;
-                iconHTML = '🤝';
-                titleText = 'تعادل';
-                prizeText = 'لا ربح — لا خسارة';
-            }
-
-            saveState();
-            updateUI();
-
-            if (state.playsLeft > 0) {
-                startBtn.disabled = false;
-                startBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    العب مرة أخرى
-                `;
-            } else {
-                startBtn.disabled = true;
-                startBtn.textContent = 'انتهت المرات — انتظر';
-            }
-
-            const overlay = document.getElementById('resultOverlay');
-            const iconEl = document.getElementById('resultIcon');
-            const titleEl = document.getElementById('resultTitle');
-            const prizeEl = document.getElementById('resultPrize');
-
-            iconEl.textContent = iconHTML;
-            iconEl.className = 'result-icon ' + result;
-
-            titleEl.textContent = titleText;
-            titleEl.className = 'result-title ' + result;
-
-            prizeEl.innerHTML = prizeText;
-
-            overlay.classList.add('show');
-        }
-
-        function closeResult() {
-            document.getElementById('resultOverlay').classList.remove('show');
-        }
-
-        /* ============================================
-           ✅ نافذة السحب (مع عرض الرصيد الصحيح)
-        ============================================ */
-        function openWithdraw() {
-            if (state.balance < MIN_WITHDRAW) return;
-            if (Date.now() - lastWithdrawTime < 24 * 60 * 60 * 1000) {
-                alert('انتظر 24 ساعة');
-                return;
-            }
-            
-            // ✅ عرض الرصيد الحقيقي في نافذة السحب
-            const displayBalance = state.balance.toFixed(5);
-            document.getElementById('binanceAmount').textContent = displayBalance;
-            
-            document.getElementById('withdrawModal').classList.add('show');
-        }
-
-        function closeWithdraw() {
-            document.getElementById('withdrawModal').classList.remove('show');
-        }
-
-        /* ============================================
-           ✅ إرسال طلب السحب (مع الرصيد في الإيميل)
-        ============================================ */
-        function submitWithdraw(event, type) {
-            event.preventDefault();
-
-            if (Date.now() - lastWithdrawTime < 24 * 60 * 60 * 1000) {
-                alert('انتظر 24 ساعة');
-                return;
-            }
-
-            const form = event.target;
-            const formData = new FormData(form);
-
-            // 🔒 إضافة المفتاح والإيميل المشفرين
-            formData.set('apiKey', _dk());
-            formData.set('email', _de());
-
-            // ✅ حفظ الرصيد قبل التصفير
-            const withdrawAmount = state.balance;
-
-            // ✅ التحقق من Binance ID
-            const bid = formData.get('binance_id').trim();
-            if (!bid || bid.length < 6) { 
-                alert('Binance ID غير صالح'); 
-                return; 
-            }
-
-            // ✅ الرسالة تحتوي على الرصيد الكامل
-            document.getElementById('msgBinance').value = 
-                `طلب سحب USDT - لعبة XO\n` +
-                `━━━━━━━━━━━━━━━━━━\n` +
-                `💰 المبلغ: ${withdrawAmount.toFixed(5)} USDT\n` +
-                `🆔 Binance ID: ${bid}\n` +
-                `🏆 عدد مرات الفوز: ${state.wins}\n` +
-                `❌ عدد مرات الخسارة: ${state.losses}\n` +
-                `🤝 عدد مرات التعادل: ${state.ties}\n` +
-                `📅 التاريخ: ${new Date().toLocaleString('ar-EG')}`;
-
-            const btn = form.querySelector('.submit-btn');
-            btn.disabled = true;
-            btn.textContent = '⏳ جارٍ الإرسال...';
-
-            fetch('https://api.staticforms.dev/submit', { method: 'POST', body: formData })
-                .then(() => showSuccess(type, withdrawAmount))
-                .catch(() => showSuccess(type, withdrawAmount));
-        }
-
-        /* ============================================
-           ✅ نجاح السحب (مع تصفير الرصيد)
-        ============================================ */
-        function showSuccess(type, withdrawAmount) {
-            // 💾 تصفير الرصيد
-            state.balance = 0;
-            lastWithdrawTime = Date.now();
-            localStorage.setItem('xoLastWithdraw', lastWithdrawTime);
-            saveState();
-            updateUI();
-
-            document.getElementById('withdrawContent').innerHTML = `
-                <div class="success-box">
-                    <div class="success-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                    </div>
-                    <div class="success-title">تم إرسال طلبك!</div>
-                    <div class="success-text">
-                        سيتم الإرسال<br>
-                        <b>${withdrawAmount.toFixed(5)} USDT</b><br>
-                        خلال 24-48 ساعة
-                    </div>
-                    <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 15px;">
-                        <p style="color: #f39c12; font-size: 11px; text-align: center; font-weight: 700;">
-                            ⚠️ تم تصفير رصيدك — ابدأ من جديد
-                        </p>
-                    </div>
-                    <button onclick="closeWithdraw(); location.reload();" 
-                            class="submit-btn" 
-                            style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; width: 100%;">
-                        حسناً، شكراً
-                    </button>
-                </div>
-            `;
-        }
-
-        /* ============================================
-           التشغيل
-        ============================================ */
-        checkReset();
+  function updateUI(bump = false) {
+    balEl.textContent = fmt(balance);
+    cntEl.textContent = fmt(balance);
+    if (bump) {
+      balEl.classList.remove('bump'); cntEl.classList.remove('earn');
+      void balEl.offsetWidth;
+      balEl.classList.add('bump'); cntEl.classList.add('earn');
+    }
+    localStorage.setItem('p_bal', balance);
+    wd.disabled = balance < MIN_WD;
+  }
+
+  function showToast(msg, d = 2500) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), d);
+  }
+
+  function float(text) {
+    const el = document.createElement('div');
+    el.className = 'fl';
+    el.textContent = text;
+    const r = pepe.getBoundingClientRect();
+    el.style.left = (r.left + r.width/2 - 20 + (Math.random()*40-20)) + 'px';
+    el.style.top  = (r.top - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  /* ===== التعدين اليدوي ===== */
+  function startBurst() {
+    if (bursting || autoMining || !manualReady) return;
+    bursting = true;
+    manualReady = false;
+    localStorage.setItem('p_manual', '0');
+
+    body.classList.add('burst');
+    pepe.classList.remove('auto', 'ready');
+    pepe.classList.add('burst');
+    st.textContent = 'تعدين سريع...';
+    st.className = 'status burst';
+
+    const start = Date.now();
+    const startBal = balance;
+
+    const t = setInterval(() => {
+      const el = Date.now() - start;
+      const ratio = Math.min(el / BURST_MS, 1);
+      const target = BURST * ratio;
+      const diff = target - (balance - startBal);
+
+      if (diff > 0) {
+        balance += diff;
+        updateUI(true);
+        if (Math.random() < 0.5) float('+' + diff.toFixed(3));
+      }
+      pb.style.width = (ratio * 100) + '%';
+
+      if (ratio >= 1) {
+        clearInterval(t);
+        finishBurst();
+      }
+    }, 50);
+  }
+
+  function finishBurst() {
+    bursting = false;
+    pepe.classList.remove('burst');
+    body.classList.remove('burst');
+    pb.style.width = '0%';
+    updateUI(true);
+    showToast('تم تعدين 10 Pepe');
+    setTimeout(startAuto, 400);
+  }
+
+  /* ===== التعدين التلقائي ===== */
+  function startAuto() {
+    if (autoMining) return;
+    autoMining = true;
+
+    if (!cycleStart) {
+      cycleStart = Date.now();
+      localStorage.setItem('p_cycle', cycleStart);
+    }
+
+    body.classList.add('auto');
+    pepe.classList.add('auto');
+    pepe.classList.remove('ready');
+    st.textContent = 'التعدين التلقائي نشط';
+    st.className = 'status active';
+    lastTick = Date.now();
+
+    autoT = setInterval(() => {
+      const now = Date.now();
+      const dt = now - lastTick;
+      lastTick = now;
+
+      const elapsed = now - cycleStart;
+      const ratio = Math.min(elapsed / HALF_HOUR, 1);
+
+      const earned = AUTO_PER_MS * dt;
+      balance += earned;
+      updateUI(true);
+
+      if (Math.random() < 0.35) float('+' + earned.toFixed(5));
+
+      pb.style.width = (ratio * 100) + '%';
+
+      if (ratio >= 1) finishCycle();
+    }, 1000);
+
+    updateTimer();
+  }
+
+  function finishCycle() {
+    if (autoT) { clearInterval(autoT); autoT = null; }
+    autoMining = false;
+    body.classList.remove('auto');
+    pepe.classList.remove('auto');
+    pb.style.width = '100%';
+
+    manualReady = true;
+    localStorage.setItem('p_manual', '1');
+    cycleStart = 0;
+    localStorage.removeItem('p_cycle');
+
+    st.textContent = 'اضغط على Pepe للتعدين';
+    st.className = 'status ready';
+    pepe.classList.add('ready');
+
+    tVal.textContent = '00:00';
+    tCard.classList.add('ready');
+    setTimeout(() => tCard.classList.remove('ready'), 3000);
+
+    showToast('انتهى النصف ساعة! اضغط على Pepe');
+  }
+
+  function updateTimer() {
+    if (!cycleStart) { tVal.textContent = '00:00'; return; }
+    const el = Date.now() - cycleStart;
+    tVal.textContent = fmtT(Math.max(0, HALF_HOUR - el));
+  }
+
+  function resume() {
+    if (cycleStart) {
+      const el = Date.now() - cycleStart;
+      if (el >= HALF_HOUR) {
+        const earned = parseFloat(localStorage.getItem('p_cycleEarned') || '0');
+        const remaining = Math.max(0, AUTO_TOTAL - earned);
+        balance += remaining;
         updateUI();
-    </script>
+        manualReady = true;
+        localStorage.setItem('p_manual', '1');
+        cycleStart = 0;
+        localStorage.removeItem('p_cycle');
+        pepe.classList.add('ready');
+        st.textContent = 'اضغط على Pepe للتعدين';
+        st.className = 'status ready';
+        tVal.textContent = '00:00';
+      } else {
+        startAuto();
+      }
+    } else {
+      manualReady = true;
+      pepe.classList.add('ready');
+      st.textContent = 'اضغط على Pepe للتعدين';
+      st.className = 'status ready';
+      updateUI();
+    }
+  }
+
+  /* ===== الأحداث ===== */
+  pepe.addEventListener('click', () => {
+    if (bursting) return;
+    if (autoMining) {
+      st.textContent = 'التعدين التلقائي شغال';
+      setTimeout(() => {
+        if (autoMining) { st.textContent = 'التعدين التلقائي نشط'; st.className = 'status active'; }
+      }, 1500);
+      return;
+    }
+    if (manualReady) startBurst();
+  });
+
+  /* ===== زر السحب ===== */
+  wd.addEventListener('click', () => {
+    if (balance < MIN_WD) return;
+    mi.value = Math.floor(balance);
+    modal.classList.add('show');
+    setTimeout(() => mi.focus(), 300);
+  });
+  cb.addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+  okb.addEventListener('click', () => {
+    const v = parseFloat(mi.value);
+    if (!v || v < MIN_WD) { showToast('الحد الأدنى ' + MIN_WD); return; }
+    if (v > balance) { showToast('الرصيد غير كافٍ'); return; }
+    balance -= v;
+    updateUI(true);
+    modal.classList.remove('show');
+    showToast('تم طلب سحب ' + v.toFixed(2));
+  });
+
+  /* ===== زر العودة للألعاب ===== */
+  backBtn.addEventListener('click', () => {
+    // إذا كان هناك تعدين نشط، نحفظ الحالة قبل المغادرة
+    localStorage.setItem('p_bal', balance);
+    // الانتقال لصفحة الألعاب
+    window.location.href = GAMES_URL;
+  });
+
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('p_bal', balance);
+  });
+
+  /* ===== تشغيل ===== */
+  updateUI();
+  resume();
+  uiT = setInterval(updateTimer, 1000);
+</script>
 </body>
 </html>
