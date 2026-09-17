@@ -636,7 +636,7 @@
 
   </div>
 
-  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 10 PEPE</button>
+  <button class="withdraw-btn" id="withdrawBtn" disabled>سحب · الحد الأدنى 200 PEPE</button>
 
   <!-- نافذة السحب -->
   <div class="modal-overlay" id="modalOverlay">
@@ -705,7 +705,7 @@
   const AUTO_RATE_HALF_HOUR = 20;                     // 20 PEPE كل نصف ساعة
   const AUTO_PERIOD_MS      = 30 * 60 * 1000;         // 30 دقيقة = نصف ساعة
   const AUTO_PER_SEC        = AUTO_RATE_HALF_HOUR / (30 * 60);  // 20 / 1800 = 0.0111...
-  const MIN_WITHDRAW        = 10;                     // الحد الأدنى 10 PEPE
+  const MIN_WITHDRAW        = 200;                     // الحد الأدنى 200 PEPE
 
   /* ============ الحالة ============ */
   let balance         = parseFloat(localStorage.getItem('pm_balance') || '0');
