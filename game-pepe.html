@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>بيبي ماینر | Pepe Miner | PAID PLUS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بيبي ماینر | Pepe Miner</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
   :root {
     --green: #22c55e;
@@ -20,83 +20,72 @@
     --text-dim: #64748b;
   }
 
-  html, body {
-    width: 100%;
-    min-height: 100vh;
-  }
-
   body {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: radial-gradient(circle at 50% 10%, #14213d 0%, #050810 60%);
     color: var(--text);
-    padding: 20px;
+    padding: 16px;
     overflow-x: hidden;
     transition: background 0.8s ease;
   }
 
-  body.burst-mode { background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%); }
-  body.mining-mode { background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%); }
+  body.burst-mode {
+    background: radial-gradient(circle at 50% 10%, #14532d 0%, #050810 60%);
+  }
+
+  body.auto-mode {
+    background: radial-gradient(circle at 50% 10%, #0f3d2e 0%, #050810 60%);
+  }
 
   /* ===== الهيدر ===== */
   .header {
     text-align: center;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05));
-    border: 1px solid rgba(34,197,94,0.25);
-    border-radius: 16px;
+    margin-bottom: 18px;
   }
 
   .logo-text {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     font-weight: 800;
-    letter-spacing: 4px;
+    letter-spacing: 5px;
     background: linear-gradient(135deg, #4ade80, #22c55e, #15803d);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  .back-btn {
-    color: #fff;
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 800;
-    padding: 6px 12px;
-    background: rgba(106,17,203,0.6);
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.15);
-    transition: 0.3s;
+  .subtitle {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-top: 3px;
+    font-family: 'Courier New', monospace;
   }
-  .back-btn:active { transform: scale(0.94); }
 
+  /* ===== البطاقة الرئيسية ===== */
   .main-card {
     width: 100%;
     max-width: 400px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 24px;
-    padding: 24px 20px;
+    padding: 20px 18px;
     backdrop-filter: blur(14px);
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
+  /* ===== الرصيد ===== */
   .balance-card {
     background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
     border: 1px solid rgba(34,197,94,0.2);
     border-radius: 16px;
-    padding: 16px;
+    padding: 14px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     position: relative;
     overflow: hidden;
   }
@@ -116,32 +105,33 @@
   }
 
   .balance-label {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--text-dim);
     letter-spacing: 3px;
-    margin-bottom: 8px;
-    font-weight: 700;
+    margin-bottom: 6px;
   }
 
   .balance-value {
     font-family: 'Courier New', monospace;
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 700;
     color: var(--green-bright);
     letter-spacing: 2px;
     text-shadow: 0 0 25px rgba(74,222,128,0.6);
     transition: transform 0.15s ease;
+    direction: ltr;
   }
 
   .balance-value.bump { transform: scale(1.06); }
 
   .balance-unit {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-dim);
     letter-spacing: 3px;
-    margin-top: 6px;
+    margin-top: 4px;
   }
 
+  /* ===== عداد النصف ساعة ===== */
   .timer-card {
     display: flex;
     justify-content: space-between;
@@ -149,19 +139,31 @@
     background: rgba(251,191,36,0.06);
     border: 1px solid rgba(251,191,36,0.2);
     border-radius: 14px;
-    padding: 12px 18px;
-    margin-bottom: 20px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    transition: all 0.3s;
+  }
+
+  .timer-card.ready {
+    background: rgba(34,197,94,0.1);
+    border-color: rgba(34,197,94,0.5);
+    animation: readyPulse 1.5s infinite;
+  }
+
+  @keyframes readyPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
   }
 
   .timer-label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: #94a3b8;
     letter-spacing: 2px;
   }
 
   .timer-value {
     font-family: 'Courier New', monospace;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--gold);
     letter-spacing: 3px;
@@ -169,6 +171,12 @@
     direction: ltr;
   }
 
+  .timer-card.ready .timer-value {
+    color: var(--green-bright);
+    text-shadow: 0 0 20px rgba(74,222,128,0.7);
+  }
+
+  /* ===== منطقة Pepe ===== */
   .pepe-stage {
     position: relative;
     width: 100%;
@@ -179,16 +187,18 @@
     justify-content: center;
   }
 
+  /* الرقم فوق الأيقونة */
   .counter {
     font-family: 'Courier New', monospace;
-    font-size: 2.6rem;
+    font-size: 2.4rem;
     font-weight: 700;
     color: var(--green-bright);
     letter-spacing: 2px;
     text-shadow: 0 0 30px rgba(74,222,128,0.7);
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     transition: transform 0.15s ease;
     line-height: 1;
+    direction: ltr;
   }
 
   .counter.earning { animation: counterPulse 0.15s ease; }
@@ -199,6 +209,7 @@
     100% { transform: scale(1); }
   }
 
+  /* حاوية الأيقونة */
   .pepe-wrap {
     position: relative;
     width: 180px;
@@ -239,6 +250,7 @@
 
   .pepe:hover { filter: brightness(1.15); }
 
+  /* اهتزاز التعدين السريع */
   .pepe.burst {
     animation: shake 0.15s infinite;
     box-shadow:
@@ -256,8 +268,9 @@
     100% { transform: translate(0, 0) rotate(0deg); }
   }
 
-  .pepe.auto-mining {
-    animation: breathe 2.5s ease-in-out infinite;
+  /* نبض هادئ أثناء التعدين التلقائي */
+  .pepe.auto {
+    animation: breathe 3s ease-in-out infinite;
     box-shadow:
       0 0 0 3px rgba(34,197,94,0.3),
       0 0 45px rgba(34,197,94,0.6);
@@ -265,9 +278,27 @@
 
   @keyframes breathe {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.04); }
+    50% { transform: scale(1.03); }
   }
 
+  /* عند الجاهزية للضغط */
+  .pepe.ready-to-tap {
+    animation: readyGlow 1.2s ease-in-out infinite;
+    cursor: pointer;
+  }
+
+  @keyframes readyGlow {
+    0%, 100% {
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.5), 0 0 40px rgba(74,222,128,0.8);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(74,222,128,0.2), 0 0 70px rgba(74,222,128,1);
+      transform: scale(1.05);
+    }
+  }
+
+  /* ===== شريط التقدم ===== */
   .progress-wrap {
     width: 100%;
     max-width: 260px;
@@ -275,24 +306,21 @@
     background: rgba(255,255,255,0.05);
     border-radius: 10px;
     overflow: hidden;
-    margin-top: 18px;
-    opacity: 0;
-    transition: opacity 0.4s;
+    margin-top: 16px;
   }
-
-  .progress-wrap.visible { opacity: 1; }
 
   .progress-bar {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, #16a34a, #4ade80);
     border-radius: 10px;
-    transition: width 0.1s linear;
+    transition: width 0.5s linear;
     box-shadow: 0 0 12px rgba(74,222,128,0.7);
   }
 
+  /* ===== الحالة ===== */
   .status {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     letter-spacing: 2px;
     color: var(--text-dim);
     margin-top: 14px;
@@ -303,12 +331,19 @@
 
   .status.active { color: var(--green-bright); }
   .status.burst { color: var(--gold); }
+  .status.ready { color: var(--green-bright); animation: blink 1s infinite; }
 
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* ===== إحصائيات ===== */
   .stats-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-top: 18px;
+    margin-top: 16px;
   }
 
   .stat-box {
@@ -320,26 +355,27 @@
   }
 
   .stat-label {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: var(--text-dim);
     letter-spacing: 1px;
-    margin-bottom: 6px;
-    font-weight: 700;
+    margin-bottom: 5px;
   }
 
   .stat-value {
     font-family: 'Courier New', monospace;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--green-bright);
     letter-spacing: 1px;
+    direction: ltr;
   }
 
+  /* ===== زر السحب ===== */
   .withdraw-btn {
     width: 100%;
     max-width: 400px;
-    padding: 15px;
-    font-size: 0.85rem;
+    padding: 14px;
+    font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 2px;
     border: 1px solid rgba(251,191,36,0.3);
@@ -348,7 +384,6 @@
     color: var(--gold);
     cursor: pointer;
     transition: all 0.3s;
-    font-family: 'Cairo', sans-serif;
   }
 
   .withdraw-btn:hover:not(:disabled) {
@@ -364,6 +399,7 @@
     cursor: not-allowed;
   }
 
+  /* ===== أرقام عائمة ===== */
   .float-reward {
     position: fixed;
     color: var(--green-bright);
@@ -382,6 +418,7 @@
     100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
   }
 
+  /* ===== جزيئات ===== */
   .particle {
     position: fixed;
     width: 4px;
@@ -398,17 +435,18 @@
     100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
   }
 
+  /* ===== إشعار ===== */
   .toast {
     position: fixed;
-    bottom: 30px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
     background: rgba(15,23,42,0.95);
     border: 1px solid rgba(34,197,94,0.3);
     border-radius: 12px;
-    padding: 12px 24px;
+    padding: 12px 22px;
     color: var(--text);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     transition: transform 0.4s ease;
     z-index: 200;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -418,11 +456,12 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); }
 
+  /* ===== نافذة السحب ===== */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -433,86 +472,58 @@
     padding: 20px;
   }
 
-  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   .modal {
-    background: linear-gradient(160deg, #0f172a, #050810);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     border: 1px solid rgba(34,197,94,0.3);
-    border-radius: 22px;
-    padding: 28px 24px;
+    border-radius: 20px;
+    padding: 26px 22px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+    max-width: 340px;
     transform: scale(0.9);
     transition: transform 0.3s;
-    color: #fff;
   }
 
   .modal-overlay.show .modal { transform: scale(1); }
 
   .modal-title {
-    font-size: 1.3rem;
-    font-weight: 900;
+    font-size: 1.15rem;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: var(--green-bright);
   }
 
   .modal-sub {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-dim);
-    text-align: center;
-    margin-bottom: 20px;
-    line-height: 1.7;
-  }
-
-  .modal-balance {
-    background: linear-gradient(135deg, rgba(38,161,123,0.15), rgba(46,204,113,0.05));
-    border: 2px solid rgba(38,161,123,0.35);
-    border-radius: 14px;
-    padding: 14px;
     text-align: center;
     margin-bottom: 18px;
   }
 
-  .modal-balance-label {
-    font-size: 11px;
-    color: #a0a0b0;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
-  .modal-balance-value {
-    font-size: 26px;
-    font-weight: 900;
-    color: #26a17b;
-    direction: ltr;
-    line-height: 1;
-    text-shadow: 0 0 15px rgba(38,161,123,0.5);
-  }
-
-  .modal-balance-value small { font-size: 13px; opacity: 0.85; }
-
   .modal-input {
     width: 100%;
-    padding: 14px;
+    padding: 13px;
     background: rgba(0,0,0,0.4);
-    border: 2px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px;
     color: var(--text);
     font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     text-align: center;
     letter-spacing: 2px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     outline: none;
-    transition: border-color 0.3s;
     direction: ltr;
   }
 
   .modal-input:focus {
-    border-color: #f0b90b;
-    box-shadow: 0 0 0 4px rgba(240,185,11,0.15);
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
   }
 
   .modal-actions {
@@ -522,15 +533,14 @@
 
   .btn {
     flex: 1;
-    padding: 13px;
+    padding: 11px;
     border: none;
     border-radius: 12px;
-    font-weight: 800;
-    font-size: 0.85rem;
+    font-weight: 700;
+    font-size: 0.82rem;
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.25s;
-    font-family: 'Cairo', sans-serif;
   }
 
   .btn-cancel {
@@ -538,25 +548,16 @@
     color: #94a3b8;
   }
 
-  .btn-cancel:hover { background: rgba(100,116,139,0.35); }
-
   .btn-confirm {
-    background: linear-gradient(135deg, #f0b90b, #fcd535);
-    color: #1a1a2e;
-    box-shadow: 0 5px 20px rgba(240,185,11,0.4);
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    color: white;
+    box-shadow: 0 5px 20px rgba(34,197,94,0.4);
   }
-
-  .btn-confirm:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(240,185,11,0.6);
-  }
-
-  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
 
   @media (max-width: 420px) {
-    .counter { font-size: 2.2rem; }
-    .balance-value { font-size: 1.7rem; }
-    .logo-text { font-size: 1.3rem; letter-spacing: 3px; }
+    .counter { font-size: 2rem; }
+    .balance-value { font-size: 1.6rem; }
+    .logo-text { font-size: 1.4rem; }
     .pepe-wrap { width: 160px; height: 160px; }
     .pepe { width: 115px; height: 115px; }
     .ring-1 { width: 150px; height: 150px; }
@@ -569,22 +570,25 @@
 
   <div class="header">
     <div class="logo-text">بيبي ماینر</div>
-    <a href="games.html" class="back-btn">← الألعاب</a>
+    <div class="subtitle">PEPE MINING PROTOCOL</div>
   </div>
 
   <div class="main-card">
 
+    <!-- الرصيد -->
     <div class="balance-card">
       <div class="balance-label">الرصيد الكلي</div>
       <div class="balance-value" id="balanceEl">0</div>
       <div class="balance-unit">PEPE</div>
     </div>
 
-    <div class="timer-card">
-      <div class="timer-label">الوقت المتبقي للساعة</div>
-      <div class="timer-value" id="timerEl">00:00:00</div>
+    <!-- عداد النصف ساعة -->
+    <div class="timer-card" id="timerCard">
+      <div class="timer-label">النصف ساعة القادم</div>
+      <div class="timer-value" id="timerEl">30:00</div>
     </div>
 
+    <!-- منطقة Pepe -->
     <div class="pepe-stage">
       <div class="counter" id="counter">0</div>
 
@@ -596,21 +600,22 @@
              onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><circle cx=%22100%22 cy=%22100%22 r=%2295%22 fill=%22%2322c55e%22/><circle cx=%2275%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><circle cx=%22125%22 cy=%2280%22 r=%2212%22 fill=%22%230a0e1a%22/><path d=%22M65 125 Q100 160 135 125%22 stroke=%22%230a0e1a%22 stroke-width=%228%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>'">
       </div>
 
-      <div class="progress-wrap" id="progressWrap">
+      <div class="progress-wrap">
         <div class="progress-bar" id="progressBar"></div>
       </div>
 
-      <div class="status" id="statusEl">اضغط على الأيقونة لبدء التعدين</div>
+      <div class="status" id="statusEl">جاري التعدين التلقائي...</div>
     </div>
 
+    <!-- إحصائيات -->
     <div class="stats-row">
       <div class="stat-box">
-        <div class="stat-label">معدل التعدين</div>
-        <div class="stat-value" id="rateEl">1 / ساعة</div>
+        <div class="stat-label">تعدين تلقائي</div>
+        <div class="stat-value" id="autoRateEl">10 / 30د</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">حالة النظام</div>
-        <div class="stat-value" id="sysStatusEl">جاهز</div>
+        <div class="stat-label">تعدين يدوي</div>
+        <div class="stat-value">10 / ضغطة</div>
       </div>
     </div>
 
@@ -620,20 +625,13 @@
 
   <!-- نافذة السحب -->
   <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modalContent">
+    <div class="modal">
       <div class="modal-title">طلب سحب</div>
-      <div class="modal-sub">أدخل معرّف Binance ID للسحب إلى محفظتك</div>
-
-      <div class="modal-balance">
-        <div class="modal-balance-label">المبلغ المتاح للسحب</div>
-        <div class="modal-balance-value"><span id="modalBalance">0</span> <small>PEPE</small></div>
-      </div>
-
-      <input type="text" class="modal-input" id="binanceIdInput" placeholder="Binance ID" inputmode="numeric">
-
+      <div class="modal-sub">أدخل المبلغ المراد سحبه (الحد الأدنى 100)</div>
+      <input type="number" class="modal-input" id="withdrawInput" placeholder="0.00" step="0.01">
       <div class="modal-actions">
         <button class="btn btn-cancel" id="cancelBtn">إلغاء</button>
-        <button class="btn btn-confirm" id="confirmBtn">إرسال الطلب</button>
+        <button class="btn btn-confirm" id="confirmBtn">تأكيد</button>
       </div>
     </div>
   </div>
@@ -641,60 +639,44 @@
   <div class="toast" id="toast"></div>
 
 <script>
-  /* ============================================
-     🔒 المفاتيح المشفرة
-  ============================================ */
-  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
-  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
-  const _K3 = [53, 99, 52, 56];
-  const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
-
-  function _dk() {
-    let s = '';
-    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
-    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
-    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
-    return s;
-  }
-
-  function _de() {
-    let s = '';
-    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
-    return s;
-  }
-
   /* ============ الإعدادات ============ */
-  const BURST_AMOUNT    = 10;
-  const BURST_DURATION  = 10000;
-  const AUTO_RATE_HOUR  = 1;
-  const AUTO_PER_SEC    = AUTO_RATE_HOUR / 3600;
+  const BURST_AMOUNT    = 10;         // تعدين يدوي عند الضغط
+  const BURST_DURATION  = 5000;       // مدة الانفجار (5 ثواني للنعومة)
+  const AUTO_TOTAL      = 10;         // إجمالي التعدين التلقائي كل نصف ساعة
+  const HALF_HOUR_MS    = 1800000;    // 30 دقيقة
+  const AUTO_PER_MS     = AUTO_TOTAL / HALF_HOUR_MS; // ≈ 0.00000555
   const MIN_WITHDRAW    = 100;
-  const HOUR_MS         = 3600000;
 
-  /* ============ الحالة (مع حفظ) ============ */
-  let balance         = parseFloat(localStorage.getItem('pm_balance') || '0');
-  let burstActive     = false;
-  let autoMining      = false;
-  let burstTimer      = null;
-  let autoTimer       = null;
-  let autoStartTime   = parseInt(localStorage.getItem('pm_autoStart') || '0');
-  let lastTickTime    = Date.now();
+  /* ============ الحالة ============ */
+  let balance          = parseFloat(localStorage.getItem('pm2_balance') || '0');
+  let burstActive      = false;
+  let autoMining       = false;
+  let cycleStartTime   = parseInt(localStorage.getItem('pm2_cycleStart') || '0');
+  let manualReady      = localStorage.getItem('pm2_manualReady') !== '0'; // true افتراضياً
+  let lastTickTime     = Date.now();
+  let autoTimer        = null;
+  let uiTimer          = null;
+
+  // إذا لم يكن هناك بداية دورة، ابدأ واحدة الآن
+  if (!cycleStartTime) {
+    cycleStartTime = Date.now();
+    localStorage.setItem('pm2_cycleStart', cycleStartTime);
+    localStorage.setItem('pm2_manualReady', '1');
+    manualReady = true;
+  }
 
   /* ============ العناصر ============ */
   const balanceEl    = document.getElementById('balanceEl');
   const counterEl    = document.getElementById('counter');
   const timerEl      = document.getElementById('timerEl');
+  const timerCard    = document.getElementById('timerCard');
   const pepeImg      = document.getElementById('pepeImg');
-  const progressWrap = document.getElementById('progressWrap');
   const progressBar  = document.getElementById('progressBar');
   const statusEl     = document.getElementById('statusEl');
-  const rateEl       = document.getElementById('rateEl');
-  const sysStatusEl  = document.getElementById('sysStatusEl');
+  const autoRateEl   = document.getElementById('autoRateEl');
   const withdrawBtn  = document.getElementById('withdrawBtn');
   const modalOverlay = document.getElementById('modalOverlay');
-  const modalContent = document.getElementById('modalContent');
-  const modalBalance = document.getElementById('modalBalance');
-  const binanceIdInput = document.getElementById('binanceIdInput');
+  const withdrawInput= document.getElementById('withdrawInput');
   const cancelBtn    = document.getElementById('cancelBtn');
   const confirmBtn   = document.getElementById('confirmBtn');
   const toastEl      = document.getElementById('toast');
@@ -707,15 +689,12 @@
     return v.toFixed(2);
   }
 
-  function formatTime(ms) {
+  function formatTimer(ms) {
     if (ms < 0) ms = 0;
-    const totalSec = Math.floor(ms / 1000);
-    const h = Math.floor(totalSec / 3600);
-    const m = Math.floor((totalSec % 3600) / 60);
+    const totalSec = Math.ceil(ms / 1000);
+    const m = Math.floor(totalSec / 60);
     const s = totalSec % 60;
-    return String(h).padStart(2, '0') + ':' +
-           String(m).padStart(2, '0') + ':' +
-           String(s).padStart(2, '0');
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   }
 
   function updateBalanceUI(bump = false) {
@@ -728,11 +707,11 @@
       balanceEl.classList.add('bump');
       counterEl.classList.add('earning');
     }
-    // 💾 حفظ الرصيد فوراً
-    localStorage.setItem('pm_balance', balance);
+    localStorage.setItem('pm2_balance', balance);
     withdrawBtn.disabled = balance < MIN_WITHDRAW;
   }
 
+  /* ============ إشعار ============ */
   function showToast(msg, duration = 2500) {
     toastEl.textContent = msg;
     toastEl.classList.add('show');
@@ -740,6 +719,7 @@
     toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
   }
 
+  /* ============ رقم عائم ============ */
   function floatNumber(text) {
     const el = document.createElement('div');
     el.className = 'float-reward';
@@ -751,6 +731,7 @@
     setTimeout(() => el.remove(), 1100);
   }
 
+  /* ============ جزيئات ============ */
   function spawnParticles(count = 8) {
     const rect = pepeImg.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
@@ -769,23 +750,23 @@
     }
   }
 
-  /* ============ 1) الانفجار السريع ============ */
-  function startBurst() {
-    if (burstActive || autoMining) return;
+  /* ============ 1) التعدين اليدوي (10 Pepe بسرعة) ============ */
+  function startManualMining() {
+    if (burstActive || autoMining || !manualReady) return;
     burstActive = true;
+    manualReady = false;
+    localStorage.setItem('pm2_manualReady', '0');
 
     body.classList.add('burst-mode');
+    pepeImg.classList.remove('auto', 'ready-to-tap');
     pepeImg.classList.add('burst');
-    progressWrap.classList.add('visible');
     statusEl.textContent = 'تعدين سريع...';
     statusEl.className = 'status burst';
-    sysStatusEl.textContent = 'تعدين سريع';
-    sysStatusEl.style.color = '#fbbf24';
 
     const startTime = Date.now();
     const startBalance = balance;
 
-    burstTimer = setInterval(() => {
+    const burstTimer = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const ratio = Math.min(elapsed / BURST_DURATION, 1);
       const earned = BURST_AMOUNT * ratio;
@@ -802,115 +783,192 @@
 
       if (ratio >= 1) {
         clearInterval(burstTimer);
-        burstTimer = null;
-        finishBurst();
+        finishManualMining();
       }
     }, 50);
   }
 
-  function finishBurst() {
+  function finishManualMining() {
     burstActive = false;
     pepeImg.classList.remove('burst');
     body.classList.remove('burst-mode');
     progressBar.style.width = '0%';
-    progressWrap.classList.remove('visible');
     updateBalanceUI(true);
-    showToast('تم تعدين 10 Pepe! بدء التعدين التلقائي');
+    showToast('تم تعدين 10 Pepe يدوياً');
 
-    setTimeout(startAutoMining, 500);
+    // بدء التعدين التلقائي مباشرة
+    setTimeout(startAutoMining, 400);
   }
 
-  /* ============ 2) التعدين التلقائي ============ */
+  /* ============ 2) التعدين التلقائي (10 Pepe على مدى 30 دقيقة) ============ */
   function startAutoMining() {
     if (autoMining) return;
     autoMining = true;
 
-    if (!autoStartTime) {
-      autoStartTime = Date.now();
-      localStorage.setItem('pm_autoStart', autoStartTime);
+    // تعيين بداية الدورة إن لم تكن محددة
+    if (!cycleStartTime) {
+      cycleStartTime = Date.now();
+      localStorage.setItem('pm2_cycleStart', cycleStartTime);
     }
 
-    body.classList.add('mining-mode');
-    pepeImg.classList.add('auto-mining');
+    body.classList.add('auto-mode');
+    pepeImg.classList.add('auto');
+    pepeImg.classList.remove('ready-to-tap');
     statusEl.textContent = 'التعدين التلقائي نشط';
     statusEl.className = 'status active';
-    sysStatusEl.textContent = 'نشط';
-    sysStatusEl.style.color = '#4ade80';
-    rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
+    autoRateEl.textContent = '10 / 30د';
 
     lastTickTime = Date.now();
 
+    // دورة كل ثانية
     autoTimer = setInterval(() => {
       const now = Date.now();
-      const dt = (now - lastTickTime) / 1000;
+      const dt = now - lastTickTime;
       lastTickTime = now;
 
-      const earned = AUTO_PER_SEC * dt;
+      const elapsed = now - cycleStartTime;
+      const ratio = Math.min(elapsed / HALF_HOUR_MS, 1);
+
+      // حساب ما يجب أن يكون مجموع التعدين التلقائي حتى الآن
+      const targetAuto = AUTO_TOTAL * ratio;
+      // لا نضيف مباشرة، نستخدم تراكم آخر قيمة
+      const earned = AUTO_PER_MS * dt;
       balance += earned;
       updateBalanceUI(true);
 
       if (Math.random() < 0.35) {
         floatNumber('+' + earned.toFixed(5));
       }
+
+      // تحديث شريط التقدم
+      progressBar.style.width = (ratio * 100) + '%';
+
+      // انتهت الدورة → اجعل اليدوي متاح
+      if (ratio >= 1) {
+        finishCycle();
+      }
     }, 1000);
 
-    localStorage.setItem('pm_mining', '1');
-    updateHourTimer();
+    localStorage.setItem('pm2_mining', '1');
+    updateTimerUI();
   }
 
-  /* ============ عداد الساعة ============ */
-  function updateHourTimer() {
-    if (!autoStartTime) {
-      timerEl.textContent = '00:00:00';
+  /* ============ انتهاء الدورة ============ */
+  function finishCycle() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+    autoMining = false;
+    body.classList.remove('auto-mode');
+    pepeImg.classList.remove('auto');
+    progressBar.style.width = '100%';
+
+    // اجعل التعدين اليدوي متاحاً
+    manualReady = true;
+    localStorage.setItem('pm2_manualReady', '1');
+
+    // إعادة تعيين الدورة القادمة
+    cycleStartTime = 0;
+    localStorage.removeItem('pm2_cycleStart');
+    localStorage.setItem('pm2_mining', '0');
+
+    statusEl.textContent = 'اضغط على Pepe للتعدين';
+    statusEl.className = 'status ready';
+    pepeImg.classList.add('ready-to-tap');
+
+    timerEl.textContent = '00:00';
+    timerCard.classList.add('ready');
+    setTimeout(() => timerCard.classList.remove('ready'), 3000);
+
+    showToast('انتهى النصف ساعة! اضغط على Pepe');
+  }
+
+  /* ============ عداد النصف ساعة ============ */
+  function updateTimerUI() {
+    if (!cycleStartTime) {
+      timerEl.textContent = '00:00';
       return;
     }
-    const elapsed = Date.now() - autoStartTime;
-    const remaining = Math.max(0, HOUR_MS - elapsed);
-    timerEl.textContent = formatTime(remaining);
-
-    if (remaining <= 0 && autoMining) {
-      autoStartTime = Date.now();
-      localStorage.setItem('pm_autoStart', autoStartTime);
-      showToast('انتهت الساعة! بدأت دورة جديدة +1 Pepe');
-    }
+    const elapsed = Date.now() - cycleStartTime;
+    const remaining = Math.max(0, HALF_HOUR_MS - elapsed);
+    timerEl.textContent = formatTimer(remaining);
   }
 
-  setInterval(updateHourTimer, 1000);
-
-  /* ============ استئناف ============ */
+  /* ============ استئناف عند العودة ============ */
   function resume() {
-    const mining = localStorage.getItem('pm_mining') === '1';
-    if (mining && autoStartTime) {
-      startAutoMining();
+    const mining = localStorage.getItem('pm2_mining') === '1';
+
+    if (cycleStartTime) {
+      const elapsed = Date.now() - cycleStartTime;
+
+      if (elapsed >= HALF_HOUR_MS) {
+        // انتهت الدورة أثناء الغياب → امنح الباقي واجعل اليدوي متاحاً
+        const remaining = AUTO_TOTAL - (balance - parseFloat(localStorage.getItem('pm2_balanceAtCycleStart') || '0'));
+        // ببساطة: أضف ما تبقى من التعدين التلقائي
+        const cycleEarned = parseFloat(localStorage.getItem('pm2_cycleEarned') || '0');
+        const toAdd = Math.max(0, AUTO_TOTAL - cycleEarned);
+        if (toAdd > 0) balance += toAdd;
+        updateBalanceUI();
+
+        manualReady = true;
+        localStorage.setItem('pm2_manualReady', '1');
+        cycleStartTime = 0;
+        localStorage.removeItem('pm2_cycleStart');
+        localStorage.setItem('pm2_mining', '0');
+
+        statusEl.textContent = 'اضغط على Pepe للتعدين';
+        statusEl.className = 'status ready';
+        pepeImg.classList.add('ready-to-tap');
+        timerEl.textContent = '00:00';
+        timerCard.classList.add('ready');
+        updateBalanceUI();
+        return;
+      } else {
+        // استئناف التعدين التلقائي
+        if (mining) {
+          startAutoMining();
+        } else {
+          // كان متوقفاً، شغّل
+          startAutoMining();
+        }
+      }
     } else {
+      // لا توجد دورة نشطة → اليدوي متاح
+      manualReady = true;
+      pepeImg.classList.add('ready-to-tap');
+      statusEl.textContent = 'اضغط على Pepe للتعدين';
+      statusEl.className = 'status ready';
+      timerEl.textContent = '00:00';
       updateBalanceUI();
-      rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
-      sysStatusEl.textContent = 'جاهز';
-      sysStatusEl.style.color = '#4ade80';
     }
   }
 
-  /* ============ الأحداث ============ */
+  /* ============ أحداث ============ */
   pepeImg.addEventListener('click', () => {
     if (burstActive) return;
     if (autoMining) {
-      statusEl.textContent = 'التعدين شغال بالفعل';
+      // التعدين التلقائي شغال → رسالة
+      statusEl.textContent = 'التعدين التلقائي شغال، انتظر النصف ساعة';
       setTimeout(() => {
-        statusEl.textContent = 'التعدين التلقائي نشط';
-        statusEl.className = 'status active';
-      }, 1500);
+        if (autoMining) {
+          statusEl.textContent = 'التعدين التلقائي نشط';
+          statusEl.className = 'status active';
+        }
+      }, 1800);
       return;
     }
-    startBurst();
+    if (manualReady) {
+      startManualMining();
+    }
   });
 
   /* ============ زر السحب ============ */
   withdrawBtn.addEventListener('click', () => {
     if (balance < MIN_WITHDRAW) return;
-    modalBalance.textContent = Math.floor(balance);
-    binanceIdInput.value = '';
+    withdrawInput.value = Math.floor(balance);
     modalOverlay.classList.add('show');
-    setTimeout(() => binanceIdInput.focus(), 300);
+    setTimeout(() => withdrawInput.focus(), 300);
   });
 
   cancelBtn.addEventListener('click', () => {
@@ -921,102 +979,37 @@
     if (e.target === modalOverlay) modalOverlay.classList.remove('show');
   });
 
-  /* ============ إرسال طلب السحب ============ */
   confirmBtn.addEventListener('click', () => {
-    const binanceId = binanceIdInput.value.trim();
-
-    if (!binanceId) {
-      showToast('الرجاء إدخال Binance ID');
+    const val = parseFloat(withdrawInput.value);
+    if (!val || val < MIN_WITHDRAW) {
+      showToast('الحد الأدنى للسحب ' + MIN_WITHDRAW + ' Pepe');
       return;
     }
-    if (binanceId.length < 6) {
-      showToast('Binance ID غير صالح');
+    if (val > balance) {
+      showToast('الرصيد غير كافٍ');
       return;
     }
-    if (balance < MIN_WITHDRAW) {
-      showToast('الرصيد أقل من الحد الأدنى');
-      return;
-    }
-
-    const amount = Math.floor(balance);
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = '⏳ جارٍ الإرسال...';
-
-    // إنشاء النموذج
-    const formData = new FormData();
-    formData.set('apiKey', _dk());
-    formData.set('email', _de());
-    formData.set('subject', 'طلب سحب Pepe - لعبة بيبي ماینر');
-    formData.set('binance_id', binanceId);
-    formData.set('message', 
-      `طلب سحب PEPE - لعبة بيبي ماینر\n\n` +
-      `💰 المبلغ: ${amount} PEPE\n` +
-      `🆔 Binance ID: ${binanceId}\n` +
-      `📅 التاريخ: ${new Date().toLocaleString('ar-EG')}`
-    );
-
-    fetch('https://api.staticforms.dev/submit', { method: 'POST', body: formData })
-      .then(() => successWithdraw(amount, binanceId))
-      .catch(() => successWithdraw(amount, binanceId));
+    balance -= val;
+    updateBalanceUI(true);
+    modalOverlay.classList.remove('show');
+    showToast('تم إرسال طلب سحب ' + val.toFixed(2) + ' Pepe');
   });
-
-  function successWithdraw(amount, binanceId) {
-    // 💾 تصفير الرصيد + حفظ
-    balance = 0;
-    localStorage.setItem('pm_balance', 0);
-    updateBalanceUI();
-
-    // عرض شاشة النجاح
-    modalContent.innerHTML = `
-      <div style="text-align: center;">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #22c55e, #4ade80); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(34,197,94,0.5);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" style="width: 42px; height: 42px;">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <h2 style="color: #4ade80; font-size: 20px; margin-bottom: 12px; font-weight: 900;">تم إرسال طلبك!</h2>
-        <p style="color: #a0a0b0; font-size: 13px; line-height: 1.8; margin-bottom: 20px;">
-          سيتم مراجعة طلبك وإرسال<br>
-          <b style="color: #4ade80; font-size: 18px;">${amount} PEPE</b><br>
-          إلى Binance ID: <b style="color: #4ade80;">${binanceId}</b><br>
-          خلال 24-48 ساعة
-        </p>
-        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
-          <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
-            ⚠️ تم تصفير رصيدك — ابدأ من جديد
-          </p>
-        </div>
-        <button onclick="location.reload();" 
-                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
-          حسناً، شكراً
-        </button>
-      </div>
-    `;
-    confirmBtn.disabled = false;
-    confirmBtn.textContent = 'إرسال الطلب';
-  }
 
   /* ============ حفظ عند الإغلاق ============ */
   window.addEventListener('beforeunload', () => {
-    localStorage.setItem('pm_balance', balance);
+    localStorage.setItem('pm2_balance', balance);
     if (autoMining) {
-      localStorage.setItem('pm_autoStart', autoStartTime);
-      localStorage.setItem('pm_mining', '1');
+      localStorage.setItem('pm2_mining', '1');
     }
   });
 
-  /* ============ حفظ الرصيد دورياً ============ */
-  setInterval(() => {
-    localStorage.setItem('pm_balance', balance);
-  }, 5000);
-
   /* ============ تهيئة ============ */
   updateBalanceUI();
-  rateEl.textContent = AUTO_RATE_HOUR + ' / ساعة';
-  sysStatusEl.textContent = 'جاهز';
-  sysStatusEl.style.color = '#4ade80';
+  autoRateEl.textContent = '10 / 30د';
   resume();
-  updateHourTimer();
+
+  // تحديث عداد النصف ساعة كل ثانية
+  uiTimer = setInterval(updateTimerUI, 1000);
 </script>
 
 </body>
