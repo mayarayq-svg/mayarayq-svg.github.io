@@ -1889,3 +1889,86 @@ svg {
   }
 }
 
+
+
+
+/* ===== Powered By ===== */
+.powered-by {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.powered-text {
+    color: #888;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.powered-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.powered-link:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.6);
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+}
+
+.powered-link:active {
+    transform: scale(0.96);
+}
+
+.powered-link svg {
+    width: 14px;
+    height: 14px;
+    transition: 0.3s;
+}
+
+.powered-link:hover svg {
+    transform: translate(2px, -2px);
+}
+
+/* للجوال */
+@media (max-width: 500px) {
+    .powered-by {
+        flex-direction: column;
+        gap: 8px;
+        font-size: 11px;
+    }
+    .powered-text { font-size: 11px; letter-spacing: 1.5px; }
+    .powered-link { font-size: 12px; padding: 5px 12px; letter-spacing: 1.5px; }
+    .powered-link svg { width: 12px; height: 12px; }
+}
+
+/* الوضع الليلي */
+[data-theme="dark"] .powered-by {
+    border-top-color: rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"] .powered-text {
+    color: #666;
+}
+
+
