@@ -1971,4 +1971,363 @@ svg {
     color: #666;
 }
 
+/* ===== صفحة تواصل معنا ===== */
+.contact-page {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 50px 35px;
+  margin: 50px 0;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-page::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(106,17,203,0.12), transparent 70%);
+  border-radius: 50%;
+  top: -120px;
+  right: -100px;
+  pointer-events: none;
+}
+
+.contact-page::after {
+  content: '';
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(38,161,123,0.1), transparent 70%);
+  border-radius: 50%;
+  bottom: -100px;
+  left: -80px;
+  pointer-events: none;
+}
+
+.contact-big-icon {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 25px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 50px rgba(106,17,203,0.4);
+  position: relative;
+  z-index: 2;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.contact-big-icon svg {
+  width: 55px;
+  height: 55px;
+  color: #fff;
+}
+
+.contact-title {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-desc {
+  font-size: 16px;
+  color: var(--text-soft);
+  max-width: 550px;
+  margin: 0 auto 35px;
+  line-height: 1.8;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== زر البريد ===== */
+.email-contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: #fff;
+  padding: 22px 26px;
+  border-radius: 22px;
+  text-decoration: none;
+  font-weight: 800;
+  transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 15px 40px rgba(106,17,203,0.45);
+  position: relative;
+  overflow: hidden;
+  max-width: 520px;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+.email-contact-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: 0.7s;
+}
+
+.email-contact-btn:hover::before {
+  left: 100%;
+}
+
+.email-contact-btn:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 25px 55px rgba(106,17,203,0.6);
+}
+
+.email-contact-btn:active {
+  transform: translateY(-2px);
+}
+
+.email-btn-icon {
+  width: 58px;
+  height: 58px;
+  background: rgba(255,255,255,0.22);
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  transition: 0.5s;
+}
+
+.email-btn-icon svg {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+
+.email-contact-btn:hover .email-btn-icon {
+  transform: rotate(360deg) scale(1.1);
+  background: rgba(255,255,255,0.35);
+}
+
+.email-btn-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: right;
+}
+
+.email-btn-label {
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 3px;
+}
+
+.email-btn-email {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  direction: ltr;
+  letter-spacing: 0.5px;
+}
+
+.email-btn-arrow {
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: 0.35s;
+}
+
+.email-btn-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.email-contact-btn:hover .email-btn-arrow {
+  background: rgba(255,255,255,0.35);
+  transform: translateX(-8px);
+}
+
+/* ===== معلومات إضافية ===== */
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 45px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-info-item {
+  background: linear-gradient(135deg, rgba(106,17,203,0.08), rgba(37,117,252,0.08));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 15px;
+  transition: 0.35s;
+}
+
+.contact-info-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 12px 30px rgba(106,17,203,0.2);
+}
+
+.contact-info-icon {
+  width: 45px;
+  height: 45px;
+  margin: 0 auto 12px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.contact-info-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.contact-info-item h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.contact-info-item p {
+  font-size: 12.5px;
+  color: var(--text-soft);
+}
+
+/* ===== Powered By ===== */
+.powered-by {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  flex-wrap: wrap;
+}
+
+.powered-text {
+  color: #888;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.powered-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+  transition: 0.3s;
+  text-transform: uppercase;
+}
+
+.powered-link:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(106, 17, 203, 0.6);
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+}
+
+.powered-link:active {
+  transform: scale(0.96);
+}
+
+.powered-link svg {
+  width: 14px;
+  height: 14px;
+  transition: 0.3s;
+}
+
+.powered-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ===== للجوال ===== */
+@media (max-width: 600px) {
+  .contact-page {
+    padding: 35px 20px;
+    border-radius: 20px;
+    margin: 30px 0;
+  }
+  .contact-big-icon {
+    width: 85px;
+    height: 85px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+  }
+  .contact-big-icon svg { width: 44px; height: 44px; }
+  .contact-title { font-size: 22px; }
+  .contact-desc { font-size: 14px; margin-bottom: 25px; }
+  .email-contact-btn {
+    padding: 16px 18px;
+    gap: 12px;
+    border-radius: 16px;
+  }
+  .email-btn-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+  .email-btn-icon svg { width: 26px; height: 26px; }
+  .email-btn-label { font-size: 15px; }
+  .email-btn-email { font-size: 11px; }
+  .email-btn-arrow {
+    width: 38px;
+    height: 38px;
+  }
+  .email-btn-arrow svg { width: 17px; height: 17px; }
+  .contact-info {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .contact-info-item { padding: 18px 15px; }
+  
+  .powered-by {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .powered-text { font-size: 11px; letter-spacing: 1.5px; }
+  .powered-link { font-size: 12px; padding: 5px 12px; letter-spacing: 1.5px; }
+  .powered-link svg { width: 12px; height: 12px; }
+}
+
 
