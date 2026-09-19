@@ -40,7 +40,6 @@
     position: relative;
   }
 
-  /* نجوم خفيفة */
   body::before {
     content: '';
     position: fixed;
@@ -60,7 +59,6 @@
     50% { opacity: 0.3; }
   }
 
-  /* الهيدر */
   .header {
     width: 100%;
     max-width: 420px;
@@ -118,7 +116,6 @@
 
   .back-btn:active { transform: scale(0.94); }
 
-  /* البطاقة الرئيسية */
   .main-card {
     width: 100%;
     max-width: 420px;
@@ -145,7 +142,6 @@
     pointer-events: none;
   }
 
-  /* بطاقة الرصيد */
   .balance-card {
     background: 
       linear-gradient(135deg, rgba(192,192,192,0.1), rgba(192,192,192,0.02));
@@ -203,7 +199,6 @@
     font-weight: 700;
   }
 
-  /* بطاقة العداد */
   .timer-card {
     display: flex;
     justify-content: space-between;
@@ -239,7 +234,6 @@
     direction: ltr;
   }
 
-  /* منطقة BTTC */
   .bttc-stage {
     position: relative;
     width: 100%;
@@ -339,7 +333,6 @@
     box-shadow: 0 0 0 3px rgba(100,116,139,0.2);
   }
 
-  /* شريط التقدم */
   .progress-wrap {
     width: 100%;
     max-width: 260px;
@@ -379,7 +372,6 @@
   .status.burst { color: #ffffff; }
   .status.cooling { color: var(--red); }
 
-  /* الإحصائيات */
   .stats-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -411,7 +403,6 @@
     letter-spacing: 1px;
   }
 
-  /* أزرار أسفل */
   .actions-bottom {
     width: 100%;
     max-width: 420px;
@@ -441,7 +432,6 @@
 
   .action-btn svg { width: 16px; height: 16px; }
 
-  /* زر الإعلان */
   .ad-btn {
     background: linear-gradient(135deg, rgba(192,192,192,0.15), rgba(192,192,192,0.05));
     color: var(--silver-bright);
@@ -459,7 +449,6 @@
     cursor: not-allowed;
   }
 
-  /* زر السحب */
   .withdraw-btn {
     background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(251,191,36,0.03));
     color: var(--gold);
@@ -480,7 +469,6 @@
     cursor: not-allowed;
   }
 
-  /* نجوم طائرة */
   .float-reward {
     position: fixed;
     color: #ffffff;
@@ -499,7 +487,6 @@
     100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
   }
 
-  /* جزيئات */
   .particle {
     position: fixed;
     width: 3px;
@@ -516,7 +503,6 @@
     100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
   }
 
-  /* Toast */
   .toast {
     position: fixed;
     bottom: 30px;
@@ -538,7 +524,6 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* نافذة الإعلان */
   .ad-overlay {
     position: fixed;
     inset: 0;
@@ -581,70 +566,30 @@
   }
 
   .ad-frame {
-  width: 100%;
-  min-height: 250px;
-  background: linear-gradient(135deg, #0a0a10, #050508);
-  border: 2px solid rgba(192,192,192,0.15);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-  position: relative;
-  overflow: hidden;
-  padding: 15px;
-}
-
-/* لضمان ظهور الإعلان */
-.ad-frame iframe,
-.ad-frame ins,
-.ad-frame img,
-.ad-frame div[id*="container"] {
-  max-width: 100%;
-  border-radius: 12px;
-}
-
-  .ad-frame::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(192,192,192,0.1), transparent 70%);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
-
-  .ad-icon {
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, rgba(192,192,192,0.15), rgba(192,192,192,0.03));
-    border: 2px solid rgba(192,192,192,0.3);
-    border-radius: 50%;
+    width: 100%;
+    min-height: 250px;
+    background: linear-gradient(135deg, #0a0a10, #050508);
+    border: 2px solid rgba(192,192,192,0.15);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--silver-bright);
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
     position: relative;
-    z-index: 2;
+    overflow: hidden;
+    padding: 15px;
   }
 
-  .ad-icon svg { width: 34px; height: 34px; }
-
-  .ad-frame p {
-    font-size: 13px;
-    color: var(--text-dim);
-    font-weight: 700;
-    letter-spacing: 1px;
-    position: relative;
-    z-index: 2;
+  .ad-frame iframe,
+  .ad-frame ins,
+  .ad-frame img,
+  .ad-frame div[id*="container"] {
+    max-width: 100%;
+    border-radius: 12px;
   }
 
-  /* عداد دائري */
   .ad-timer-wrap {
     position: relative;
     width: 120px;
@@ -693,7 +638,6 @@
     font-weight: 600;
   }
 
-  /* نافذة السحب */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -888,9 +832,7 @@
     <div class="logo-text">BTTC MINER</div>
     <a href="games.html" class="back-btn">← الألعاب</a>
   </div>
- <!--ADSTERRA-->
- 
-<script src="https://pl31327659.profitableratecpmnetwork.com/b8/30/f3/b830f333cc9c4375b32b4e9916029d52.js"></script>
+
   <div class="main-card">
 
     <div class="balance-card">
@@ -934,10 +876,8 @@
 
   </div>
 
-  <!-- الأزرار -->
   <div class="actions-bottom">
 
-    <!-- زر مشاهدة إعلان -->
     <button class="action-btn ad-btn" id="adBtn" onclick="openAd()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="23 7 16 12 23 17 23 7"/>
@@ -946,7 +886,6 @@
       <span id="adBtnText">شاهد إعلان · +50 BTTC</span>
     </button>
 
-    <!-- زر السحب -->
     <button class="action-btn withdraw-btn" id="withdrawBtn" disabled>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="11" width="18" height="11" rx="2"/>
@@ -964,19 +903,18 @@
       <div class="ad-label">SPONSORED</div>
 
       <div class="ad-frame">
-  <!-- 🎯 مكان الإعلان -->
-       <script>
-  atOptions = {
-    'key' : '368963302f52616ae408b99d5bc68f1a',
-    'format' : 'iframe',
-    'height' : 200,
-    'width' : 320,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
-</div>
-     
+        <!-- 🎯 ضع كود الإعلان هنا -->
+        <script>
+          atOptions = {
+            'key' : '368963302f52616ae408b99d5bc68f1a',
+            'format' : 'iframe',
+            'height' : 200,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
+      </div>
 
       <div class="ad-timer-wrap">
         <svg viewBox="0 0 100 100">
@@ -995,7 +933,6 @@
       <p class="ad-text">انتظر انتهاء العداد للحصول على مكافأتك</p>
     </div>
   </div>
-
   <!-- ===== نافذة السحب ===== -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalContent">
@@ -1068,9 +1005,18 @@
   const CYCLE_MS            = 30 * 60 * 1000;
   const MIN_WITHDRAW        = 1000;
   
-  const AD_REWARD           = 50;                     // 50 BTTC لكل إعلان
-  const AD_DURATION         = 10;                     // 10 ثواني
-  const AD_COOLDOWN         = 60 * 60 * 1000;         // كل ساعة
+  const AD_REWARD           = 50;
+  const AD_DURATION         = 10;
+  const AD_COOLDOWN         = 60 * 60 * 1000;
+
+  /* ============ 🔒 دالة الحفظ الفوري ============ */
+  function saveState() {
+    localStorage.setItem('bttc_balance', balance);
+    localStorage.setItem('bttc_cycleStart', cycleStartTime);
+    localStorage.setItem('bttc_cycleActive', cycleActive ? '1' : '0');
+    localStorage.setItem('bttc_burstActive', burstActive ? '1' : '0');
+    localStorage.setItem('bttc_lastUpdate', Date.now());
+  }
 
   /* ============ الحالة ============ */
   let balance         = parseFloat(localStorage.getItem('bttc_balance') || '0');
@@ -1132,7 +1078,6 @@
       void balanceEl.offsetWidth;
       balanceEl.classList.add('bump');
     }
-    localStorage.setItem('bttc_balance', balance);
     
     if (balance >= MIN_WITHDRAW) {
       withdrawBtn.disabled = false;
@@ -1141,6 +1086,7 @@
       withdrawBtn.disabled = true;
       withdrawText.textContent = 'سحب · الحد الأدنى 1000 BTTC';
     }
+    saveState();
   }
 
   function showToast(msg, duration = 2500) {
@@ -1179,8 +1125,21 @@
     }
   }
 
+  /* ============ 🔒 كشف التلاعب بالوقت ============ */
+  function checkIntegrity() {
+    const lastUpdate = parseInt(localStorage.getItem('bttc_lastUpdate') || '0');
+    const now = Date.now();
+    
+    if (lastUpdate > 0 && now < lastUpdate - 60000) {
+      localStorage.clear();
+      location.reload();
+      return false;
+    }
+    return true;
+  }
+
   /* ============ حالة الزر ============ */
-  function canClick() { return !cycleActive; }
+  function canClick() { return !cycleActive && !burstActive; }
 
   function updateBttcButton() {
     if (canClick()) {
@@ -1195,12 +1154,18 @@
     }
   }
 
-  /* ============ التعدين السريع ============ */
+  /* ============ 🔒 التعدين السريع (محمي) ============ */
   function startBurst() {
     if (burstActive) return;
     if (!canClick()) { showToast('انتظر انتهاء العدّاد'); return; }
 
     burstActive = true;
+    
+    // 🔒 حفظ فوري قبل بدء التعدين
+    cycleActive = true;
+    cycleStartTime = Date.now();
+    saveState();
+
     bttcImg.classList.add('burst');
     progressWrap.classList.add('visible');
     statusEl.textContent = 'تعدين سريع...';
@@ -1223,6 +1188,12 @@
         if (Math.random() < 0.5) floatNumber('+' + Math.floor(diff));
       }
 
+      // 🔒 حفظ دوري كل 5 ثواني
+      if (Date.now() - (burstTimer._lastSave || 0) > 5000) {
+        saveState();
+        burstTimer._lastSave = Date.now();
+      }
+
       progressBar.style.width = (ratio * 100) + '%';
       if (Math.random() < 0.3) spawnParticles(4);
 
@@ -1236,20 +1207,21 @@
 
   function finishBurst() {
     burstActive = false;
+    
+    // 🔒 إضافة المكافأة الكاملة
+    balance += BURST_AMOUNT;
+    updateBalanceUI(true);
+    
     bttcImg.classList.remove('burst');
     progressBar.style.width = '0%';
     progressWrap.classList.remove('visible');
-    updateBalanceUI(true);
-    startCycle();
-  }
 
-  /* ============ دورة 30 دقيقة ============ */
-  function startCycle() {
-    cycleActive = true;
+    // 🔒 حفظ نهائي
     cycleStartTime = Date.now();
-    localStorage.setItem('bttc_cycleStart', cycleStartTime);
-    localStorage.setItem('bttc_cycleActive', '1');
+    cycleActive = true;
+    saveState();
 
+    // بدء دورة 30 دقيقة
     timerCard.classList.add('active');
     sysStatusEl.textContent = 'نشط';
     sysStatusEl.style.color = '#e8e8e8';
@@ -1259,6 +1231,7 @@
     updateCycleTimer();
   }
 
+  /* ============ دورة 30 دقيقة ============ */
   function updateCycleTimer() {
     if (!cycleActive) {
       timerEl.textContent = '--:--';
@@ -1281,15 +1254,14 @@
       showToast('انتهت الدورة! +' + CYCLE_BTTC + ' BTTC');
       
       cycleActive = false;
-      localStorage.setItem('bttc_cycleActive', '0');
-      localStorage.removeItem('bttc_cycleStart');
+      cycleStartTime = 0;
+      saveState();
       
       timerCard.classList.remove('active');
       bttcImg.classList.remove('cooling');
       
       sysStatusEl.textContent = 'جاهز';
       sysStatusEl.style.color = '#e8e8e8';
-      
       timerEl.textContent = '--:--';
       updateBttcButton();
     }
@@ -1340,7 +1312,6 @@
         adOverlay.classList.remove('show');
         adActive = false;
 
-        // إضافة المكافأة
         balance += AD_REWARD;
         lastAdTime = Date.now();
         localStorage.setItem('bttc_lastAd', lastAdTime);
@@ -1354,11 +1325,87 @@
 
   setInterval(updateAdButton, 1000);
 
-  /* ============ استئناف ============ */
+  /* ============ 🔒 استئناف محمي ============ */
   function resume() {
+    if (!checkIntegrity()) return;
+
     const cycleWasActive = localStorage.getItem('bttc_cycleActive') === '1';
+    const burstWasActive = localStorage.getItem('bttc_burstActive') === '1';
     const storedStart = parseInt(localStorage.getItem('bttc_cycleStart') || '0');
 
+    // ═══ الحالة 1: كان التعدين السريع نشطًا ═══
+    if (burstWasActive && storedStart) {
+      const burstEndTime = storedStart + BURST_DURATION;
+      
+      if (Date.now() >= burstEndTime) {
+        // ✅ اكتمل التعدين أثناء الغياب
+        balance += BURST_AMOUNT;
+        updateBalanceUI(true);
+        showToast('اكتمل التعدين أثناء غيابك! +' + BURST_AMOUNT + ' BTTC');
+        
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        burstActive = false;
+        saveState();
+        
+        if (Date.now() - storedStart >= CYCLE_MS) {
+          balance += CYCLE_BTTC;
+          updateBalanceUI(true);
+          showToast('انتهت الدورة أيضًا! +' + CYCLE_BTTC + ' BTTC');
+          
+          cycleActive = false;
+          cycleStartTime = 0;
+          saveState();
+          
+          sysStatusEl.textContent = 'جاهز';
+          rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
+          timerEl.textContent = '--:--';
+          updateBttcButton();
+          return;
+        }
+        
+        timerCard.classList.add('active');
+        sysStatusEl.textContent = 'نشط';
+        rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
+        updateBttcButton();
+        updateCycleTimer();
+        return;
+      } else {
+        // ⏳ التعدين ما زال يعمل → أكمل من حيث توقف
+        burstActive = true;
+        bttcImg.classList.add('burst');
+        progressWrap.classList.add('visible');
+        statusEl.textContent = 'تعدين سريع...';
+        statusEl.className = 'status burst';
+        
+        const remaining = burstEndTime - Date.now();
+        const startTime = Date.now() - (BURST_DURATION - remaining);
+        const startBalance = balance;
+        
+        burstTimer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const ratio = Math.min(elapsed / BURST_DURATION, 1);
+          const earned = BURST_AMOUNT * ratio;
+          const diff = earned - (balance - startBalance);
+          
+          if (diff > 0) {
+            balance += diff;
+            updateBalanceUI(true);
+          }
+          
+          progressBar.style.width = (ratio * 100) + '%';
+          
+          if (ratio >= 1) {
+            clearInterval(burstTimer);
+            burstTimer = null;
+            finishBurst();
+          }
+        }, 50);
+        return;
+      }
+    }
+
+    // ═══ الحالة 2: الدورة كانت نشطة ═══
     if (cycleWasActive && storedStart) {
       const elapsed = Date.now() - storedStart;
       
@@ -1367,11 +1414,13 @@
         updateBalanceUI(true);
         showToast('انتهت الدورة أثناء غيابك! +' + CYCLE_BTTC + ' BTTC');
         
-        localStorage.setItem('bttc_cycleActive', '0');
-        localStorage.removeItem('bttc_cycleStart');
+        cycleActive = false;
+        cycleStartTime = 0;
+        saveState();
         
         sysStatusEl.textContent = 'جاهز';
         rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
+        timerEl.textContent = '--:--';
         updateBttcButton();
       } else {
         cycleActive = true;
@@ -1454,9 +1503,12 @@
   }
 
   function successWithdraw(amount, fullName, binanceId) {
+    // 🔒 تصفير كامل
     balance = 0;
-    localStorage.setItem('bttc_balance', 0);
-    updateBalanceUI();
+    cycleActive = false;
+    cycleStartTime = 0;
+    burstActive = false;
+    saveState();
 
     modalContent.innerHTML = `
       <div style="text-align: center;">
@@ -1488,13 +1540,17 @@
     confirmBtn.textContent = 'إرسال الطلب';
   }
 
-  /* ============ حفظ عند الإغلاق ============ */
+  /* ============ 🔒 حفظ عند الإغلاق ============ */
   window.addEventListener('beforeunload', () => {
-    localStorage.setItem('bttc_balance', balance);
+    saveState();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) saveState();
   });
 
   setInterval(() => {
-    localStorage.setItem('bttc_balance', balance);
+    saveState();
   }, 5000);
 
   /* ============ تهيئة ============ */
@@ -1508,3 +1564,4 @@
 
 </body>
 </html>
+  
