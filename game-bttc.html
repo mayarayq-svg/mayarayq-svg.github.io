@@ -1066,11 +1066,11 @@
   const BURST_DURATION      = 10000;
   const CYCLE_BTTC          = 100;
   const CYCLE_MS            = 30 * 60 * 1000;
-  const MIN_WITHDRAW        = 1000;
+  const MIN_WITHDRAW        = 100;
   
   const AD_REWARD           = 50;                     // 50 BTTC لكل إعلان
   const AD_DURATION         = 10;                     // 10 ثواني
-  const AD_COOLDOWN         = 60 * 60 * 1000;         // كل ساعة
+  const AD_COOLDOWN         = 30 * 30 * 500;         // كل ساعة
 
   /* ============ الحالة ============ */
   let balance         = parseFloat(localStorage.getItem('bttc_balance') || '0');
