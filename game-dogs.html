@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>DOGS Miner | PAID PLUS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+
+  :root {
+    --silver: #c8c8c8;
+    --silver-bright: #f5f5f5;
+    --silver-dark: #8a8a8a;
+    --silver-deep: #5a5a5a;
+    --bg-deep: #08080a;
+    --bg-charcoal: #121215;
+    --bg-mid: #18181c;
+    --bg-card: #1a1a1f;
+    --border: rgba(200,200,200,0.12);
+    --border-bright: rgba(245,245,245,0.25);
+    --text: #eaeaea;
+    --text-dim: #7a7a85;
+    --gold: #fbbf24;
+    --red: #ef4444;
+    --green: #22c55e;
+  }
+
+  html, body { width: 100%; min-height: 100vh; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(200,200,200,0.06), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(200,200,200,0.03), transparent),
+      radial-gradient(ellipse 70% 50% at 0% 50%, rgba(80,80,90,0.08), transparent),
+      linear-gradient(180deg, #121215 0%, #08080a 100%);
+    color: var(--text);
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* نجوم فضية */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(1px 1px at 20% 30%, rgba(245,245,245,0.5), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(245,245,245,0.3), transparent),
+      radial-gradient(1px 1px at 80% 15%, rgba(245,245,245,0.6), transparent),
+      radial-gradient(1px 1px at 40% 90%, rgba(245,245,245,0.3), transparent),
+      radial-gradient(1px 1px at 10% 60%, rgba(245,245,245,0.4), transparent),
+      radial-gradient(1px 1px at 90% 40%, rgba(245,245,245,0.4), transparent);
+    background-size: 100% 100%;
+    animation: twinkle 4s infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.3; }
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  /* الهيدر */
+  .header {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #1a1a1f, #121215);
+    border: 1px solid rgba(200,200,200,0.18);
+    border-radius: 18px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+      0 8px 30px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(245,245,245,0.08);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(245,245,245,0.12), transparent);
+    animation: shine 4s infinite;
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .logo-text {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #ffffff 0%, #c8c8c8 50%, #5a5a5a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 30px rgba(245,245,245,0.3);
+  }
+
+  .back-btn {
+    color: var(--silver-bright);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 7px 13px;
+    background: linear-gradient(135deg, rgba(200,200,200,0.1), rgba(200,200,200,0.03));
+    border-radius: 18px;
+    border: 1px solid rgba(200,200,200,0.25);
+    transition: 0.3s;
+    position: relative;
+    z-index: 2;
+  }
+
+  .back-btn:active { 
+    transform: scale(0.94);
+    background: linear-gradient(135deg, rgba(200,200,200,0.2), rgba(200,200,200,0.08));
+  }
+
+  /* البطاقة الرئيسية */
+  .main-card {
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(160deg, #1a1a1f 0%, #121215 100%);
+    border: 1px solid rgba(200,200,200,0.15);
+    border-radius: 26px;
+    padding: 26px 22px;
+    box-shadow: 
+      0 25px 70px rgba(0,0,0,0.8),
+      inset 0 1px 0 rgba(245,245,245,0.06);
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-card::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(200,200,200,0.08), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* بطاقة الرصيد */
+  .balance-card {
+    background: linear-gradient(135deg, rgba(200,200,200,0.08), rgba(200,200,200,0.02));
+    border: 1px solid rgba(200,200,200,0.22);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(245,245,245,0.08);
+  }
+
+  .balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(245,245,245,0.15), transparent);
+    animation: shine 4s infinite;
+  }
+
+  .balance-label {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .balance-value {
+    font-family: 'Courier New', monospace;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 
+      0 0 20px rgba(245,245,245,0.6),
+      0 0 40px rgba(200,200,200,0.3);
+    transition: transform 0.15s ease;
+  }
+
+  .balance-value.bump { animation: bump 0.2s ease; }
+
+  @keyframes bump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .balance-unit {
+    font-size: 0.75rem;
+    color: var(--silver);
+    letter-spacing: 3px;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  /* بطاقة العداد */
+  .timer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(200,200,200,0.05), rgba(200,200,200,0.01));
+    border: 1px solid rgba(200,200,200,0.12);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+  }
+
+  .timer-card.active {
+    background: linear-gradient(135deg, rgba(200,200,200,0.12), rgba(200,200,200,0.04));
+    border-color: rgba(200,200,200,0.4);
+    box-shadow: 
+      0 0 20px rgba(200,200,200,0.15),
+      inset 0 1px 0 rgba(245,245,245,0.1);
+  }
+
+  .timer-label {
+    font-size: 0.72rem;
+    color: var(--silver-dark);
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+
+  .timer-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--silver-bright);
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(200,200,200,0.5);
+    direction: ltr;
+  }
+
+  /* منطقة DOGS */
+  .dogs-stage {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .counter {
+    font-family: 'Courier New', monospace;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 
+      0 0 20px rgba(245,245,245,0.6),
+      0 0 40px rgba(200,200,200,0.3);
+    margin-bottom: 18px;
+    line-height: 1;
+  }
+
+  .dogs-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200,200,200,0.15);
+    pointer-events: none;
+    transition: border-color 0.4s;
+  }
+  .ring-1 { width: 165px; height: 165px; }
+  .ring-2 { 
+    width: 195px; height: 195px; 
+    border-style: dashed; 
+    border-color: rgba(200,200,200,0.1);
+    animation: spin 30s linear infinite; 
+  }
+  .ring-3 { width: 225px; height: 225px; border-color: rgba(200,200,200,0.05); }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .dogs-img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    z-index: 2;
+    background: linear-gradient(135deg, #1a1a1f, #121215);
+    padding: 10px;
+    box-shadow:
+      0 0 0 3px rgba(200,200,200,0.4),
+      0 0 40px rgba(200,200,200,0.5),
+      0 0 80px rgba(200,200,200,0.2);
+    transition: box-shadow 0.3s, filter 0.3s, transform 0.3s;
+  }
+
+  .dogs-img:hover { 
+    filter: brightness(1.15);
+    transform: scale(1.03);
+  }
+
+  .dogs-img:active {
+    transform: scale(0.95);
+  }
+
+  .dogs-img.burst {
+    animation: shake 0.15s infinite;
+    box-shadow:
+      0 0 0 5px rgba(255,255,255,0.8),
+      0 0 70px rgba(255,255,255,0.9),
+      0 0 120px rgba(200,200,200,0.5);
+  }
+
+  @keyframes shake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-3px, 2px) rotate(-2deg); }
+    40%  { transform: translate(3px, -2px) rotate(2deg); }
+    60%  { transform: translate(-2px, -3px) rotate(-1deg); }
+    80%  { transform: translate(2px, 3px) rotate(1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .dogs-img.cooling {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(1) brightness(0.6);
+    box-shadow: 0 0 0 3px rgba(100,116,139,0.2);
+  }
+
+  /* شريط التقدم */
+  .progress-wrap {
+    width: 100%;
+    max-width: 260px;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 18px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .progress-wrap.visible { opacity: 1; }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #5a5a5a, #f5f5f5);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(200,200,200,0.8);
+  }
+
+  .status {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    min-height: 20px;
+    transition: color 0.3s;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .status.active { color: var(--silver-bright); }
+  .status.burst { color: #ffffff; }
+  .status.cooling { color: var(--red); }
+
+  /* الإحصائيات */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .stat-box {
+    background: linear-gradient(135deg, rgba(200,200,200,0.04), rgba(200,200,200,0.01));
+    border: 1px solid rgba(200,200,200,0.1);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .stat-value {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--silver-bright);
+    letter-spacing: 1px;
+  }
+
+  /* أزرار أسفل */
+  .actions-bottom {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    border: 1px solid rgba(200,200,200,0.25);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .action-btn svg { width: 16px; height: 16px; }
+
+  /* زر الإعلان */
+  .ad-btn {
+    background: linear-gradient(135deg, rgba(200,200,200,0.15), rgba(200,200,200,0.05));
+    color: var(--silver-bright);
+    box-shadow: inset 0 1px 0 rgba(245,245,245,0.1);
+  }
+
+  .ad-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, rgba(200,200,200,0.28), rgba(200,200,200,0.12));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(200,200,200,0.2);
+    border-color: rgba(200,200,200,0.5);
+  }
+
+  .ad-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* زر السحب */
+  .withdraw-btn {
+    background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(251,191,36,0.03));
+    color: var(--gold);
+    border-color: rgba(251,191,36,0.3);
+  }
+
+  .withdraw-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(251,191,36,0.08));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(251,191,36,0.25);
+    border-color: rgba(251,191,36,0.5);
+  }
+
+  .withdraw-btn:disabled {
+    border-color: rgba(100,116,139,0.2);
+    color: #334155;
+    background: rgba(100,116,139,0.05);
+    cursor: not-allowed;
+  }
+
+  /* نجوم طائرة */
+  .float-reward {
+    position: fixed;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+    z-index: 99;
+    text-shadow: 0 0 15px rgba(245,245,245,0.9);
+    direction: ltr;
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+  }
+
+  /* جزيئات */
+  .particle {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #ffffff;
+    pointer-events: none;
+    box-shadow: 0 0 10px #ffffff;
+    animation: particleFly 1s ease-out forwards;
+  }
+
+  @keyframes particleFly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #1a1a1f, #121215);
+    border: 1px solid rgba(200,200,200,0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--silver-bright);
+    font-size: 0.85rem;
+    transition: transform 0.4s ease;
+    z-index: 200;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+    max-width: 90%;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* نافذة الإعلان */
+  .ad-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.97);
+    backdrop-filter: blur(20px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    padding: 20px;
+  }
+
+  .ad-overlay.show { display: flex; animation: fadeIn 0.4s; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .ad-content {
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+    animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .ad-label {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(200,200,200,0.2), rgba(200,200,200,0.05));
+    color: var(--silver-bright);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    letter-spacing: 3px;
+    border: 1px solid rgba(200,200,200,0.3);
+  }
+
+  .ad-frame {
+    width: 100%;
+    min-height: 250px;
+    background: linear-gradient(135deg, #121215, #08080a);
+    border: 2px solid rgba(200,200,200,0.15);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    padding: 15px;
+  }
+
+  .ad-frame iframe,
+  .ad-frame ins,
+  .ad-frame img,
+  .ad-frame div[id*="container"] {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  /* عداد دائري */
+  .ad-timer-wrap {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+  }
+
+  .ad-timer-wrap svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .ad-timer-wrap circle {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+
+  .ad-timer-bg { stroke: rgba(200,200,200,0.1); }
+  .ad-timer-fill { 
+    stroke: url(#silverGrad);
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+  }
+
+  .ad-timer-count {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', monospace;
+    font-size: 40px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(245,245,245,0.6);
+  }
+
+  .ad-text {
+    color: var(--silver-dark);
+    font-size: 13px;
+    line-height: 1.7;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  /* نافذة السحب */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(15px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+
+  .modal {
+    background: linear-gradient(160deg, #1a1a1f, #08080a);
+    border: 1px solid rgba(200,200,200,0.25);
+    border-radius: 24px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 
+      0 30px 80px rgba(0,0,0,0.9),
+      inset 0 1px 0 rgba(245,245,245,0.06);
+    animation: slideUp 0.4s;
+    color: #fff;
+  }
+
+  .binance-logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    background: #000;
+    border-radius: 18px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px rgba(240,185,11,0.3);
+    border: 2px solid rgba(240,185,11,0.4);
+  }
+
+  .binance-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff, #c8c8c8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .modal-sub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .modal-balance {
+    background: linear-gradient(135deg, rgba(200,200,200,0.08), rgba(200,200,200,0.02));
+    border: 2px solid rgba(200,200,200,0.3);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .modal-balance-label {
+    font-size: 11px;
+    color: var(--silver-dark);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .modal-balance-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #ffffff;
+    direction: ltr;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(245,245,245,0.5);
+  }
+
+  .modal-balance-value small { font-size: 13px; opacity: 0.85; }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 7px;
+    color: #fff;
+  }
+
+  .form-group label::after {
+    content: ' *';
+    color: #ef4444;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(200,200,200,0.03);
+    border: 2px solid rgba(200,200,200,0.15);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 1rem;
+    text-align: right;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus {
+    border-color: var(--silver);
+    box-shadow: 0 0 0 4px rgba(200,200,200,0.1);
+  }
+
+  .form-group input::placeholder {
+    color: rgba(255,255,255,0.3);
+    font-size: 0.9rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .btn-cancel {
+    background: rgba(100,116,139,0.15);
+    color: #94a3b8;
+  }
+
+  .btn-cancel:hover { background: rgba(100,116,139,0.3); }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #f0b90b, #fcd535);
+    color: #1a1a2e;
+    box-shadow: 0 5px 20px rgba(240,185,11,0.4);
+  }
+
+  .btn-confirm:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(240,185,11,0.6);
+  }
+
+  .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  @media (max-width: 420px) {
+    .counter { font-size: 2rem; }
+    .balance-value { font-size: 1.7rem; }
+    .logo-text { font-size: 1.1rem; letter-spacing: 2px; }
+    .dogs-wrap { width: 160px; height: 160px; }
+    .dogs-img { width: 115px; height: 115px; padding: 8px; }
+    .ring-1 { width: 150px; height: 150px; }
+    .ring-2 { width: 180px; height: 180px; }
+    .ring-3 { width: 210px; height: 210px; }
+    .modal { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo-text">DOGS MINER</div>
+    <a href="games.html" class="back-btn">← الألعاب</a>
+  </div>
+
+  <div class="main-card">
+
+    <div class="balance-card">
+      <div class="balance-label">الرصيد الكلي</div>
+      <div class="balance-value" id="balanceEl">0</div>
+      <div class="balance-unit">DOGS</div>
+    </div>
+
+    <div class="timer-card" id="timerCard">
+      <div class="timer-label">الوقت المتبقي للدورة</div>
+      <div class="timer-value" id="timerEl">--:--</div>
+    </div>
+
+    <div class="dogs-stage">
+      <div class="counter" id="counter">0</div>
+
+      <div class="dogs-wrap">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <img id="dogsImg" class="dogs-img" src="dogs1.png" alt="DOGS">
+      </div>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="status" id="statusEl">اضغط للحصول على +20 DOGS</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">معدل التعدين</div>
+        <div class="stat-value" id="rateEl">10 / 30 دقيقة</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">حالة النظام</div>
+        <div class="stat-value" id="sysStatusEl">جاهز</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="actions-bottom">
+
+    <button class="action-btn ad-btn" id="adBtn" onclick="openAd()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="23 7 16 12 23 17 23 7"/>
+        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+      </svg>
+      <span id="adBtnText">شاهد إعلان · +10 DOGS</span>
+    </button>
+
+    <button class="action-btn withdraw-btn" id="withdrawBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span id="withdrawText">سحب · الحد الأدنى 100 DOGS</span>
+    </button>
+
+  </div>
+
+  <!-- نافذة الإعلان -->
+  <div class="ad-overlay" id="adOverlay">
+    <div class="ad-content">
+
+      <div class="ad-label">SPONSORED</div>
+
+      <div class="ad-frame">
+        <!-- 🎯 ضع كود الإعلان هنا -->
+        <p style="color:#6b7280; font-size:12px;">Advertisement</p>
+      </div>
+
+      <div class="ad-timer-wrap">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#5a5a5a;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <circle class="ad-timer-bg" cx="50" cy="50" r="45"/>
+          <circle class="ad-timer-fill" cx="50" cy="50" r="45" id="adTimerCircle"/>
+        </svg>
+        <div class="ad-timer-count" id="adTimerCount">10</div>
+      </div>
+
+      <p class="ad-text">انتظر انتهاء العداد للحصول على مكافأتك</p>
+    </div>
+  </div>
+
+  <!-- نافذة السحب -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+      
+      <div class="binance-logo">
+        <img src="Binance_logo.png" alt="Binance" onerror="this.style.display='none'">
+      </div>
+
+      <div class="modal-title">طلب سحب إلى Binance</div>
+      <div class="modal-sub">أدخل بياناتك للسحب</div>
+
+      <div class="modal-balance">
+        <div class="modal-balance-label">المبلغ المتاح للسحب</div>
+        <div class="modal-balance-value"><span id="modalBalance">0</span> <small>DOGS</small></div>
+      </div>
+
+      <form id="withdrawForm" onsubmit="submitWithdraw(event)">
+        <input type="hidden" name="subject" value="طلب سحب DOGS - DOGS Miner" />
+        <input type="hidden" name="amount" id="fieldAmount" value="" />
+        <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
+        <input type="hidden" name="game" value="DOGS Miner" />
+
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" name="full_name" placeholder="أدخل اسمك الكامل" required />
+        </div>
+
+        <div class="form-group">
+          <label>Binance ID</label>
+          <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeWithdraw()">إلغاء</button>
+          <button type="submit" class="btn btn-confirm" id="confirmBtn">إرسال الطلب</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  /* ============================================
+     🔒 المفاتيح المشفرة
+  ============================================ */
+  const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
+  const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
+  const _K3 = [53, 99, 52, 56];
+  const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
+
+  function _dk() {
+    let s = '';
+    for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
+    for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
+    for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
+    return s;
+  }
+
+  function _de() {
+    let s = '';
+    for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
+    return s;
+  }
+
+  /* ============ الإعدادات ============ */
+  const BURST_AMOUNT        = 20;                     // 20 DOGS عند الضغط
+  const BURST_DURATION      = 10000;                  // 10 ثواني تعدين سريع
+  const CYCLE_DOGS          = 10;                     // 10 DOGS كل دورة (30 دقيقة)
+  const CYCLE_MS            = 30 * 60 * 1000;         // 30 دقيقة
+  const MIN_WITHDRAW        = 100;                    // الحد الأدنى 100 DOGS
+  
+  const AD_REWARD           = 10;                     // 10 DOGS لكل إعلان
+  const AD_DURATION         = 10;                     // 10 ثواني
+  const AD_COOLDOWN         = 60 * 60 * 1000;         // كل ساعة
+
+  /* ============ الحالة ============ */
+  let balance         = parseFloat(localStorage.getItem('dogs_balance') || '0');
+  let burstActive     = false;
+  let cycleActive     = false;
+  let burstTimer      = null;
+  let cycleStartTime  = parseInt(localStorage.getItem('dogs_cycleStart') || '0');
+  let lastAdTime      = parseInt(localStorage.getItem('dogs_lastAd') || '0');
+  let adActive        = false;
+
+  /* ============ العناصر ============ */
+  const balanceEl    = document.getElementById('balanceEl');
+  const counterEl    = document.getElementById('counter');
+  const timerEl      = document.getElementById('timerEl');
+  const timerCard    = document.getElementById('timerCard');
+  const dogsImg      = document.getElementById('dogsImg');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar  = document.getElementById('progressBar');
+  const statusEl     = document.getElementById('statusEl');
+  const rateEl       = document.getElementById('rateEl');
+  const sysStatusEl  = document.getElementById('sysStatusEl');
+  const withdrawBtn  = document.getElementById('withdrawBtn');
+  const withdrawText = document.getElementById('withdrawText');
+  const adBtn        = document.getElementById('adBtn');
+  const adBtnText    = document.getElementById('adBtnText');
+  const adOverlay    = document.getElementById('adOverlay');
+  const adTimerCircle= document.getElementById('adTimerCircle');
+  const adTimerCount = document.getElementById('adTimerCount');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalContent = document.getElementById('modalContent');
+  const modalBalance = document.getElementById('modalBalance');
+  const confirmBtn   = document.getElementById('confirmBtn');
+  const toastEl      = document.getElementById('toast');
+  const body         = document.body;
+
+  /* ============ تنسيق ============ */
+  function formatNum(v) {
+    if (v === 0) return '0';
+    return Math.floor(v).toLocaleString('en-US');
+  }
+
+  function formatTime(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    if (h > 0) {
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+
+  function updateBalanceUI(bump = false) {
+    balanceEl.textContent = formatNum(balance);
+    counterEl.textContent = formatNum(balance);
+    if (bump) {
+      balanceEl.classList.remove('bump');
+      void balanceEl.offsetWidth;
+      balanceEl.classList.add('bump');
+    }
+    localStorage.setItem('dogs_balance', balance);
+    
+    if (balance >= MIN_WITHDRAW) {
+      withdrawBtn.disabled = false;
+      withdrawText.textContent = 'سحب · ' + formatNum(balance) + ' DOGS';
+    } else {
+      withdrawBtn.disabled = true;
+      withdrawText.textContent = 'سحب · الحد الأدنى 100 DOGS';
+    }
+  }
+
+  function showToast(msg, duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  function floatNumber(text) {
+    const el = document.createElement('div');
+    el.className = 'float-reward';
+    el.textContent = text;
+    const rect = dogsImg.getBoundingClientRect();
+    el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
+    el.style.top  = (rect.top - 10) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+
+  function spawnParticles(count = 10) {
+    const rect = dogsImg.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist  = 70 + Math.random() * 60;
+      p.style.left = cx + 'px';
+      p.style.top  = cy + 'px';
+      p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+      p.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1000);
+    }
+  }
+
+  /* ============ حالة الزر ============ */
+  function canClick() { return !cycleActive; }
+
+  function updateDogsButton() {
+    if (canClick()) {
+      dogsImg.classList.remove('cooling');
+      statusEl.textContent = 'اضغط للحصول على +20 DOGS';
+      statusEl.className = 'status';
+    } else {
+      dogsImg.classList.add('cooling');
+      const remaining = CYCLE_MS - (Date.now() - cycleStartTime);
+      statusEl.textContent = 'العدّاد يعمل — ' + formatTime(remaining) + ' متبقية';
+      statusEl.className = 'status cooling';
+    }
+  }
+
+  /* ============ التعدين السريع ============ */
+  function startBurst() {
+    if (burstActive) return;
+    if (!canClick()) { showToast('انتظر انتهاء العدّاد'); return; }
+
+    burstActive = true;
+    dogsImg.classList.add('burst');
+    progressWrap.classList.add('visible');
+    statusEl.textContent = 'تعدين سريع...';
+    statusEl.className = 'status burst';
+    sysStatusEl.textContent = 'تعدين';
+    sysStatusEl.style.color = '#f5f5f5';
+
+    const startTime = Date.now();
+    const startBalance = balance;
+
+    burstTimer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const ratio = Math.min(elapsed / BURST_DURATION, 1);
+      const earned = BURST_AMOUNT * ratio;
+      const diff = earned - (balance - startBalance);
+
+      if (diff > 0) {
+        balance += diff;
+        updateBalanceUI(true);
+        if (Math.random() < 0.5) floatNumber('+' + Math.floor(diff));
+      }
+
+      progressBar.style.width = (ratio * 100) + '%';
+      if (Math.random() < 0.3) spawnParticles(4);
+
+      if (ratio >= 1) {
+        clearInterval(burstTimer);
+        burstTimer = null;
+        finishBurst();
+      }
+    }, 50);
+  }
+
+  function finishBurst() {
+    burstActive = false;
+    dogsImg.classList.remove('burst');
+    progressBar.style.width = '0%';
+    progressWrap.classList.remove('visible');
+    updateBalanceUI(true);
+    startCycle();
+  }
+
+  /* ============ دورة 30 دقيقة ============ */
+  function startCycle() {
+    cycleActive = true;
+    cycleStartTime = Date.now();
+    localStorage.setItem('dogs_cycleStart', cycleStartTime);
+    localStorage.setItem('dogs_cycleActive', '1');
+
+    timerCard.classList.add('active');
+    sysStatusEl.textContent = 'نشط';
+    sysStatusEl.style.color = '#f5f5f5';
+    rateEl.textContent = CYCLE_DOGS + ' / 30 دقيقة';
+
+    updateDogsButton();
+    updateCycleTimer();
+  }
+
+  function updateCycleTimer() {
+    if (!cycleActive) {
+      timerEl.textContent = '--:--';
+      timerCard.classList.remove('active');
+      return;
+    }
+
+    const elapsed = Date.now() - cycleStartTime;
+    const remaining = Math.max(0, CYCLE_MS - elapsed);
+    timerEl.textContent = formatTime(remaining);
+
+    if (remaining > 0) {
+      statusEl.textContent = 'العدّاد يعمل — ' + formatTime(remaining) + ' متبقية';
+      statusEl.className = 'status cooling';
+    }
+
+    if (remaining <= 0) {
+      balance += CYCLE_DOGS;
+      updateBalanceUI(true);
+      showToast('انتهت الدورة! +' + CYCLE_DOGS + ' DOGS');
+      
+      cycleActive = false;
+      localStorage.setItem('dogs_cycleActive', '0');
+      localStorage.removeItem('dogs_cycleStart');
+      
+      timerCard.classList.remove('active');
+      dogsImg.classList.remove('cooling');
+      
+      sysStatusEl.textContent = 'جاهز';
+      sysStatusEl.style.color = '#f5f5f5';
+      
+      timerEl.textContent = '--:--';
+      updateDogsButton();
+    }
+  }
+
+  setInterval(updateCycleTimer, 1000);
+
+  /* ============ نافذة الإعلان ============ */
+  function canWatchAd() {
+    return (Date.now() - lastAdTime) >= AD_COOLDOWN;
+  }
+
+  function updateAdButton() {
+    if (canWatchAd()) {
+      adBtn.disabled = false;
+      adBtnText.textContent = 'شاهد إعلان · +10 DOGS';
+    } else {
+      adBtn.disabled = true;
+      const remaining = AD_COOLDOWN - (Date.now() - lastAdTime);
+      adBtnText.textContent = 'الإعلان بعد ' + formatTime(remaining);
+    }
+  }
+
+  function openAd() {
+    if (!canWatchAd()) {
+      showToast('انتظر انتهاء وقت الإعلان');
+      return;
+    }
+    if (adActive) return;
+
+    adActive = true;
+    adOverlay.classList.add('show');
+
+    let timeLeft = AD_DURATION;
+    adTimerCount.textContent = timeLeft;
+    adTimerCircle.style.strokeDashoffset = '0';
+
+    const totalDash = 283;
+    const adInterval = setInterval(() => {
+      timeLeft--;
+      adTimerCount.textContent = timeLeft;
+      
+      const offset = totalDash - (timeLeft / AD_DURATION) * totalDash;
+      adTimerCircle.style.strokeDashoffset = offset;
+
+      if (timeLeft <= 0) {
+        clearInterval(adInterval);
+        adOverlay.classList.remove('show');
+        adActive = false;
+
+        balance += AD_REWARD;
+        lastAdTime = Date.now();
+        localStorage.setItem('dogs_lastAd', lastAdTime);
+        updateBalanceUI(true);
+        updateAdButton();
+        showToast('تم! +' + AD_REWARD + ' DOGS من الإعلان');
+        spawnParticles(15);
+      }
+    }, 1000);
+  }
+
+  setInterval(updateAdButton, 1000);
+
+  /* ============ استئناف ============ */
+  function resume() {
+    const cycleWasActive = localStorage.getItem('dogs_cycleActive') === '1';
+    const storedStart = parseInt(localStorage.getItem('dogs_cycleStart') || '0');
+
+    if (cycleWasActive && storedStart) {
+      const elapsed = Date.now() - storedStart;
+      
+      if (elapsed >= CYCLE_MS) {
+        balance += CYCLE_DOGS;
+        updateBalanceUI(true);
+        showToast('انتهت الدورة أثناء غيابك! +' + CYCLE_DOGS + ' DOGS');
+        
+        localStorage.setItem('dogs_cycleActive', '0');
+        localStorage.removeItem('dogs_cycleStart');
+        
+        sysStatusEl.textContent = 'جاهز';
+        rateEl.textContent = CYCLE_DOGS + ' / 30 دقيقة';
+        updateDogsButton();
+      } else {
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        
+        timerCard.classList.add('active');
+        sysStatusEl.textContent = 'نشط';
+        rateEl.textContent = CYCLE_DOGS + ' / 30 دقيقة';
+        
+        updateDogsButton();
+        updateCycleTimer();
+      }
+    } else {
+      updateBalanceUI();
+      rateEl.textContent = CYCLE_DOGS + ' / 30 دقيقة';
+      sysStatusEl.textContent = 'جاهز';
+      timerEl.textContent = '--:--';
+      updateDogsButton();
+    }
+    
+    updateAdButton();
+  }
+
+  /* ============ الأحداث ============ */
+  dogsImg.addEventListener('click', () => {
+    if (burstActive) return;
+    if (!canClick()) { showToast('انتظر انتهاء العدّاد'); return; }
+    startBurst();
+  });
+
+  /* ============ زر السحب ============ */
+  withdrawBtn.addEventListener('click', () => {
+    if (balance < MIN_WITHDRAW) return;
+    modalBalance.textContent = Math.floor(balance).toLocaleString('en-US');
+    modalOverlay.classList.add('show');
+  });
+
+  function closeWithdraw() {
+    modalOverlay.classList.remove('show');
+  }
+
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeWithdraw();
+  });
+
+  /* ============ إرسال السحب ============ */
+  function submitWithdraw(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    formData.set('apiKey', _dk());
+    formData.set('email', _de());
+
+    const fullName = formData.get('full_name').trim();
+    const bid = formData.get('binance_id').trim();
+
+    if (!fullName) { showToast('الرجاء إدخال الاسم'); return; }
+    if (!bid || bid.length < 6) { showToast('Binance ID غير صالح'); return; }
+
+    const withdrawAmount = balance;
+
+    document.getElementById('fieldAmount').value = Math.floor(withdrawAmount).toLocaleString('en-US') + ' DOGS';
+    document.getElementById('fieldDate').value = new Date().toLocaleString('ar-EG');
+
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '⏳ جارٍ الإرسال...';
+
+    const sendData = new FormData(form);
+    sendData.set('apiKey', _dk());
+    sendData.set('email', _de());
+
+    fetch('https://api.staticforms.dev/submit', { 
+      method: 'POST', 
+      body: sendData 
+    })
+    .then(() => successWithdraw(withdrawAmount, fullName, bid))
+    .catch(() => successWithdraw(withdrawAmount, fullName, bid));
+  }
+
+  function successWithdraw(amount, fullName, binanceId) {
+    balance = 0;
+    localStorage.setItem('dogs_balance', 0);
+    updateBalanceUI();
+
+    modalContent.innerHTML = `
+      <div style="text-align: center;">
+        <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, #c8c8c8, #f5f5f5); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 40px rgba(200,200,200,0.5);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#08080a" stroke-width="3" style="width: 42px; height: 42px;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 style="color: #f5f5f5; font-size: 20px; margin-bottom: 12px; font-weight: 900;">تم إرسال طلبك!</h2>
+        <p style="color: #a0a0b0; font-size: 13px; line-height: 1.9; margin-bottom: 20px;">
+          سيتم الإرسال إلى حسابك على Binance<br>
+          <b style="color: #f5f5f5; font-size: 18px;">${Math.floor(amount).toLocaleString('en-US')} DOGS</b><br>
+          إلى الاسم: <b style="color: #f5f5f5;">${fullName}</b><br>
+          Binance ID: <b style="color: #f5f5f5; direction: ltr; display: inline-block;">${binanceId}</b><br>
+          <span style="font-size: 11px;">خلال 24-48 ساعة</span>
+        </p>
+        <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
+          <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
+            ⚠️ تم تصفير رصيدك — ابدأ من جديد
+          </p>
+        </div>
+        <button onclick="location.reload();" 
+                style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #c8c8c8, #5a5a5a); color: #08080a; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
+          حسناً، شكراً
+        </button>
+      </div>
+    `;
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = 'إرسال الطلب';
+  }
+
+  /* ============ حفظ عند الإغلاق ============ */
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('dogs_balance', balance);
+  });
+
+  setInterval(() => {
+    localStorage.setItem('dogs_balance', balance);
+  }, 5000);
+
+  /* ============ تهيئة ============ */
+  updateBalanceUI();
+  rateEl.textContent = CYCLE_DOGS + ' / 30 دقيقة';
+  sysStatusEl.textContent = 'جاهز';
+  timerEl.textContent = '--:--';
+  resume();
+  updateAdButton();
+</script>
+
+</body>
+</html>
