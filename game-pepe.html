@@ -187,7 +187,6 @@
     letter-spacing: 2px;
     text-shadow: 0 0 30px rgba(74,222,128,0.7);
     margin-bottom: 18px;
-    transition: transform 0.15s ease;
     line-height: 1;
   }
 
@@ -586,21 +585,7 @@
     <div class="logo-text">بيبي ماینر</div>
     <a href="games.html" class="back-btn">← الألعاب</a>
   </div>
- <!--ADSTERRA-->
 
-<script>
-  atOptions = {
-    'key' : '368963302f52616ae408b99d5bc68f1a',
-    'format' : 'iframe',
-    'height' : 50,
-    'width' : 320,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
- <script src="https://pl31327659.profitableratecpmnetwork.com/b8/30/f3/b830f333cc9c4375b32b4e9916029d52.js"></script>
-
- 
   <div class="main-card">
 
     <div class="balance-card">
@@ -707,23 +692,39 @@
     return s;
   }
 
-  /* ============ الإعدادات ============ */
-  const BURST_AMOUNT        = 20;                     // 20 PEPE لكل ضغطة
-  const BURST_DURATION      = 10000;                  // 10 ثواني لتشغيل التعدين السريع
-  const CYCLE_PEPE          = 20;                     // 20 PEPE كل دورة
-  const CYCLE_MS            = 30 * 60 * 1000;         // 30 دقيقة = دورة كاملة
+  /* ============================================
+     الإعدادات
+  ============================================ */
+  const BURST_AMOUNT        = 20;
+  const BURST_DURATION      = 10000;
+  const CYCLE_PEPE          = 20;
+  const CYCLE_MS            = 30 * 60 * 1000;
   const MIN_WITHDRAW        = 200;
 
-  /* ============ الحالة ============ */
+  /* ============================================
+     🔒 دالة الحفظ الفوري (الحماية الأساسية)
+  ============================================ */
+  function saveState() {
+    localStorage.setItem('pm_balance', balance);
+    localStorage.setItem('pm_cycleStart', cycleStartTime);
+    localStorage.setItem('pm_cycleActive', cycleActive ? '1' : '0');
+    localStorage.setItem('pm_burstActive', burstActive ? '1' : '0');
+    localStorage.setItem('pm_lastUpdate', Date.now());
+  }
+
+  /* ============================================
+     الحالة
+  ============================================ */
   let balance         = parseFloat(localStorage.getItem('pm_balance') || '0');
   let burstActive     = false;
   let cycleActive     = false;
   let burstTimer      = null;
-  let cycleTimer      = null;
   let cycleStartTime  = parseInt(localStorage.getItem('pm_cycleStart') || '0');
-  let lastTickTime    = Date.now();
+  let cycleTimer      = null;
 
-  /* ============ العناصر ============ */
+  /* ============================================
+     العناصر
+  ============================================ */
   const balanceEl    = document.getElementById('balanceEl');
   const counterEl    = document.getElementById('counter');
   const timerEl      = document.getElementById('timerEl');
@@ -743,7 +744,9 @@
   const toastEl      = document.getElementById('toast');
   const body         = document.body;
 
-  /* ============ تنسيق ============ */
+  /* ============================================
+     تنسيق
+  ============================================ */
   function formatNum(v) {
     if (v === 0) return '0';
     if (v < 1) return v.toFixed(4);
@@ -755,8 +758,7 @@
     const totalSec = Math.floor(ms / 1000);
     const m = Math.floor(totalSec / 60);
     const s = totalSec % 60;
-    return String(m).padStart(2, '0') + ':' +
-           String(s).padStart(2, '0');
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   }
 
   function updateBalanceUI(bump = false) {
@@ -769,8 +771,8 @@
       balanceEl.classList.add('bump');
       counterEl.classList.add('earning');
     }
-    localStorage.setItem('pm_balance', balance);
     withdrawBtn.disabled = balance < MIN_WITHDRAW;
+    saveState();
   }
 
   function showToast(msg, duration = 2500) {
@@ -809,9 +811,28 @@
     }
   }
 
-  /* ============ حالة الزر ============ */
+  /* ============================================
+     🔒 التحقق من صحة البيانات (ضد التلاعب)
+  ============================================ */
+  function checkIntegrity() {
+    const lastUpdate = parseInt(localStorage.getItem('pm_lastUpdate') || '0');
+    const now = Date.now();
+    
+    // إذا كان الوقت الحالي أصغر من آخر تحديث → تم تغيير وقت الجهاز
+    if (lastUpdate > 0 && now < lastUpdate - 60000) { // 1 دقيقة تسامح
+      // تم التلاعب - إعادة تعيين
+      localStorage.clear();
+      location.reload();
+      return false;
+    }
+    return true;
+  }
+
+  /* ============================================
+     حالة الزر
+  ============================================ */
   function canClick() {
-    return !cycleActive;
+    return !cycleActive && !burstActive;
   }
 
   function updatePepeButton() {
@@ -827,7 +848,9 @@
     }
   }
 
-  /* ============ 1) التعدين السريع (20 Pepe) ============ */
+  /* ============================================
+     🔒 1) التعدين السريع (مع الحفظ الفوري)
+  ============================================ */
   function startBurst() {
     if (burstActive) return;
     if (!canClick()) {
@@ -836,6 +859,11 @@
     }
 
     burstActive = true;
+    
+    // 🔒 حفظ فوري قبل بدء التعدين
+    cycleActive = true;
+    cycleStartTime = Date.now();
+    saveState();
 
     body.classList.add('burst-mode');
     pepeImg.classList.add('burst');
@@ -847,6 +875,7 @@
 
     const startTime = Date.now();
     const startBalance = balance;
+    let savedBalance = startBalance;
 
     burstTimer = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -858,6 +887,12 @@
         balance += diff;
         updateBalanceUI(true);
         if (Math.random() < 0.5) floatNumber('+' + diff.toFixed(3));
+      }
+
+      // 🔒 حفظ دوري كل 5 ثواني
+      if (Date.now() - (burstTimer._lastSave || 0) > 5000) {
+        saveState();
+        burstTimer._lastSave = Date.now();
       }
 
       progressBar.style.width = (ratio * 100) + '%';
@@ -873,24 +908,22 @@
 
   function finishBurst() {
     burstActive = false;
+    
+    // 🔒 إضافة المكافأة الكاملة
+    balance += BURST_AMOUNT;
+    updateBalanceUI(true);
+    
     pepeImg.classList.remove('burst');
     body.classList.remove('burst-mode');
     progressBar.style.width = '0%';
     progressWrap.classList.remove('visible');
-    updateBalanceUI(true);
+
+    // 🔒 حفظ نهائي
+    cycleStartTime = Date.now();
+    cycleActive = true;
+    saveState();
 
     // بدء دورة 30 دقيقة
-    startCycle();
-  }
-
-  /* ============ 2) دورة 30 دقيقة ============ */
-  function startCycle() {
-    cycleActive = true;
-    cycleStartTime = Date.now();
-    localStorage.setItem('pm_cycleStart', cycleStartTime);
-    localStorage.setItem('pm_cycleActive', '1');
-
-    // تفعيل الواجهة
     body.classList.add('mining-mode');
     timerCard.classList.add('active');
     sysStatusEl.textContent = 'نشط';
@@ -901,7 +934,9 @@
     updateCycleTimer();
   }
 
-  /* ============ عداد الدورة (30 دقيقة) ============ */
+  /* ============================================
+     🔒 2) دورة 30 دقيقة
+  ============================================ */
   function updateCycleTimer() {
     if (!cycleActive) {
       timerEl.textContent = '--:--';
@@ -913,10 +948,8 @@
     const remaining = Math.max(0, CYCLE_MS - elapsed);
     timerEl.textContent = formatTime(remaining);
 
-    // نص الحالة أثناء العد
-    const statusRemaining = CYCLE_MS - elapsed;
-    if (statusRemaining > 0) {
-      statusEl.textContent = 'العدّاد يعمل — ' + formatTime(statusRemaining) + ' متبقية';
+    if (remaining > 0) {
+      statusEl.textContent = 'العدّاد يعمل — ' + formatTime(remaining) + ' متبقية';
       statusEl.className = 'status cooling';
     }
 
@@ -928,8 +961,8 @@
       
       // إيقاف الدورة
       cycleActive = false;
-      localStorage.setItem('pm_cycleActive', '0');
-      localStorage.removeItem('pm_cycleStart');
+      cycleStartTime = 0;
+      saveState();
       
       body.classList.remove('mining-mode');
       timerCard.classList.remove('active');
@@ -937,65 +970,147 @@
       
       sysStatusEl.textContent = 'جاهز';
       sysStatusEl.style.color = '#4ade80';
-      
-      // تصفير العداد
       timerEl.textContent = '--:--';
       
-      // تحديث الواجهة
       updatePepeButton();
     }
   }
 
-  setInterval(updateCycleTimer, 1000);
+  if (cycleTimer) clearInterval(cycleTimer);
+  cycleTimer = setInterval(updateCycleTimer, 1000);
 
-  /* ============ استئناف ============ */
+  /* ============================================
+     🔒 3) استئناف عند العودة (حماية كاملة)
+  ============================================ */
   function resume() {
+    // 🔒 فحص سلامة البيانات
+    if (!checkIntegrity()) return;
+
     const cycleWasActive = localStorage.getItem('pm_cycleActive') === '1';
+    const burstWasActive = localStorage.getItem('pm_burstActive') === '1';
     const storedStart = parseInt(localStorage.getItem('pm_cycleStart') || '0');
 
+    // ═══ الحالة 1: كان التعدين السريع نشطًا ═══
+    if (burstWasActive && storedStart) {
+      const burstEndTime = storedStart + BURST_DURATION;
+      
+      if (Date.now() >= burstEndTime) {
+        // ✅ اكتمل التعدين أثناء الغياب
+        balance += BURST_AMOUNT;
+        updateBalanceUI(true);
+        showToast('اكتمل التعدين أثناء غيابك! +' + BURST_AMOUNT + ' Pepe');
+        
+        // ✅ ابدأ الدورة من وقت بدء التعدين
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        burstActive = false;
+        saveState();
+        
+        // تحقق إذا انتهت الدورة أيضًا
+        if (Date.now() - storedStart >= CYCLE_MS) {
+          balance += CYCLE_PEPE;
+          updateBalanceUI(true);
+          showToast('انتهت الدورة أيضًا! +' + CYCLE_PEPE + ' Pepe');
+          
+          cycleActive = false;
+          cycleStartTime = 0;
+          saveState();
+          
+          sysStatusEl.textContent = 'جاهز';
+          rateEl.textContent = CYCLE_PEPE + ' / نصف ساعة';
+          timerEl.textContent = '--:--';
+          updatePepeButton();
+          return;
+        }
+        
+        // استئناف الدورة
+        body.classList.add('mining-mode');
+        timerCard.classList.add('active');
+        sysStatusEl.textContent = 'نشط';
+        rateEl.textContent = CYCLE_PEPE + ' / نصف ساعة';
+        updatePepeButton();
+        updateCycleTimer();
+        return;
+      } else {
+        // ⏳ التعدين ما زال يعمل → أكمل من حيث توقف
+        burstActive = true;
+        pepeImg.classList.add('burst');
+        progressWrap.classList.add('visible');
+        body.classList.add('burst-mode');
+        statusEl.textContent = 'تعدين سريع...';
+        statusEl.className = 'status burst';
+        
+        const remaining = burstEndTime - Date.now();
+        const startTime = Date.now() - (BURST_DURATION - remaining);
+        const startBalance = balance;
+        
+        burstTimer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const ratio = Math.min(elapsed / BURST_DURATION, 1);
+          const earned = BURST_AMOUNT * ratio;
+          const diff = earned - (balance - startBalance);
+          
+          if (diff > 0) {
+            balance += diff;
+            updateBalanceUI(true);
+          }
+          
+          progressBar.style.width = (ratio * 100) + '%';
+          
+          if (ratio >= 1) {
+            clearInterval(burstTimer);
+            burstTimer = null;
+            finishBurst();
+          }
+        }, 50);
+        return;
+      }
+    }
+
+    // ═══ الحالة 2: الدورة كانت نشطة (بدون تعدين سريع) ═══
     if (cycleWasActive && storedStart) {
       const elapsed = Date.now() - storedStart;
       
       if (elapsed >= CYCLE_MS) {
-        // انتهت الدورة أثناء الغياب → أضف 20
+        // ✅ انتهت الدورة أثناء الغياب
         balance += CYCLE_PEPE;
         updateBalanceUI(true);
         showToast('انتهت الدورة أثناء غيابك! +' + CYCLE_PEPE + ' Pepe');
         
-        localStorage.setItem('pm_cycleActive', '0');
-        localStorage.removeItem('pm_cycleStart');
+        cycleActive = false;
+        cycleStartTime = 0;
+        saveState();
         
         sysStatusEl.textContent = 'جاهز';
-        sysStatusEl.style.color = '#4ade80';
         rateEl.textContent = CYCLE_PEPE + ' / نصف ساعة';
-        
-        updatePepeButton();
         timerEl.textContent = '--:--';
+        updatePepeButton();
       } else {
-        // الدورة لا تزال جارية
+        // ⏳ الدورة لا تزال جارية → استئناف
         cycleActive = true;
         cycleStartTime = storedStart;
         
         body.classList.add('mining-mode');
         timerCard.classList.add('active');
         sysStatusEl.textContent = 'نشط';
-        sysStatusEl.style.color = '#4ade80';
         rateEl.textContent = CYCLE_PEPE + ' / نصف ساعة';
         
         updatePepeButton();
         updateCycleTimer();
       }
     } else {
+      // ═══ الحالة 3: لا يوجد شيء نشط ═══
       updateBalanceUI();
       rateEl.textContent = CYCLE_PEPE + ' / نصف ساعة';
       sysStatusEl.textContent = 'جاهز';
-      sysStatusEl.style.color = '#4ade80';
       timerEl.textContent = '--:--';
       updatePepeButton();
     }
   }
 
-  /* ============ الأحداث ============ */
+  /* ============================================
+     الأحداث
+  ============================================ */
   pepeImg.addEventListener('click', () => {
     if (burstActive) return;
     if (!canClick()) {
@@ -1005,7 +1120,9 @@
     startBurst();
   });
 
-  /* ============ زر السحب ============ */
+  /* ============================================
+     زر السحب
+  ============================================ */
   withdrawBtn.addEventListener('click', () => {
     if (balance < MIN_WITHDRAW) return;
     modalBalance.textContent = Math.floor(balance);
@@ -1020,7 +1137,9 @@
     if (e.target === modalOverlay) modalOverlay.classList.remove('show');
   });
 
-  /* ============ إرسال طلب السحب ============ */
+  /* ============================================
+     إرسال طلب السحب
+  ============================================ */
   function submitWithdraw(event) {
     event.preventDefault();
 
@@ -1064,9 +1183,12 @@
   }
 
   function successWithdraw(amount, fullName, binanceId) {
+    // 🔒 تصفير الرصيد وحفظه فوريًا
     balance = 0;
-    localStorage.setItem('pm_balance', 0);
-    updateBalanceUI();
+    cycleActive = false;
+    cycleStartTime = 0;
+    burstActive = false;
+    saveState();
 
     modalContent.innerHTML = `
       <div style="text-align: center;">
@@ -1098,16 +1220,24 @@
     confirmBtn.textContent = 'إرسال الطلب';
   }
 
-  /* ============ حفظ عند الإغلاق ============ */
+  /* ============================================
+     حفظ عند الإغلاق
+  ============================================ */
   window.addEventListener('beforeunload', () => {
-    localStorage.setItem('pm_balance', balance);
+    saveState();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) saveState();
   });
 
   setInterval(() => {
-    localStorage.setItem('pm_balance', balance);
+    saveState();
   }, 5000);
 
-  /* ============ تهيئة ============ */
+  /* ============================================
+     تهيئة
+  ============================================ */
   updateBalanceUI();
   rateEl.textContent = CYCLE_PEPE + ' / نصف ساعة';
   sysStatusEl.textContent = 'جاهز';
