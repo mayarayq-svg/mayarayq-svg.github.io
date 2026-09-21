@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>BTTC Miner | PAID PLUS</title>
+<title>BTTC Miner Pro | PAID PLUS</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
@@ -19,8 +19,12 @@
     --text: #e8e8e8;
     --text-dim: #6b7280;
     --gold: #fbbf24;
+    --gold-bright: #fcd535;
     --red: #ef4444;
     --green: #22c55e;
+    --purple: #a855f7;
+    --cyan: #22d3ee;
+    --orange: #fb923c;
   }
 
   html, body { width: 100%; min-height: 100vh; }
@@ -29,29 +33,34 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(192,192,192,0.08), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(192,192,192,0.04), transparent),
+    justify-content: flex-start;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(192,192,192,0.1), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(168,85,247,0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 0% 100%, rgba(34,211,238,0.06), transparent),
       linear-gradient(180deg, #0a0a10 0%, #050508 100%);
     color: var(--text);
-    padding: 20px;
+    padding: 15px;
     overflow-x: hidden;
     position: relative;
+    gap: 14px;
   }
 
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image: 
+    background-image:
       radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4), transparent),
       radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.3), transparent),
       radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 40% 90%, rgba(255,255,255,0.3), transparent);
+      radial-gradient(1px 1px at 40% 90%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 10% 60%, rgba(168,85,247,0.6), transparent),
+      radial-gradient(1px 1px at 90% 40%, rgba(34,211,238,0.5), transparent);
     background-size: 100% 100%;
     animation: twinkle 4s infinite;
     pointer-events: none;
+    z-index: 0;
   }
 
   @keyframes twinkle {
@@ -59,27 +68,30 @@
     50% { opacity: 0.3; }
   }
 
+  body > * { position: relative; z-index: 1; }
+
+  /* ===== الهيدر ===== */
   .header {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 14px 18px;
-    background: linear-gradient(135deg, rgba(192,192,192,0.08), rgba(192,192,192,0.02));
-    border: 1px solid rgba(192,192,192,0.2);
+    background: linear-gradient(135deg, rgba(192,192,192,0.1), rgba(192,192,192,0.02));
+    border: 1px solid rgba(192,192,192,0.25);
     border-radius: 18px;
-    margin-bottom: 18px;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(10px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
   }
 
   .header::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     animation: shine 4s infinite;
   }
 
@@ -89,7 +101,7 @@
   }
 
   .logo-text {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 900;
     letter-spacing: 3px;
     background: linear-gradient(135deg, #ffffff, #c0c0c0, #808080);
@@ -98,6 +110,21 @@
     color: transparent;
     position: relative;
     z-index: 2;
+  }
+
+  .level-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 900;
+    background: linear-gradient(135deg, rgba(168,85,247,0.25), rgba(168,85,247,0.08));
+    border: 1px solid rgba(168,85,247,0.4);
+    color: #d8b4fe;
+    margin-right: 6px;
+    letter-spacing: 0.5px;
   }
 
   .back-btn {
@@ -116,18 +143,18 @@
 
   .back-btn:active { transform: scale(0.94); }
 
+  /* ===== البطاقة الرئيسية ===== */
   .main-card {
     width: 100%;
-    max-width: 420px;
-    background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-    border: 1px solid rgba(192,192,192,0.15);
+    max-width: 440px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    border: 1px solid rgba(192,192,192,0.2);
     border-radius: 26px;
-    padding: 26px 22px;
+    padding: 22px 20px;
     backdrop-filter: blur(20px);
-    box-shadow: 
+    box-shadow:
       0 25px 70px rgba(0,0,0,0.7),
       inset 0 1px 0 rgba(255,255,255,0.06);
-    margin-bottom: 18px;
     position: relative;
     overflow: hidden;
   }
@@ -137,21 +164,32 @@
     position: absolute;
     top: -100px; left: -100px;
     width: 250px; height: 250px;
-    background: radial-gradient(circle, rgba(192,192,192,0.1), transparent 70%);
+    background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
     border-radius: 50%;
     pointer-events: none;
   }
 
+  .main-card::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; right: -100px;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(34,211,238,0.1), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ===== الرصيد ===== */
   .balance-card {
-    background: 
-      linear-gradient(135deg, rgba(192,192,192,0.1), rgba(192,192,192,0.02));
-    border: 1px solid rgba(192,192,192,0.25);
+    background: linear-gradient(135deg, rgba(192,192,192,0.12), rgba(192,192,192,0.02));
+    border: 1px solid rgba(192,192,192,0.3);
     border-radius: 18px;
-    padding: 18px;
+    padding: 16px;
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     position: relative;
     overflow: hidden;
+    z-index: 2;
   }
 
   .balance-card::before {
@@ -164,7 +202,7 @@
   }
 
   .balance-label {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     color: var(--text-dim);
     letter-spacing: 3px;
     margin-bottom: 8px;
@@ -177,90 +215,139 @@
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 1px;
-    text-shadow: 
+    text-shadow:
       0 0 15px rgba(255,255,255,0.5),
       0 0 30px rgba(192,192,192,0.3);
     transition: transform 0.15s ease;
+    direction: ltr;
+    line-height: 1;
   }
 
-  .balance-value.bump { animation: bump 0.2s ease; }
+  .balance-value.bump { animation: bump 0.25s ease; }
 
   @keyframes bump {
     0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
+    50% { transform: scale(1.1); color: #fcd535; }
     100% { transform: scale(1); }
   }
 
   .balance-unit {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--silver);
     letter-spacing: 3px;
     margin-top: 6px;
     font-weight: 700;
   }
 
-  .timer-card {
+  /* ===== شريط المستوى ===== */
+  .level-bar {
+    background: rgba(168,85,247,0.08);
+    border: 1px solid rgba(168,85,247,0.25);
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .level-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(192,192,192,0.04);
-    border: 1px solid rgba(192,192,192,0.15);
-    border-radius: 14px;
-    padding: 12px 18px;
-    margin-bottom: 20px;
-    transition: 0.3s;
+    margin-bottom: 6px;
   }
 
-  .timer-card.active {
-    background: rgba(192,192,192,0.1);
-    border-color: rgba(192,192,192,0.4);
-    box-shadow: 0 0 20px rgba(192,192,192,0.15);
+  .level-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #d8b4fe;
+    letter-spacing: 1px;
   }
 
-  .timer-label {
-    font-size: 0.72rem;
-    color: var(--silver-dark);
-    letter-spacing: 2px;
-    font-weight: 700;
-  }
-
-  .timer-value {
+  .level-score {
+    font-size: 11px;
+    font-weight: 900;
+    color: #fff;
     font-family: 'Courier New', monospace;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--silver-bright);
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px rgba(192,192,192,0.5);
     direction: ltr;
   }
 
+  .level-progress {
+    height: 5px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .level-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #22d3ee);
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(168,85,247,0.8);
+  }
+
+  /* ===== شريط المضاعف ===== */
+  .multiplier-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.03));
+    border: 1px solid rgba(251,191,36,0.25);
+    border-radius: 12px;
+    padding: 8px 14px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .multiplier-label {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .multiplier-value {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold-bright);
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 15px rgba(251,191,36,0.7);
+  }
+
+  /* ===== المرحلة ===== */
   .bttc-stage {
     position: relative;
     width: 100%;
-    height: 260px;
+    height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 2;
   }
 
   .counter {
     font-family: 'Courier New', monospace;
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 1px;
-    text-shadow: 
+    text-shadow:
       0 0 20px rgba(255,255,255,0.6),
       0 0 40px rgba(192,192,192,0.3);
-    margin-bottom: 18px;
+    margin-bottom: 12px;
     line-height: 1;
+    direction: ltr;
   }
 
   .bttc-wrap {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -273,20 +360,20 @@
     pointer-events: none;
     transition: border-color 0.4s;
   }
-  .ring-1 { width: 165px; height: 165px; }
-  .ring-2 { 
-    width: 195px; height: 195px; 
-    border-style: dashed; 
-    border-color: rgba(192,192,192,0.1);
-    animation: spin 30s linear infinite; 
+  .ring-1 { width: 155px; height: 155px; }
+  .ring-2 {
+    width: 185px; height: 185px;
+    border-style: dashed;
+    border-color: rgba(192,192,192,0.12);
+    animation: spin 30s linear infinite;
   }
-  .ring-3 { width: 225px; height: 225px; border-color: rgba(192,192,192,0.05); }
+  .ring-3 { width: 215px; height: 215px; border-color: rgba(192,192,192,0.06); }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .bttc-img {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     cursor: pointer;
     object-fit: cover;
@@ -300,7 +387,7 @@
     transition: box-shadow 0.3s, filter 0.3s, transform 0.3s;
   }
 
-  .bttc-img:hover { 
+  .bttc-img:hover {
     filter: brightness(1.1);
     transform: scale(1.03);
   }
@@ -314,7 +401,7 @@
     box-shadow:
       0 0 0 5px rgba(255,255,255,0.8),
       0 0 70px rgba(255,255,255,0.9),
-      0 0 120px rgba(192,192,192,0.5);
+      0 0 120px rgba(168,85,247,0.6);
   }
 
   @keyframes shake {
@@ -333,14 +420,49 @@
     box-shadow: 0 0 0 3px rgba(100,116,139,0.2);
   }
 
+  /* ===== شريط التقدم الدائري ===== */
+  .circle-progress {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .circle-progress.visible { opacity: 1; }
+
+  .circle-progress svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .circle-progress circle {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .circle-bg { stroke: rgba(255,255,255,0.05); }
+
+  .circle-fill {
+    stroke: url(#progressGrad);
+    stroke-dasharray: 565;
+    stroke-dashoffset: 565;
+    transition: stroke-dashoffset 0.1s linear;
+    filter: drop-shadow(0 0 6px rgba(168,85,247,0.8));
+  }
+
   .progress-wrap {
     width: 100%;
-    max-width: 260px;
+    max-width: 240px;
     height: 4px;
     background: rgba(255,255,255,0.05);
     border-radius: 10px;
     overflow: hidden;
-    margin-top: 18px;
+    margin-top: 12px;
     opacity: 0;
     transition: opacity 0.4s;
   }
@@ -350,62 +472,120 @@
   .progress-bar {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #808080, #e8e8e8);
+    background: linear-gradient(90deg, #a855f7, #22d3ee);
     border-radius: 10px;
     transition: width 0.1s linear;
-    box-shadow: 0 0 12px rgba(192,192,192,0.8);
+    box-shadow: 0 0 12px rgba(168,85,247,0.9);
   }
 
   .status {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     letter-spacing: 1.5px;
     color: var(--text-dim);
-    margin-top: 14px;
+    margin-top: 10px;
     min-height: 20px;
     transition: color 0.3s;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
     padding: 0 10px;
   }
 
   .status.active { color: var(--silver-bright); }
-  .status.burst { color: #ffffff; }
-  .status.cooling { color: var(--red); }
+  .status.burst { color: #d8b4fe; text-shadow: 0 0 10px rgba(168,85,247,0.6); }
+  .status.cooling { color: var(--gold); }
 
-  .stats-row {
+  /* ===== شريط المؤقت ===== */
+  .timer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(192,192,192,0.04);
+    border: 1px solid rgba(192,192,192,0.15);
+    border-radius: 14px;
+    padding: 10px 16px;
+    margin-top: 12px;
+    transition: 0.3s;
+    position: relative;
+    z-index: 2;
+  }
+
+  .timer-card.active {
+    background: rgba(251,191,36,0.08);
+    border-color: rgba(251,191,36,0.35);
+    box-shadow: 0 0 20px rgba(251,191,36,0.15);
+  }
+
+  .timer-label {
+    font-size: 0.68rem;
+    color: var(--silver-dark);
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+
+  .timer-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--silver-bright);
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(192,192,192,0.5);
+    direction: ltr;
+  }
+
+  /* ===== الإحصائيات ===== */
+  .stats-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 18px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+    position: relative;
+    z-index: 2;
   }
 
   .stat-box {
     background: rgba(192,192,192,0.03);
     border: 1px solid rgba(192,192,192,0.1);
     border-radius: 12px;
-    padding: 10px;
+    padding: 10px 6px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
   }
 
+  .stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    opacity: 0.5;
+  }
+
+  .stat-box.purple { color: #a855f7; }
+  .stat-box.cyan { color: #22d3ee; }
+  .stat-box.gold { color: #fbbf24; }
+
   .stat-label {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     color: var(--text-dim);
-    letter-spacing: 1px;
-    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
     font-weight: 700;
   }
 
   .stat-value {
     font-family: 'Courier New', monospace;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    color: var(--silver-bright);
-    letter-spacing: 1px;
+    color: currentColor;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px currentColor;
   }
 
+  /* ===== أزرار سفلية ===== */
   .actions-bottom {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -414,8 +594,8 @@
   .action-btn {
     width: 100%;
     padding: 15px;
-    font-size: 0.85rem;
-    font-weight: 800;
+    font-size: 0.9rem;
+    font-weight: 900;
     letter-spacing: 1.5px;
     border: 1px solid rgba(192,192,192,0.25);
     border-radius: 14px;
@@ -432,34 +612,17 @@
 
   .action-btn svg { width: 16px; height: 16px; }
 
-  .ad-btn {
-    background: linear-gradient(135deg, rgba(192,192,192,0.15), rgba(192,192,192,0.05));
-    color: var(--silver-bright);
-  }
-
-  .ad-btn:not(:disabled):hover {
-    background: linear-gradient(135deg, rgba(192,192,192,0.25), rgba(192,192,192,0.1));
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(192,192,192,0.2);
-    border-color: rgba(192,192,192,0.4);
-  }
-
-  .ad-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
   .withdraw-btn {
-    background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(251,191,36,0.03));
+    background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.03));
     color: var(--gold);
-    border-color: rgba(251,191,36,0.3);
+    border-color: rgba(251,191,36,0.35);
   }
 
   .withdraw-btn:not(:disabled):hover {
-    background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(251,191,36,0.08));
+    background: linear-gradient(135deg, rgba(251,191,36,0.28), rgba(251,191,36,0.1));
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(251,191,36,0.25);
-    border-color: rgba(251,191,36,0.5);
+    box-shadow: 0 10px 30px rgba(251,191,36,0.3);
+    border-color: rgba(251,191,36,0.6);
   }
 
   .withdraw-btn:disabled {
@@ -469,6 +632,7 @@
     cursor: not-allowed;
   }
 
+  /* ===== الجزيئات ===== */
   .float-reward {
     position: fixed;
     color: #ffffff;
@@ -478,13 +642,13 @@
     pointer-events: none;
     animation: floatUp 1.1s ease-out forwards;
     z-index: 99;
-    text-shadow: 0 0 15px rgba(255,255,255,0.9);
+    text-shadow: 0 0 15px rgba(168,85,247,0.9);
     direction: ltr;
   }
 
   @keyframes floatUp {
     0%   { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
   }
 
   .particle {
@@ -524,120 +688,25 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  .ad-overlay {
+  /* ===== Confetti ===== */
+  .confetti {
     position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.97);
-    backdrop-filter: blur(20px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 500;
-    padding: 20px;
+    width: 8px;
+    height: 8px;
+    top: -20px;
+    z-index: 300;
+    pointer-events: none;
+    animation: confettiFall 3s linear forwards;
   }
 
-  .ad-overlay.show { display: flex; animation: fadeIn 0.4s; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .ad-content {
-    text-align: center;
-    max-width: 380px;
-    width: 100%;
-    animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  @keyframes confettiFall {
+    to {
+      transform: translateY(105vh) rotate(720deg);
+      opacity: 0;
+    }
   }
 
-  @keyframes slideUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  .ad-label {
-    display: inline-block;
-    background: linear-gradient(135deg, rgba(192,192,192,0.2), rgba(192,192,192,0.05));
-    color: var(--silver-bright);
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 800;
-    margin-bottom: 24px;
-    letter-spacing: 3px;
-    border: 1px solid rgba(192,192,192,0.3);
-  }
-
-  .ad-frame {
-    width: 100%;
-    min-height: 250px;
-    background: linear-gradient(135deg, #0a0a10, #050508);
-    border: 2px solid rgba(192,192,192,0.15);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-    padding: 15px;
-  }
-
-  .ad-frame iframe,
-  .ad-frame ins,
-  .ad-frame img,
-  .ad-frame div[id*="container"] {
-    max-width: 100%;
-    border-radius: 12px;
-  }
-
-  .ad-timer-wrap {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 24px;
-  }
-
-  .ad-timer-wrap svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-
-  .ad-timer-wrap circle {
-    fill: none;
-    stroke-width: 6;
-    stroke-linecap: round;
-  }
-
-  .ad-timer-bg { stroke: rgba(192,192,192,0.1); }
-  .ad-timer-fill { 
-    stroke: url(#silverGrad);
-    stroke-dasharray: 283;
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 1s linear;
-  }
-
-  .ad-timer-count {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Courier New', monospace;
-    font-size: 40px;
-    font-weight: 900;
-    color: #ffffff;
-    text-shadow: 0 0 20px rgba(255,255,255,0.6);
-  }
-
-  .ad-text {
-    color: var(--silver-dark);
-    font-size: 13px;
-    line-height: 1.7;
-    letter-spacing: 1px;
-    font-weight: 600;
-  }
-
+  /* ===== نافذة السحب ===== */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -647,30 +716,37 @@
     align-items: center;
     justify-content: center;
     z-index: 400;
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
   }
 
   .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
 
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
   .modal {
     background: linear-gradient(160deg, #0f0f14, #050508);
     border: 1px solid rgba(192,192,192,0.25);
     border-radius: 24px;
-    padding: 28px 24px;
+    padding: 26px 22px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 
+    box-shadow:
       0 30px 80px rgba(0,0,0,0.9),
       inset 0 1px 0 rgba(255,255,255,0.05);
     animation: slideUp 0.4s;
     color: #fff;
   }
 
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
   .binance-logo {
     width: 70px;
     height: 70px;
-    margin: 0 auto 18px;
+    margin: 0 auto 16px;
     background: #000;
     border-radius: 18px;
     padding: 12px;
@@ -688,10 +764,10 @@
   }
 
   .modal-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 900;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     background: linear-gradient(135deg, #ffffff, #c0c0c0);
     -webkit-background-clip: text;
     background-clip: text;
@@ -699,10 +775,10 @@
   }
 
   .modal-sub {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-dim);
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     line-height: 1.7;
   }
 
@@ -724,7 +800,7 @@
   }
 
   .modal-balance-value {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 900;
     color: #ffffff;
     direction: ltr;
@@ -751,13 +827,13 @@
 
   .form-group input {
     width: 100%;
-    padding: 14px;
+    padding: 13px;
     background: rgba(255,255,255,0.03);
     border: 2px solid rgba(192,192,192,0.15);
     border-radius: 12px;
     color: var(--text);
     font-family: 'Cairo', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     text-align: right;
     letter-spacing: 1px;
     outline: none;
@@ -814,14 +890,15 @@
   .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
 
   @media (max-width: 420px) {
-    .counter { font-size: 2rem; }
-    .balance-value { font-size: 1.7rem; }
-    .logo-text { font-size: 1.1rem; letter-spacing: 2px; }
-    .bttc-wrap { width: 160px; height: 160px; }
-    .bttc-img { width: 115px; height: 115px; padding: 8px; }
-    .ring-1 { width: 150px; height: 150px; }
-    .ring-2 { width: 180px; height: 180px; }
-    .ring-3 { width: 210px; height: 210px; }
+    .counter { font-size: 1.7rem; }
+    .balance-value { font-size: 1.9rem; }
+    .logo-text { font-size: 1.05rem; letter-spacing: 2px; }
+    .bttc-wrap { width: 155px; height: 155px; }
+    .bttc-img { width: 110px; height: 110px; padding: 8px; }
+    .ring-1 { width: 145px; height: 145px; }
+    .ring-2 { width: 170px; height: 170px; }
+    .ring-3 { width: 195px; height: 195px; }
+    .circle-progress { width: 180px; height: 180px; }
     .modal { padding: 22px 18px; }
   }
 </style>
@@ -829,7 +906,10 @@
 <body>
 
   <div class="header">
-    <div class="logo-text">BTTC MINER</div>
+    <div style="display:flex; align-items:center; gap:4px;">
+      <div class="logo-text">BTTC</div>
+      <span class="level-tag" id="levelTag">🥉 مبتدئ</span>
+    </div>
     <a href="games.html" class="back-btn">← الألعاب</a>
   </div>
 
@@ -841,9 +921,19 @@
       <div class="balance-unit">BTTC</div>
     </div>
 
-    <div class="timer-card" id="timerCard">
-      <div class="timer-label">الوقت المتبقي للدورة</div>
-      <div class="timer-value" id="timerEl">--:--</div>
+    <div class="level-bar">
+      <div class="level-top">
+        <span class="level-label" id="levelName">المستوى 1 · مبتدئ</span>
+        <span class="level-score" id="levelScore">0 / 5</span>
+      </div>
+      <div class="level-progress">
+        <div class="level-fill" id="levelFill"></div>
+      </div>
+    </div>
+
+    <div class="multiplier-bar">
+      <span class="multiplier-label">المضاعف الحالي</span>
+      <span class="multiplier-value" id="multiplierEl">×1.0</span>
     </div>
 
     <div class="bttc-stage">
@@ -853,6 +943,20 @@
         <div class="ring ring-1"></div>
         <div class="ring ring-2"></div>
         <div class="ring ring-3"></div>
+
+        <div class="circle-progress" id="circleProgress">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle class="circle-bg" cx="100" cy="100" r="90"/>
+            <circle class="circle-fill" cx="100" cy="100" r="90" id="circleFill"/>
+          </svg>
+        </div>
+
         <img id="bttcImg" class="bttc-img" src="logobttc.png" alt="BTTC">
       </div>
 
@@ -861,31 +965,31 @@
       </div>
 
       <div class="status" id="statusEl">اضغط للحصول على +100 BTTC</div>
+
+      <div class="timer-card" id="timerCard">
+        <div class="timer-label">الوقت المتبقي للدورة</div>
+        <div class="timer-value" id="timerEl">--:--</div>
+      </div>
     </div>
 
-    <div class="stats-row">
-      <div class="stat-box">
-        <div class="stat-label">معدل التعدين</div>
-        <div class="stat-value" id="rateEl">100 / 30 دقيقة</div>
+    <div class="stats-grid">
+      <div class="stat-box purple">
+        <div class="stat-label">المستوى</div>
+        <div class="stat-value" id="lvlStatEl">1</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-label">حالة النظام</div>
-        <div class="stat-value" id="sysStatusEl">جاهز</div>
+      <div class="stat-box cyan">
+        <div class="stat-label">التعدينات</div>
+        <div class="stat-value" id="miningCountEl">0</div>
+      </div>
+      <div class="stat-box gold">
+        <div class="stat-label">معدل التعدين</div>
+        <div class="stat-value" id="rateEl">100</div>
       </div>
     </div>
 
   </div>
 
   <div class="actions-bottom">
-
-    <button class="action-btn ad-btn" id="adBtn" onclick="openAd()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="23 7 16 12 23 17 23 7"/>
-        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-      </svg>
-      <span id="adBtnText">شاهد إعلان · +50 BTTC</span>
-    </button>
-
     <button class="action-btn withdraw-btn" id="withdrawBtn" disabled>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="11" width="18" height="11" rx="2"/>
@@ -893,50 +997,12 @@
       </svg>
       <span id="withdrawText">سحب · الحد الأدنى 1000 BTTC</span>
     </button>
-
   </div>
 
-  <!-- ===== نافذة الإعلان ===== -->
-  <div class="ad-overlay" id="adOverlay">
-    <div class="ad-content">
-
-      <div class="ad-label">SPONSORED</div>
-
-      <div class="ad-frame">
-        <!-- 🎯 ضع كود الإعلان هنا -->
-        <script>
-          atOptions = {
-            'key' : '368963302f52616ae408b99d5bc68f1a',
-            'format' : 'iframe',
-            'height' : 200,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-        <script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
-      </div>
-
-      <div class="ad-timer-wrap">
-        <svg viewBox="0 0 100 100">
-          <defs>
-            <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#808080;stop-opacity:1" />
-            </linearGradient>
-          </defs>
-          <circle class="ad-timer-bg" cx="50" cy="50" r="45"/>
-          <circle class="ad-timer-fill" cx="50" cy="50" r="45" id="adTimerCircle"/>
-        </svg>
-        <div class="ad-timer-count" id="adTimerCount">10</div>
-      </div>
-
-      <p class="ad-text">انتظر انتهاء العداد للحصول على مكافأتك</p>
-    </div>
-  </div>
-  <!-- ===== نافذة السحب ===== -->
+  <!-- نافذة السحب -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modalContent">
-      
+
       <div class="binance-logo">
         <img src="Binance_logo.png" alt="Binance" onerror="this.style.display='none'">
       </div>
@@ -950,10 +1016,12 @@
       </div>
 
       <form id="withdrawForm" onsubmit="submitWithdraw(event)">
-        <input type="hidden" name="subject" value="طلب سحب BTTC - BTTC Miner" />
+        <input type="hidden" name="subject" value="طلب سحب BTTC - BTTC Miner Pro" />
         <input type="hidden" name="amount" id="fieldAmount" value="" />
         <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
-        <input type="hidden" name="game" value="BTTC Miner" />
+        <input type="hidden" name="game" value="BTTC Miner Pro" />
+        <input type="hidden" name="level" id="fieldLevel" value="" />
+        <input type="hidden" name="mining_count" id="fieldMiningCount" value="" />
 
         <div class="form-group">
           <label>الاسم الكامل</label>
@@ -998,36 +1066,58 @@
     return s;
   }
 
-  /* ============ الإعدادات ============ */
-  const BURST_AMOUNT        = 100;
-  const BURST_DURATION      = 10000;
-  const CYCLE_BTTC          = 100;
-  const CYCLE_MS            = 30 * 60 * 1000;
-  const MIN_WITHDRAW        = 1000;
-  
-  const AD_REWARD           = 50;
-  const AD_DURATION         = 10;
-  const AD_COOLDOWN         = 60 * 60 * 1000;
+  /* ============================================
+     🎯 نظام المستويات (جنوني)
+  ============================================ */
+  const LEVELS = [
+    { lvl: 1,  name: 'مبتدئ',    tag: '🥉 مبتدئ',    needed: 5,    baseRate: 100,  multiplier: 1.0, color: '#94a3b8' },
+    { lvl: 2,  name: 'متعلم',    tag: '🥈 متعلم',    needed: 10,   baseRate: 130,  multiplier: 1.2, color: '#cbd5e1' },
+    { lvl: 3,  name: 'متقدم',    tag: '🥇 متقدم',    needed: 20,   baseRate: 170,  multiplier: 1.5, color: '#fbbf24' },
+    { lvl: 4,  name: 'محترف',    tag: '⭐ محترف',    needed: 35,   baseRate: 220,  multiplier: 1.8, color: '#22d3ee' },
+    { lvl: 5,  name: 'خبير',     tag: '💎 خبير',     needed: 50,   baseRate: 280,  multiplier: 2.2, color: '#22c55e' },
+    { lvl: 6,  name: 'أسطورة',   tag: '👑 أسطورة',   needed: 75,   baseRate: 350,  multiplier: 2.5, color: '#a855f7' },
+    { lvl: 7,  name: 'أسطورة+',  tag: '🔥 أسطورة+',  needed: 100,  baseRate: 450,  multiplier: 3.0, color: '#fb923c' },
+    { lvl: 8,  name: 'أسطوري',   tag: '⚡ أسطوري',   needed: 150,  baseRate: 600,  multiplier: 4.0, color: '#ef4444' },
+    { lvl: 9,  name: 'كوني',     tag: '🌌 كوني',     needed: 200,  baseRate: 800,  multiplier: 5.0, color: '#e879f9' },
+    { lvl: 10, name: 'إلهي',     tag: '✨ إلهي',     needed: Infinity, baseRate: 1200, multiplier: 7.0, color: '#fcd535' }
+  ];
 
-  /* ============ 🔒 دالة الحفظ الفوري ============ */
+  /* ============================================
+     الإعدادات
+  ============================================ */
+  const BURST_DURATION  = 10000;
+  const CYCLE_MS        = 30 * 60 * 1000;
+  const MIN_WITHDRAW    = 1000;
+
+  /* ============================================
+     🔒 دالة الحفظ الفوري
+  ============================================ */
   function saveState() {
     localStorage.setItem('bttc_balance', balance);
     localStorage.setItem('bttc_cycleStart', cycleStartTime);
     localStorage.setItem('bttc_cycleActive', cycleActive ? '1' : '0');
     localStorage.setItem('bttc_burstActive', burstActive ? '1' : '0');
+    localStorage.setItem('bttc_level', currentLevel);
+    localStorage.setItem('bttc_miningCount', totalMiningCount);
     localStorage.setItem('bttc_lastUpdate', Date.now());
   }
 
-  /* ============ الحالة ============ */
+  /* ============================================
+     الحالة
+  ============================================ */
   let balance         = parseFloat(localStorage.getItem('bttc_balance') || '0');
   let burstActive     = false;
   let cycleActive     = false;
   let burstTimer      = null;
   let cycleStartTime  = parseInt(localStorage.getItem('bttc_cycleStart') || '0');
-  let lastAdTime      = parseInt(localStorage.getItem('bttc_lastAd') || '0');
-  let adActive        = false;
+  let currentLevel    = parseInt(localStorage.getItem('bttc_level') || '1');
+  let totalMiningCount = parseInt(localStorage.getItem('bttc_miningCount') || '0');
+  let lastClickTime   = 0;
+  let comboCount      = 0;
 
-  /* ============ العناصر ============ */
+  /* ============================================
+     العناصر
+  ============================================ */
   const balanceEl    = document.getElementById('balanceEl');
   const counterEl    = document.getElementById('counter');
   const timerEl      = document.getElementById('timerEl');
@@ -1035,24 +1125,28 @@
   const bttcImg      = document.getElementById('bttcImg');
   const progressWrap = document.getElementById('progressWrap');
   const progressBar  = document.getElementById('progressBar');
+  const circleProgress = document.getElementById('circleProgress');
+  const circleFill   = document.getElementById('circleFill');
   const statusEl     = document.getElementById('statusEl');
   const rateEl       = document.getElementById('rateEl');
-  const sysStatusEl  = document.getElementById('sysStatusEl');
   const withdrawBtn  = document.getElementById('withdrawBtn');
   const withdrawText = document.getElementById('withdrawText');
-  const adBtn        = document.getElementById('adBtn');
-  const adBtnText    = document.getElementById('adBtnText');
-  const adOverlay    = document.getElementById('adOverlay');
-  const adTimerCircle= document.getElementById('adTimerCircle');
-  const adTimerCount = document.getElementById('adTimerCount');
   const modalOverlay = document.getElementById('modalOverlay');
   const modalContent = document.getElementById('modalContent');
   const modalBalance = document.getElementById('modalBalance');
   const confirmBtn   = document.getElementById('confirmBtn');
   const toastEl      = document.getElementById('toast');
-  const body         = document.body;
+  const levelTag     = document.getElementById('levelTag');
+  const levelName    = document.getElementById('levelName');
+  const levelScore   = document.getElementById('levelScore');
+  const levelFill    = document.getElementById('levelFill');
+  const multiplierEl = document.getElementById('multiplierEl');
+  const lvlStatEl    = document.getElementById('lvlStatEl');
+  const miningCountEl = document.getElementById('miningCountEl');
 
-  /* ============ تنسيق ============ */
+  /* ============================================
+     تنسيق
+  ============================================ */
   function formatNum(v) {
     if (v === 0) return '0';
     return Math.floor(v).toLocaleString('en-US');
@@ -1070,6 +1164,90 @@
     return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   }
 
+  /* ============================================
+     المستوى الحالي
+  ============================================ */
+  function getLevelData() {
+    return LEVELS[Math.min(currentLevel - 1, LEVELS.length - 1)];
+  }
+
+  function updateLevelUI() {
+    const lvl = getLevelData();
+    levelTag.textContent = lvl.tag;
+    levelTag.style.color = lvl.color;
+    levelTag.style.borderColor = lvl.color + '80';
+    levelTag.style.background = `linear-gradient(135deg, ${lvl.color}40, ${lvl.color}10)`;
+
+    levelName.textContent = `المستوى ${lvl.lvl} · ${lvl.name}`;
+    levelName.style.color = lvl.color;
+
+    const needed = lvl.needed;
+    const prevNeeded = currentLevel === 1 ? 0 : LEVELS[currentLevel - 2].needed;
+    const currentInLevel = totalMiningCount - prevNeeded;
+    const totalInLevel = needed === Infinity ? 1 : needed - prevNeeded;
+    const percent = needed === Infinity ? 100 : Math.min(100, (currentInLevel / totalInLevel) * 100);
+
+    levelScore.textContent = needed === Infinity ? `${totalMiningCount} (MAX)` : `${totalMiningCount} / ${needed}`;
+    levelFill.style.width = percent + '%';
+    levelFill.style.background = `linear-gradient(90deg, ${lvl.color}, ${lvl.color}80)`;
+
+    multiplierEl.textContent = '×' + lvl.multiplier.toFixed(1);
+    multiplierEl.style.color = lvl.color;
+
+    lvlStatEl.textContent = lvl.lvl;
+    miningCountEl.textContent = totalMiningCount;
+    rateEl.textContent = lvl.baseRate;
+    rateEl.style.color = lvl.color;
+  }
+
+  function checkLevelUp() {
+    const nextLvlIdx = currentLevel; // level التالي (index = currentLevel)
+    if (nextLvlIdx >= LEVELS.length) return false;
+
+    const nextNeeded = LEVELS[nextLvlIdx].needed;
+    if (totalMiningCount >= nextNeeded) {
+      currentLevel = nextLvlIdx + 1;
+      saveState();
+      updateLevelUI();
+      showLevelUpCelebration(LEVELS[currentLevel - 1]);
+      return true;
+    }
+    return false;
+  }
+
+  /* ============================================
+     🎉 احتفال الترقية
+  ============================================ */
+  function showLevelUpCelebration(level) {
+    showToast(`🎉 ترقية! المستوى ${level.lvl} — ${level.name}`, 4000);
+    createConfetti();
+    spawnParticles(30);
+
+    // تأثير وميض
+    document.body.style.transition = 'background 0.3s';
+    document.body.style.background = `radial-gradient(ellipse at center, ${level.color}30, transparent 70%)`;
+    setTimeout(() => {
+      document.body.style.background = '';
+    }, 800);
+  }
+
+  function createConfetti() {
+    const colors = ['#a855f7', '#22d3ee', '#fbbf24', '#22c55e', '#ef4444', '#fcd535'];
+    for (let i = 0; i < 40; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animation = `confettiFall ${2 + Math.random() * 2}s linear ${Math.random() * 0.5}s forwards`;
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+  }
+
+  /* ============================================
+     تحديث الواجهة
+  ============================================ */
   function updateBalanceUI(bump = false) {
     balanceEl.textContent = formatNum(balance);
     counterEl.textContent = formatNum(balance);
@@ -1078,7 +1256,7 @@
       void balanceEl.offsetWidth;
       balanceEl.classList.add('bump');
     }
-    
+
     if (balance >= MIN_WITHDRAW) {
       withdrawBtn.disabled = false;
       withdrawText.textContent = 'سحب · ' + formatNum(balance) + ' BTTC';
@@ -1096,10 +1274,12 @@
     toastEl._t = setTimeout(() => toastEl.classList.remove('show'), duration);
   }
 
-  function floatNumber(text) {
+  function floatNumber(text, color = '#d8b4fe') {
     const el = document.createElement('div');
     el.className = 'float-reward';
     el.textContent = text;
+    el.style.color = color;
+    el.style.textShadow = `0 0 15px ${color}`;
     const rect = bttcImg.getBoundingClientRect();
     el.style.left = (rect.left + rect.width / 2 - 20 + (Math.random() * 40 - 20)) + 'px';
     el.style.top  = (rect.top - 10) + 'px';
@@ -1107,13 +1287,15 @@
     setTimeout(() => el.remove(), 1100);
   }
 
-  function spawnParticles(count = 10) {
+  function spawnParticles(count = 10, color = '#a855f7') {
     const rect = bttcImg.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     for (let i = 0; i < count; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
+      p.style.background = color;
+      p.style.boxShadow = `0 0 10px ${color}`;
       const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
       const dist  = 70 + Math.random() * 60;
       p.style.left = cx + 'px';
@@ -1125,11 +1307,13 @@
     }
   }
 
-  /* ============ 🔒 كشف التلاعب بالوقت ============ */
+  /* ============================================
+     🔒 كشف التلاعب بالوقت
+  ============================================ */
   function checkIntegrity() {
     const lastUpdate = parseInt(localStorage.getItem('bttc_lastUpdate') || '0');
     const now = Date.now();
-    
+
     if (lastUpdate > 0 && now < lastUpdate - 60000) {
       localStorage.clear();
       location.reload();
@@ -1138,13 +1322,15 @@
     return true;
   }
 
-  /* ============ حالة الزر ============ */
+  /* ============================================
+     حالة الزر
+  ============================================ */
   function canClick() { return !cycleActive && !burstActive; }
 
   function updateBttcButton() {
     if (canClick()) {
       bttcImg.classList.remove('cooling');
-      statusEl.textContent = 'اضغط للحصول على +100 BTTC';
+      statusEl.textContent = 'اضغط للتعدين +' + getLevelData().baseRate + ' BTTC';
       statusEl.className = 'status';
     } else {
       bttcImg.classList.add('cooling');
@@ -1154,25 +1340,29 @@
     }
   }
 
-  /* ============ 🔒 التعدين السريع (محمي) ============ */
+  /* ============================================
+     🔒 التعدين السريع (مع مضاعف المستوى)
+  ============================================ */
   function startBurst() {
     if (burstActive) return;
     if (!canClick()) { showToast('انتظر انتهاء العدّاد'); return; }
 
     burstActive = true;
-    
-    // 🔒 حفظ فوري قبل بدء التعدين
     cycleActive = true;
     cycleStartTime = Date.now();
     saveState();
 
+    totalMiningCount++;
+    saveState();
+
     bttcImg.classList.add('burst');
     progressWrap.classList.add('visible');
+    circleProgress.classList.add('visible');
     statusEl.textContent = 'تعدين سريع...';
     statusEl.className = 'status burst';
-    sysStatusEl.textContent = 'تعدين';
-    sysStatusEl.style.color = '#e8e8e8';
 
+    const lvl = getLevelData();
+    const BURST_AMOUNT = lvl.baseRate; // حسب المستوى
     const startTime = Date.now();
     const startBalance = balance;
 
@@ -1185,53 +1375,61 @@
       if (diff > 0) {
         balance += diff;
         updateBalanceUI(true);
-        if (Math.random() < 0.5) floatNumber('+' + Math.floor(diff));
+        if (Math.random() < 0.6) {
+          floatNumber('+' + Math.floor(diff), lvl.color);
+        }
       }
 
-      // 🔒 حفظ دوري كل 5 ثواني
+      // حفظ دوري
       if (Date.now() - (burstTimer._lastSave || 0) > 5000) {
         saveState();
         burstTimer._lastSave = Date.now();
       }
 
+      // شريط أفقي + دائري
       progressBar.style.width = (ratio * 100) + '%';
-      if (Math.random() < 0.3) spawnParticles(4);
+      circleFill.style.strokeDashoffset = 565 - (565 * ratio);
+
+      if (Math.random() < 0.4) spawnParticles(3, lvl.color);
 
       if (ratio >= 1) {
         clearInterval(burstTimer);
         burstTimer = null;
-        finishBurst();
+        finishBurst(BURST_AMOUNT);
       }
     }, 50);
   }
 
-  function finishBurst() {
+  function finishBurst(amount) {
     burstActive = false;
-    
-    // 🔒 إضافة المكافأة الكاملة
-    balance += BURST_AMOUNT;
+
+    balance += amount;
     updateBalanceUI(true);
-    
+
     bttcImg.classList.remove('burst');
     progressBar.style.width = '0%';
+    circleFill.style.strokeDashoffset = 565;
     progressWrap.classList.remove('visible');
+    circleProgress.classList.remove('visible');
 
-    // 🔒 حفظ نهائي
     cycleStartTime = Date.now();
     cycleActive = true;
     saveState();
 
-    // بدء دورة 30 دقيقة
     timerCard.classList.add('active');
-    sysStatusEl.textContent = 'نشط';
-    sysStatusEl.style.color = '#e8e8e8';
-    rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-
     updateBttcButton();
-    updateCycleTimer();
+    updateLevelUI();
+
+    // تحقق من الترقية
+    const leveledUp = checkLevelUp();
+    if (!leveledUp) {
+      showToast('تم التعدين! +' + amount + ' BTTC');
+    }
   }
 
-  /* ============ دورة 30 دقيقة ============ */
+  /* ============================================
+     دورة 30 دقيقة
+  ============================================ */
   function updateCycleTimer() {
     if (!cycleActive) {
       timerEl.textContent = '--:--';
@@ -1249,19 +1447,18 @@
     }
 
     if (remaining <= 0) {
-      balance += CYCLE_BTTC;
+      const reward = getLevelData().baseRate;
+      balance += reward;
       updateBalanceUI(true);
-      showToast('انتهت الدورة! +' + CYCLE_BTTC + ' BTTC');
-      
+      showToast('انتهت الدورة! +' + reward + ' BTTC');
+      spawnParticles(10, '#fbbf24');
+
       cycleActive = false;
       cycleStartTime = 0;
       saveState();
-      
+
       timerCard.classList.remove('active');
       bttcImg.classList.remove('cooling');
-      
-      sysStatusEl.textContent = 'جاهز';
-      sysStatusEl.style.color = '#e8e8e8';
       timerEl.textContent = '--:--';
       updateBttcButton();
     }
@@ -1269,189 +1466,37 @@
 
   setInterval(updateCycleTimer, 1000);
 
-  /* ============ نافذة الإعلان ============ */
-  function canWatchAd() {
-    return (Date.now() - lastAdTime) >= AD_COOLDOWN;
-  }
-
-  function updateAdButton() {
-    if (canWatchAd()) {
-      adBtn.disabled = false;
-      adBtnText.textContent = 'شاهد إعلان · +50 BTTC';
-    } else {
-      adBtn.disabled = true;
-      const remaining = AD_COOLDOWN - (Date.now() - lastAdTime);
-      adBtnText.textContent = 'الإعلان بعد ' + formatTime(remaining);
-    }
-  }
-
-  function openAd() {
-    if (!canWatchAd()) {
-      showToast('انتظر انتهاء وقت الإعلان');
-      return;
-    }
-    if (adActive) return;
-
-    adActive = true;
-    adOverlay.classList.add('show');
-
-    let timeLeft = AD_DURATION;
-    adTimerCount.textContent = timeLeft;
-    adTimerCircle.style.strokeDashoffset = '0';
-
-    const totalDash = 283;
-    const adInterval = setInterval(() => {
-      timeLeft--;
-      adTimerCount.textContent = timeLeft;
-      
-      const offset = totalDash - (timeLeft / AD_DURATION) * totalDash;
-      adTimerCircle.style.strokeDashoffset = offset;
-
-      if (timeLeft <= 0) {
-        clearInterval(adInterval);
-        adOverlay.classList.remove('show');
-        adActive = false;
-
-        balance += AD_REWARD;
-        lastAdTime = Date.now();
-        localStorage.setItem('bttc_lastAd', lastAdTime);
-        updateBalanceUI(true);
-        updateAdButton();
-        showToast('تم! +' + AD_REWARD + ' BTTC من الإعلان');
-        spawnParticles(15);
-      }
-    }, 1000);
-  }
-
-  setInterval(updateAdButton, 1000);
-
-  /* ============ 🔒 استئناف محمي ============ */
-  function resume() {
-    if (!checkIntegrity()) return;
-
-    const cycleWasActive = localStorage.getItem('bttc_cycleActive') === '1';
-    const burstWasActive = localStorage.getItem('bttc_burstActive') === '1';
-    const storedStart = parseInt(localStorage.getItem('bttc_cycleStart') || '0');
-
-    // ═══ الحالة 1: كان التعدين السريع نشطًا ═══
-    if (burstWasActive && storedStart) {
-      const burstEndTime = storedStart + BURST_DURATION;
-      
-      if (Date.now() >= burstEndTime) {
-        // ✅ اكتمل التعدين أثناء الغياب
-        balance += BURST_AMOUNT;
-        updateBalanceUI(true);
-        showToast('اكتمل التعدين أثناء غيابك! +' + BURST_AMOUNT + ' BTTC');
-        
-        cycleActive = true;
-        cycleStartTime = storedStart;
-        burstActive = false;
-        saveState();
-        
-        if (Date.now() - storedStart >= CYCLE_MS) {
-          balance += CYCLE_BTTC;
-          updateBalanceUI(true);
-          showToast('انتهت الدورة أيضًا! +' + CYCLE_BTTC + ' BTTC');
-          
-          cycleActive = false;
-          cycleStartTime = 0;
-          saveState();
-          
-          sysStatusEl.textContent = 'جاهز';
-          rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-          timerEl.textContent = '--:--';
-          updateBttcButton();
-          return;
-        }
-        
-        timerCard.classList.add('active');
-        sysStatusEl.textContent = 'نشط';
-        rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-        updateBttcButton();
-        updateCycleTimer();
-        return;
-      } else {
-        // ⏳ التعدين ما زال يعمل → أكمل من حيث توقف
-        burstActive = true;
-        bttcImg.classList.add('burst');
-        progressWrap.classList.add('visible');
-        statusEl.textContent = 'تعدين سريع...';
-        statusEl.className = 'status burst';
-        
-        const remaining = burstEndTime - Date.now();
-        const startTime = Date.now() - (BURST_DURATION - remaining);
-        const startBalance = balance;
-        
-        burstTimer = setInterval(() => {
-          const elapsed = Date.now() - startTime;
-          const ratio = Math.min(elapsed / BURST_DURATION, 1);
-          const earned = BURST_AMOUNT * ratio;
-          const diff = earned - (balance - startBalance);
-          
-          if (diff > 0) {
-            balance += diff;
-            updateBalanceUI(true);
-          }
-          
-          progressBar.style.width = (ratio * 100) + '%';
-          
-          if (ratio >= 1) {
-            clearInterval(burstTimer);
-            burstTimer = null;
-            finishBurst();
-          }
-        }, 50);
-        return;
-      }
-    }
-
-    // ═══ الحالة 2: الدورة كانت نشطة ═══
-    if (cycleWasActive && storedStart) {
-      const elapsed = Date.now() - storedStart;
-      
-      if (elapsed >= CYCLE_MS) {
-        balance += CYCLE_BTTC;
-        updateBalanceUI(true);
-        showToast('انتهت الدورة أثناء غيابك! +' + CYCLE_BTTC + ' BTTC');
-        
-        cycleActive = false;
-        cycleStartTime = 0;
-        saveState();
-        
-        sysStatusEl.textContent = 'جاهز';
-        rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-        timerEl.textContent = '--:--';
-        updateBttcButton();
-      } else {
-        cycleActive = true;
-        cycleStartTime = storedStart;
-        
-        timerCard.classList.add('active');
-        sysStatusEl.textContent = 'نشط';
-        rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-        
-        updateBttcButton();
-        updateCycleTimer();
+  /* ============================================
+     🎁 حماية إضافية: كشف النقر السريع جداً
+  ============================================ */
+  function detectAutoClick() {
+    const now = Date.now();
+    if (now - lastClickTime < 100) {
+      comboCount++;
+      if (comboCount > 10) {
+        showToast('⚠️ تم كشف النقر الآلي');
+        return false;
       }
     } else {
-      updateBalanceUI();
-      rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-      sysStatusEl.textContent = 'جاهز';
-      timerEl.textContent = '--:--';
-      updateBttcButton();
+      comboCount = 0;
     }
-    
-    updateAdButton();
+    lastClickTime = now;
+    return true;
   }
 
-  /* ============ الأحداث ============ */
+  /* ============================================
+     الأحداث
+  ============================================ */
   bttcImg.addEventListener('click', () => {
     if (burstActive) return;
     if (!canClick()) { showToast('انتظر انتهاء العدّاد'); return; }
+    if (!detectAutoClick()) return;
     startBurst();
   });
 
-  /* ============ زر السحب ============ */
+  /* ============================================
+     زر السحب
+  ============================================ */
   withdrawBtn.addEventListener('click', () => {
     if (balance < MIN_WITHDRAW) return;
     modalBalance.textContent = Math.floor(balance).toLocaleString('en-US');
@@ -1466,7 +1511,9 @@
     if (e.target === modalOverlay) closeWithdraw();
   });
 
-  /* ============ إرسال السحب ============ */
+  /* ============================================
+     إرسال السحب
+  ============================================ */
   function submitWithdraw(event) {
     event.preventDefault();
 
@@ -1486,6 +1533,8 @@
 
     document.getElementById('fieldAmount').value = Math.floor(withdrawAmount).toLocaleString('en-US') + ' BTTC';
     document.getElementById('fieldDate').value = new Date().toLocaleString('ar-EG');
+    document.getElementById('fieldLevel').value = currentLevel + ' - ' + getLevelData().name;
+    document.getElementById('fieldMiningCount').value = totalMiningCount;
 
     confirmBtn.disabled = true;
     confirmBtn.textContent = '⏳ جارٍ الإرسال...';
@@ -1494,20 +1543,21 @@
     sendData.set('apiKey', _dk());
     sendData.set('email', _de());
 
-    fetch('https://api.staticforms.dev/submit', { 
-      method: 'POST', 
-      body: sendData 
+    fetch('https://api.staticforms.dev/submit', {
+      method: 'POST',
+      body: sendData
     })
     .then(() => successWithdraw(withdrawAmount, fullName, bid))
     .catch(() => successWithdraw(withdrawAmount, fullName, bid));
   }
 
   function successWithdraw(amount, fullName, binanceId) {
-    // 🔒 تصفير كامل
     balance = 0;
     cycleActive = false;
     cycleStartTime = 0;
     burstActive = false;
+    totalMiningCount = 0;
+    currentLevel = 1;
     saveState();
 
     modalContent.innerHTML = `
@@ -1527,10 +1577,10 @@
         </p>
         <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
           <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
-            ⚠️ تم تصفير رصيدك — ابدأ من جديد
+            ⚠️ تم تصفير رصيدك ومستواك — ابدأ من جديد
           </p>
         </div>
-        <button onclick="location.reload();" 
+        <button onclick="location.reload()"
                 style="width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #c0c0c0, #808080); color: #0a0a10; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 900; cursor: pointer;">
           حسناً، شكراً
         </button>
@@ -1540,28 +1590,98 @@
     confirmBtn.textContent = 'إرسال الطلب';
   }
 
-  /* ============ 🔒 حفظ عند الإغلاق ============ */
-  window.addEventListener('beforeunload', () => {
-    saveState();
-  });
+  /* ============================================
+     🔒 الحفظ عند الإغلاق
+  ============================================ */
+  window.addEventListener('beforeunload', saveState);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) saveState(); });
+  setInterval(saveState, 5000);
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) saveState();
-  });
+  /* ============================================
+     الاستئناف
+  ============================================ */
+  function resume() {
+    if (!checkIntegrity()) return;
 
-  setInterval(() => {
-    saveState();
-  }, 5000);
+    const cycleWasActive = localStorage.getItem('bttc_cycleActive') === '1';
+    const burstWasActive = localStorage.getItem('bttc_burstActive') === '1';
+    const storedStart = parseInt(localStorage.getItem('bttc_cycleStart') || '0');
 
-  /* ============ تهيئة ============ */
+    if (burstWasActive && storedStart) {
+      const burstEndTime = storedStart + BURST_DURATION;
+
+      if (Date.now() >= burstEndTime) {
+        balance += getLevelData().baseRate;
+        updateBalanceUI(true);
+        showToast('اكتمل التعدين أثناء غيابك!');
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        burstActive = false;
+        saveState();
+        timerCard.classList.add('active');
+        updateBttcButton();
+        updateCycleTimer();
+        return;
+      } else {
+        burstActive = true;
+        bttcImg.classList.add('burst');
+        progressWrap.classList.add('visible');
+        circleProgress.classList.add('visible');
+        const burstEndTime2 = storedStart + BURST_DURATION;
+        const remaining = burstEndTime2 - Date.now();
+        const startTime = Date.now() - (BURST_DURATION - remaining);
+        const startBalance = balance;
+        const amount = getLevelData().baseRate;
+
+        burstTimer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const ratio = Math.min(elapsed / BURST_DURATION, 1);
+          const earned = amount * ratio;
+          const diff = earned - (balance - startBalance);
+          if (diff > 0) { balance += diff; updateBalanceUI(true); }
+          progressBar.style.width = (ratio * 100) + '%';
+          circleFill.style.strokeDashoffset = 565 - (565 * ratio);
+          if (ratio >= 1) {
+            clearInterval(burstTimer);
+            burstTimer = null;
+            finishBurst(amount);
+          }
+        }, 50);
+        return;
+      }
+    }
+
+    if (cycleWasActive && storedStart) {
+      const elapsed = Date.now() - storedStart;
+      if (elapsed >= CYCLE_MS) {
+        balance += getLevelData().baseRate;
+        updateBalanceUI(true);
+        showToast('انتهت الدورة أثناء غيابك!');
+        cycleActive = false;
+        cycleStartTime = 0;
+        saveState();
+        timerEl.textContent = '--:--';
+        updateBttcButton();
+      } else {
+        cycleActive = true;
+        cycleStartTime = storedStart;
+        timerCard.classList.add('active');
+        updateBttcButton();
+        updateCycleTimer();
+      }
+    } else {
+      updateBttcButton();
+    }
+  }
+
+  /* ============================================
+     التهيئة
+  ============================================ */
   updateBalanceUI();
-  rateEl.textContent = CYCLE_BTTC + ' / 30 دقيقة';
-  sysStatusEl.textContent = 'جاهز';
+  updateLevelUI();
   timerEl.textContent = '--:--';
   resume();
-  updateAdButton();
 </script>
 
 </body>
 </html>
-  
