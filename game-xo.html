@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a15">
-    <title>لعبة X O — اربح USDT | PAID PLUS</title>
+    <title>X O | PAID PLUS</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -41,12 +41,12 @@
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(106,17,203,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(106,17,203,0.04) 1px, transparent 1px);
+                linear-gradient(rgba(106,17,203,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(106,17,203,0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             z-index: 0;
             pointer-events: none;
-            animation: gridMove 20s linear infinite;
+            animation: gridMove 25s linear infinite;
         }
 
         @keyframes gridMove {
@@ -66,6 +66,7 @@
             min-height: 100vh;
         }
 
+        /* ====== الهيدر ====== */
         .header {
             display: flex;
             align-items: center;
@@ -119,6 +120,151 @@
         }
         .back-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.3); }
 
+        /* ====== شريط المستوى والنقاط ====== */
+        .level-bar {
+            background: linear-gradient(135deg, rgba(106,17,203,0.25), rgba(37,117,252,0.15));
+            border: 1px solid rgba(106,17,203,0.4);
+            border-radius: 18px;
+            padding: 14px 18px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(106,17,203,0.2);
+        }
+
+        .level-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .level-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .level-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(106,17,203,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+            direction: ltr;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .level-badge.pulse {
+            animation: badgePulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(8deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .level-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .level-name {
+            font-size: 14px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .level-sub {
+            font-size: 10px;
+            color: #a0a0b0;
+            font-weight: 700;
+        }
+
+        .score-box {
+            text-align: left;
+            direction: ltr;
+        }
+
+        .score-label {
+            font-size: 10px;
+            color: #f39c12;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .score-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: #f39c12;
+            text-shadow: 0 0 15px rgba(243,156,18,0.7);
+            line-height: 1;
+            transition: transform 0.3s;
+        }
+
+        .score-value.bump {
+            animation: scoreBump 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes scoreBump {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.35); color: #2ecc71; text-shadow: 0 0 30px rgba(46,204,113,1); }
+            100% { transform: scale(1); }
+        }
+
+        .progress-track {
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6a11cb, #2575fc, #2ecc71);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px rgba(106,17,203,0.8);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shineProgress 2s infinite;
+        }
+
+        @keyframes shineProgress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #a0a0b0;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ====== الإحصائيات ====== */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -132,7 +278,6 @@
             padding: 12px 8px;
             text-align: center;
             backdrop-filter: blur(10px);
-            transition: 0.3s;
             position: relative;
             overflow: hidden;
         }
@@ -169,81 +314,7 @@
             text-shadow: 0 0 15px currentColor;
         }
 
-        .plays-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(243,156,18,0.15), rgba(243,156,18,0.05));
-            border: 1px solid rgba(243,156,18,0.35);
-            border-radius: 14px;
-            padding: 11px 18px;
-            backdrop-filter: blur(10px);
-        }
-
-        .plays-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #f39c12;
-            font-weight: 800;
-            font-size: 12px;
-        }
-
-        .plays-label svg { width: 15px; height: 15px; }
-
-        .plays-count {
-            font-size: 18px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            text-shadow: 0 0 12px rgba(243,156,18,0.6);
-        }
-
-        .cooldown-bar {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(192,57,43,0.05));
-            border: 1px solid rgba(231,76,60,0.4);
-            border-radius: 14px;
-            padding: 11px 18px;
-            backdrop-filter: blur(10px);
-            animation: cooldownPulse 2s ease-in-out infinite;
-        }
-
-        .cooldown-bar.show { display: flex; }
-
-        @keyframes cooldownPulse {
-            0%, 100% { border-color: rgba(231,76,60,0.4); box-shadow: 0 0 0 0 rgba(231,76,60,0); }
-            50% { border-color: rgba(231,76,60,0.7); box-shadow: 0 0 20px 0 rgba(231,76,60,0.2); }
-        }
-
-        .cooldown-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #e74c3c;
-            font-weight: 800;
-            font-size: 11px;
-        }
-
-        .cooldown-label svg { width: 14px; height: 14px; animation: rotateClock 3s linear infinite; }
-
-        @keyframes rotateClock {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .cooldown-timer {
-            font-size: 15px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 12px rgba(231,76,60,0.7);
-        }
-
+        /* ====== منطقة اللعب ====== */
         .game-area {
             background: 
                 radial-gradient(circle at 50% 0%, rgba(106,17,203,0.25), transparent 60%),
@@ -276,6 +347,47 @@
             50% { transform: translate(30px, 30px); }
         }
 
+        .difficulty-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+            transition: 0.3s;
+        }
+
+        .difficulty-tag.easy {
+            background: rgba(46,204,113,0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46,204,113,0.4);
+        }
+        .difficulty-tag.medium {
+            background: rgba(243,156,18,0.15);
+            color: #f39c12;
+            border: 1px solid rgba(243,156,18,0.4);
+        }
+        .difficulty-tag.hard {
+            background: rgba(231,76,60,0.15);
+            color: #e74c3c;
+            border: 1px solid rgba(231,76,60,0.4);
+        }
+        .difficulty-tag.expert {
+            background: rgba(155,89,182,0.15);
+            color: #9b59b6;
+            border: 1px solid rgba(155,89,182,0.5);
+            animation: expertGlow 2s infinite;
+        }
+
+        @keyframes expertGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(155,89,182,0.4); }
+            50% { box-shadow: 0 0 25px rgba(155,89,182,0.8); }
+        }
+
         .turn-indicator {
             margin-bottom: 20px;
             font-size: 16px;
@@ -287,6 +399,7 @@
             gap: 8px;
             position: relative;
             z-index: 2;
+            transition: 0.3s;
         }
 
         .turn-indicator .you { 
@@ -300,6 +413,7 @@
             font-size: 20px;
         }
 
+        /* ====== لوحة اللعب ====== */
         .board-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -321,8 +435,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 52px;
-            font-weight: 900;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -354,39 +466,76 @@
         .cell.taken { cursor: not-allowed; }
         .cell.disabled { cursor: not-allowed; opacity: 0.5; }
 
-        .cell.x {
-            color: #2ecc71;
-            border-color: #2ecc71;
-            background: linear-gradient(135deg, rgba(46,204,113,0.2), rgba(46,204,113,0.05));
-            text-shadow: 0 0 20px rgba(46,204,113,1), 0 0 40px rgba(46,204,113,0.5);
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.1),
-                0 0 30px rgba(46,204,113,0.4);
-            animation: popIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        /* ====== SVG الرسم ====== */
+        .cell svg {
+            width: 65%;
+            height: 65%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: visible;
         }
 
-        .cell.o {
-            color: #e74c3c;
-            border-color: #e74c3c;
-            background: linear-gradient(135deg, rgba(231,76,60,0.2), rgba(231,76,60,0.05));
-            text-shadow: 0 0 20px rgba(231,76,60,1), 0 0 40px rgba(231,76,60,0.5);
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.1),
-                0 0 30px rgba(231,76,60,0.4);
-            animation: popIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        /* رسم X */
+        .draw-x line {
+            stroke: #2ecc71;
+            stroke-width: 8;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 10px rgba(46,204,113,1)) drop-shadow(0 0 20px rgba(46,204,113,0.6));
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawLine 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .draw-x line:nth-child(2) {
+            animation-delay: 0.25s;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-            60% { transform: scale(1.1) rotate(3deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* رسم O */
+        .draw-o circle {
+            stroke: #e74c3c;
+            stroke-width: 8;
+            stroke-linecap: round;
+            fill: none;
+            filter: drop-shadow(0 0 10px rgba(231,76,60,1)) drop-shadow(0 0 20px rgba(231,76,60,0.6));
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+            animation: drawCircle 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transform-origin: center;
+            transform: rotate(-90deg);
+        }
+
+        @keyframes drawCircle {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* تأثير التوهج عند الرسم */
+        .cell.x-glow {
+            animation: xGlow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes xGlow {
+            0% { border-color: rgba(106,17,203,0.35); background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); }
+            50% { border-color: #2ecc71; background: linear-gradient(135deg, rgba(46,204,113,0.25), rgba(46,204,113,0.05)); box-shadow: 0 0 40px rgba(46,204,113,0.7); }
+            100% { border-color: rgba(46,204,113,0.4); background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(46,204,113,0.02)); }
+        }
+
+        .cell.o-glow {
+            animation: oGlow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes oGlow {
+            0% { border-color: rgba(106,17,203,0.35); background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); }
+            50% { border-color: #e74c3c; background: linear-gradient(135deg, rgba(231,76,60,0.25), rgba(231,76,60,0.05)); box-shadow: 0 0 40px rgba(231,76,60,0.7); }
+            100% { border-color: rgba(231,76,60,0.4); background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(231,76,60,0.02)); }
         }
 
         .cell.win {
-            background: linear-gradient(135deg, rgba(46,204,113,0.4), rgba(38,161,123,0.3));
-            border-color: #2ecc71;
+            border-color: #2ecc71 !important;
+            background: linear-gradient(135deg, rgba(46,204,113,0.4), rgba(38,161,123,0.3)) !important;
             animation: winPulse 0.8s infinite;
-            box-shadow: 0 0 40px rgba(46,204,113,0.8), inset 0 0 30px rgba(46,204,113,0.3);
+            box-shadow: 0 0 40px rgba(46,204,113,0.8), inset 0 0 30px rgba(46,204,113,0.3) !important;
         }
 
         @keyframes winPulse {
@@ -394,6 +543,13 @@
             50% { transform: scale(1.06); box-shadow: 0 0 60px rgba(46,204,113,1); }
         }
 
+        .cell.win svg line,
+        .cell.win svg circle {
+            stroke: #fff !important;
+            filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 30px rgba(255,255,255,0.8));
+        }
+
+        /* ====== زر البدء ====== */
         .start-btn {
             display: inline-flex;
             align-items: center;
@@ -431,114 +587,7 @@
         .start-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .start-btn svg { width: 16px; height: 16px; }
 
-        .balance-card {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: linear-gradient(135deg, #26a17b 0%, #2ecc71 100%);
-            border-radius: 20px;
-            padding: 16px 20px;
-            box-shadow: 
-                0 15px 40px rgba(38,161,123,0.5),
-                inset 0 1px 0 rgba(255,255,255,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 50%;
-            top: -80px;
-            right: -50px;
-            animation: floatBall 5s ease-in-out infinite;
-        }
-
-        @keyframes floatBall {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-20px, 15px); }
-        }
-
-        .balance-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.25);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 7px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(10px);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
-        }
-
-        .balance-icon img { width: 100%; height: 100%; object-fit: contain; }
-
-        .balance-info { flex: 1; position: relative; z-index: 2; }
-
-        .balance-label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.95);
-            font-weight: 700;
-            margin-bottom: 4px;
-            letter-spacing: 1px;
-        }
-
-        .balance-value {
-            font-size: 22px;
-            font-weight: 900;
-            color: #fff;
-            direction: ltr;
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
-            line-height: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.25);
-        }
-
-        .balance-symbol { font-size: 12px; opacity: 0.9; }
-
-        .withdraw-btn {
-            background: #fff;
-            color: #26a17b;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 14px;
-            font-weight: 900;
-            font-size: 12px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-            z-index: 2;
-            flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            transition: 0.3s;
-        }
-
-        .withdraw-btn:not(:disabled):hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-        }
-
-        .withdraw-btn:not(:disabled):active { transform: scale(0.94); }
-
-        .withdraw-btn:disabled {
-            background: rgba(255,255,255,0.35);
-            color: rgba(255,255,255,0.7);
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .withdraw-btn svg { width: 14px; height: 14px; }
-
+        /* ====== نافذة النتيجة ====== */
         .result-overlay {
             position: fixed;
             inset: 0;
@@ -633,10 +682,10 @@
         .result-prize strong {
             display: block;
             font-size: 26px;
-            color: #2ecc71;
+            color: #f39c12;
             margin-top: 10px;
             direction: ltr;
-            text-shadow: 0 0 20px rgba(46,204,113,0.7);
+            text-shadow: 0 0 20px rgba(243,156,18,0.7);
             font-weight: 900;
         }
 
@@ -657,179 +706,112 @@
         .result-btn:hover { transform: translateY(-2px); }
         .result-btn:active { transform: scale(0.95); }
 
-        .withdraw-modal {
+        /* ====== إشعار الترقية ====== */
+        .levelup-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(5,5,15,0.9);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            padding: 15px;
-            overflow-y: auto;
+            padding: 20px;
         }
 
-        .withdraw-modal.show { display: flex; }
+        .levelup-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
 
-        .withdraw-content {
-            background: linear-gradient(160deg, #1a1a2e, #0a0a15);
-            border-radius: 26px;
-            padding: 30px 24px;
-            max-width: 420px;
+        .levelup-box {
+            background: linear-gradient(160deg, #1a1a2e 0%, #0a0a15 100%);
+            border-radius: 28px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 360px;
             width: 100%;
+            border: 2px solid rgba(243,156,18,0.5);
+            box-shadow: 0 30px 90px rgba(243,156,18,0.4);
+            animation: levelupPop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 0 35px 90px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08);
-            color: #fff;
+            overflow: hidden;
         }
 
-        .modal-close {
+        .levelup-box::before {
+            content: '';
             position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 36px;
-            height: 36px;
-            background: rgba(255,255,255,0.08);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(243,156,18,0.2), transparent 60%);
+            pointer-events: none;
         }
 
-        .modal-close:active { transform: scale(0.9); background: rgba(255,0,0,0.25); }
-        .modal-close svg { width: 16px; height: 16px; color: #fff; }
+        @keyframes levelupPop {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            60% { transform: scale(1.05) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
 
-        .modal-title {
-            text-align: center;
-            font-size: 20px;
+        .levelup-icon {
+            font-size: 70px;
+            margin-bottom: 16px;
+            animation: bounceIcon 1s infinite;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        .levelup-title {
+            font-size: 26px;
             font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #f0b90b, #fcd535);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #f39c12;
+            margin-bottom: 10px;
+            text-shadow: 0 0 25px rgba(243,156,18,0.7);
+            position: relative;
+            z-index: 2;
         }
 
-        .frozen-balance {
-            background: linear-gradient(135deg, rgba(38,161,123,0.18), rgba(46,204,113,0.08));
-            border: 2px solid rgba(38,161,123,0.4);
-            border-radius: 16px;
-            padding: 18px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 20px rgba(38,161,123,0.1);
-        }
-
-        .frozen-label {
-            font-size: 11px;
-            color: #a0a0b0;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-
-        .frozen-amount {
-            font-size: 28px;
-            font-weight: 900;
-            color: #26a17b;
-            direction: ltr;
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(38,161,123,0.7);
-        }
-
-        .frozen-amount small { font-size: 13px; opacity: 0.85; }
-
-        .form-group { margin-bottom: 16px; }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 7px;
-            color: #fff;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group label::after {
-            content: ' *';
-            color: #e74c3c;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 13px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
+        .levelup-text {
             font-size: 14px;
-            font-weight: 700;
-            transition: 0.3s;
+            color: #a0a0b0;
+            margin-bottom: 22px;
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #f0b90b;
-            box-shadow: 0 0 0 4px rgba(240,185,11,0.15);
-            background: rgba(255,255,255,0.06);
+        .levelup-text b {
+            color: #2ecc71;
+            font-size: 18px;
         }
 
-        .form-group input::placeholder { color: rgba(255,255,255,0.3); }
-
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f0b90b, #fcd535);
-            color: #1a1a2e;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 18px;
-            box-shadow: 0 12px 30px rgba(240,185,11,0.5);
-            transition: 0.3s;
+        /* ====== جزيئات الاحتفال ====== */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            z-index: 1001;
+            pointer-events: none;
+            border-radius: 2px;
         }
 
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(240,185,11,0.7);
+        @keyframes confettiFall {
+            to {
+                transform: translateY(105vh) rotate(720deg);
+                opacity: 0;
+            }
         }
-
-        .submit-btn:active { transform: scale(0.98); }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .success-box { text-align: center; padding: 15px 0; }
-        .success-icon {
-            width: 80px; height: 80px; margin: 0 auto 20px;
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 20px 50px rgba(38,161,123,0.6);
-            animation: resultIconPop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .success-icon svg { width: 42px; height: 42px; color: #fff; }
-        .success-title { font-size: 21px; font-weight: 900; color: #26a17b; margin-bottom: 12px; }
-        .success-text { font-size: 13px; color: #a0a0b0; line-height: 1.9; margin-bottom: 18px; }
-        .success-text b { color: #26a17b; font-size: 15px; }
 
         @media (max-width: 400px) {
             .container { padding: 10px; gap: 10px; }
             .board-grid { max-width: 280px; gap: 10px; }
-            .cell { font-size: 44px; border-radius: 14px; }
-            .balance-value { font-size: 19px; }
-            .logo { font-size: 15px; }
             .result-title { font-size: 24px; }
             .result-prize strong { font-size: 22px; }
+            .score-value { font-size: 19px; }
+            .level-badge { width: 38px; height: 38px; font-size: 16px; }
         }
     </style>
 </head>
@@ -840,6 +822,29 @@
         <div class="header">
             <span class="logo">PAID PLUS</span>
             <a href="games.html" class="back-btn">← الألعاب</a>
+        </div>
+
+        <div class="level-bar">
+            <div class="level-top">
+                <div class="level-info">
+                    <div class="level-badge" id="levelBadge">1</div>
+                    <div class="level-text">
+                        <div class="level-name" id="levelName">مبتدئ</div>
+                        <div class="level-sub" id="levelSub">سهل</div>
+                    </div>
+                </div>
+                <div class="score-box">
+                    <div class="score-label">النقاط</div>
+                    <div class="score-value" id="scoreValue">0</div>
+                </div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressCurrent">0 / 3</span>
+                <span id="progressNext">التالي: 3 نقاط</span>
+            </div>
         </div>
 
         <div class="stats">
@@ -857,42 +862,11 @@
             </div>
         </div>
 
-        <div class="plays-bar">
-            <div class="plays-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-                مرات متبقية
-            </div>
-            <div class="plays-count" id="playsLeft">30</div>
-        </div>
-
-        <div class="cooldown-bar" id="cooldownBar">
-            <div class="cooldown-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-                المرات القادمة بعد
-            </div>
-            <div class="cooldown-timer" id="cooldownTimer">06:00:00</div>
-        </div>
-
         <div class="game-area">
+            <div class="difficulty-tag easy" id="difficultyTag">🟢 سهل</div>
             <div class="turn-indicator" id="turnIndicator">
                 اضغط "ابدأ اللعب" للبدء
             </div>
-<script>
-  atOptions = {
-    'key' : '368963302f52616ae408b99d5bc68f1a',
-    'format' : 'iframe',
-    'height' : 50,
-    'width' : 320,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highrevenueformat.com/368963302f52616ae408b99d5bc68f1a/invoke.js"></script>
-            
 
             <div class="board-grid" id="boardGrid">
                 <div class="cell" data-index="0"></div>
@@ -914,26 +888,6 @@
             </button>
         </div>
 
-        <div class="balance-card">
-            <div class="balance-icon">
-                <img src="USDT_Logo.png" alt="USDT">
-            </div>
-            <div class="balance-info">
-                <div class="balance-label">رصيدك</div>
-                <div class="balance-value">
-                    <span id="balanceAmount">0.00000</span>
-                    <span class="balance-symbol">USDT</span>
-                </div>
-            </div>
-            <button class="withdraw-btn" id="withdrawBtn" onclick="openWithdraw()" disabled>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <span id="withdrawText">السحب</span>
-            </button>
-        </div>
-
     </div>
 
     <div class="result-overlay" id="resultOverlay">
@@ -945,110 +899,51 @@
         </div>
     </div>
 
-    <!-- ============================================
-         نافذة السحب (مع حقول منفصلة)
-    ============================================ -->
-    <div class="withdraw-modal" id="withdrawModal">
-        <div class="withdraw-content" id="withdrawContent">
-            <button class="modal-close" onclick="closeWithdraw()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-
-            <div class="modal-title">طلب سحب إلى Binance</div>
-
-            <div class="frozen-balance">
-                <div class="frozen-label">المبلغ المتاح للسحب</div>
-                <div class="frozen-amount"><span id="binanceAmount">0.00</span> <small>USDT</small></div>
-            </div>
-
-            <form id="formBinance" onsubmit="submitWithdraw(event)">
-                <!-- ✅ الحقول المنفصلة (ستظهر كلها في الإيميل) -->
-                <input type="hidden" name="subject" value="طلب سحب USDT - لعبة XO" />
-                <input type="hidden" name="amount" id="fieldAmount" value="" />
-                <input type="hidden" name="wins" id="fieldWins" value="" />
-                <input type="hidden" name="losses" id="fieldLosses" value="" />
-                <input type="hidden" name="ties" id="fieldTies" value="" />
-                <input type="hidden" name="withdraw_date" id="fieldDate" value="" />
-                <input type="hidden" name="game" value="لعبة X O" />
-                
-                <div class="form-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" name="full_name" placeholder="أدخل اسمك الكامل" required />
-                </div>
-                
-                <div class="form-group">
-                    <label>Binance ID</label>
-                    <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
-                </div>
-                
-                <button type="submit" class="submit-btn" id="submitBinance">إرسال طلب السحب</button>
-            </form>
+    <div class="levelup-overlay" id="levelupOverlay">
+        <div class="levelup-box">
+            <div class="levelup-icon">🎉</div>
+            <div class="levelup-title" id="levelupTitle">ترقية!</div>
+            <div class="levelup-text" id="levelupText"></div>
+            <button class="result-btn" onclick="closeLevelup()" style="background: linear-gradient(135deg, #f39c12, #fcd535); color: #1a1a2e; position: relative; z-index: 2;">متابعة</button>
         </div>
     </div>
 
     <script>
         /* ============================================
-           🔒 المفاتيح المشفرة
+           نظام المستويات
         ============================================ */
-        const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
-        const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
-        const _K3 = [53, 99, 52, 56];
-        const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
-
-        function _dk() {
-            let s = '';
-            for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
-            for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
-            for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
-            return s;
-        }
-
-        function _de() {
-            let s = '';
-            for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
-            return s;
-        }
+        const LEVELS = [
+            { level: 1, name: 'مبتدئ',    sub: 'سهل',     difficulty: 'easy',   pointsToNext: 3,   tag: '🟢 سهل',        mistakeChance: 0.45 },
+            { level: 2, name: 'متعلم',    sub: 'سهل+',    difficulty: 'easy',   pointsToNext: 7,   tag: '🟢 سهل+',       mistakeChance: 0.30 },
+            { level: 3, name: 'متوسط',    sub: 'متوسط',   difficulty: 'medium', pointsToNext: 12,  tag: '🟡 متوسط',      mistakeChance: 0.18 },
+            { level: 4, name: 'متقدم',    sub: 'متوسط+',  difficulty: 'medium', pointsToNext: 18,  tag: '🟡 متوسط+',     mistakeChance: 0.10 },
+            { level: 5, name: 'محترف',    sub: 'صعب',     difficulty: 'hard',   pointsToNext: 25,  tag: '🔴 صعب',        mistakeChance: 0.05 },
+            { level: 6, name: 'خبير',     sub: 'صعب+',    difficulty: 'hard',   pointsToNext: 35,  tag: '🔴 صعب+',       mistakeChance: 0.02 },
+            { level: 7, name: 'أسطورة',   sub: 'خبير',    difficulty: 'expert', pointsToNext: 50,  tag: '🟣 خبير',       mistakeChance: 0.00 },
+            { level: 8, name: 'أسطورة+',  sub: 'مستحيل',  difficulty: 'expert', pointsToNext: Infinity, tag: '🟣 مستحيل', mistakeChance: 0.00 }
+        ];
 
         /* ============================================
-           الإعدادات
-        ============================================ */
-        const REWARD_PER_WIN = 0.0005;
-        const MAX_PLAYS = 30;
-        const COOLDOWN = 6 * 60 * 60 * 1000;
-        const MIN_WITHDRAW = 0.01;
-
-        /* ============================================
-           حالة اللعبة (مع الحفظ)
+           الحالة
         ============================================ */
         let state = {
             board: ['', '', '', '', '', '', '', '', ''],
             playerTurn: true,
             gameActive: false,
             moves: 0,
-            balance: parseFloat(localStorage.getItem('xoBalance') || '0'),
+            score: parseInt(localStorage.getItem('xoScore') || '0'),
+            level: parseInt(localStorage.getItem('xoLevel') || '1'),
             wins: parseInt(localStorage.getItem('xoWins') || '0'),
             losses: parseInt(localStorage.getItem('xoLosses') || '0'),
-            ties: parseInt(localStorage.getItem('xoTies') || '0'),
-            playsLeft: parseInt(localStorage.getItem('xoPlaysLeft') || String(MAX_PLAYS)),
-            lastReset: parseInt(localStorage.getItem('xoLastReset') || '0')
+            ties: parseInt(localStorage.getItem('xoTies') || '0')
         };
 
-        let lastWithdrawTime = parseInt(localStorage.getItem('xoLastWithdraw') || '0');
-        let cooldownInterval = null;
-
-        /* ============================================
-           حفظ الحالة
-        ============================================ */
         function saveState() {
-            localStorage.setItem('xoBalance', state.balance);
+            localStorage.setItem('xoScore', state.score);
+            localStorage.setItem('xoLevel', state.level);
             localStorage.setItem('xoWins', state.wins);
             localStorage.setItem('xoLosses', state.losses);
             localStorage.setItem('xoTies', state.ties);
-            localStorage.setItem('xoPlaysLeft', state.playsLeft);
-            localStorage.setItem('xoLastReset', state.lastReset);
         }
 
         /* ============================================
@@ -1057,123 +952,57 @@
         const cells = document.querySelectorAll('.cell');
         const turnIndicator = document.getElementById('turnIndicator');
         const startBtn = document.getElementById('startBtn');
-        const balanceEl = document.getElementById('balanceAmount');
         const winsEl = document.getElementById('wins');
         const lossesEl = document.getElementById('losses');
         const tiesEl = document.getElementById('ties');
-        const playsLeftEl = document.getElementById('playsLeft');
-        const withdrawBtn = document.getElementById('withdrawBtn');
-        const withdrawText = document.getElementById('withdrawText');
-        const cooldownBar = document.getElementById('cooldownBar');
-        const cooldownTimer = document.getElementById('cooldownTimer');
-
-        /* ============================================
-           العداد التنازلي
-        ============================================ */
-        function updateCooldown() {
-            if (state.playsLeft > 0) {
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) {
-                    clearInterval(cooldownInterval);
-                    cooldownInterval = null;
-                }
-                return;
-            }
-
-            const now = Date.now();
-            const remaining = COOLDOWN - (now - state.lastReset);
-
-            if (remaining <= 0) {
-                state.playsLeft = MAX_PLAYS;
-                state.lastReset = now;
-                saveState();
-                updateUI();
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) {
-                    clearInterval(cooldownInterval);
-                    cooldownInterval = null;
-                }
-                startBtn.disabled = false;
-                startBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    ابدأ اللعب
-                `;
-                return;
-            }
-
-            cooldownBar.classList.add('show');
-
-            const h = Math.floor(remaining / 3600000);
-            const m = Math.floor((remaining % 3600000) / 60000);
-            const s = Math.floor((remaining % 60000) / 1000);
-            cooldownTimer.textContent = 
-                `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        function startCooldownWatcher() {
-            if (cooldownInterval) return;
-            cooldownInterval = setInterval(updateCooldown, 1000);
-            updateCooldown();
-        }
-
-        function checkReset() {
-            const now = Date.now();
-
-            if (state.lastReset === 0) {
-                state.lastReset = now;
-                state.playsLeft = MAX_PLAYS;
-                saveState();
-            } else if (now - state.lastReset >= COOLDOWN) {
-                state.playsLeft = MAX_PLAYS;
-                state.lastReset = now;
-                saveState();
-            }
-
-            startCooldownWatcher();
-        }
+        const levelBadge = document.getElementById('levelBadge');
+        const levelName = document.getElementById('levelName');
+        const levelSub = document.getElementById('levelSub');
+        const scoreValue = document.getElementById('scoreValue');
+        const progressFill = document.getElementById('progressFill');
+        const progressCurrent = document.getElementById('progressCurrent');
+        const progressNext = document.getElementById('progressNext');
+        const difficultyTag = document.getElementById('difficultyTag');
 
         /* ============================================
            تحديث الواجهة
         ============================================ */
         function updateUI() {
-            balanceEl.textContent = state.balance.toFixed(5);
             winsEl.textContent = state.wins;
             lossesEl.textContent = state.losses;
             tiesEl.textContent = state.ties;
-            playsLeftEl.textContent = state.playsLeft;
+            scoreValue.textContent = state.score;
 
-            if (state.balance >= MIN_WITHDRAW) {
-                withdrawBtn.disabled = false;
-                withdrawText.textContent = 'سحب';
-            } else {
-                withdrawBtn.disabled = true;
-                withdrawText.textContent = 'الحد 0.01';
-            }
+            const lvl = LEVELS[Math.min(state.level - 1, LEVELS.length - 1)];
+            levelBadge.textContent = lvl.level;
+            levelName.textContent = lvl.name;
+            levelSub.textContent = lvl.sub;
+
+            const prevPoints = lvl.level === 1 ? 0 : LEVELS[lvl.level - 2].pointsToNext;
+            const nextPoints = lvl.pointsToNext;
+            const currentInLevel = state.score - prevPoints;
+            const totalInLevel = nextPoints - prevPoints;
+            const percent = Math.min(100, Math.max(0, (currentInLevel / totalInLevel) * 100));
+
+            progressFill.style.width = percent + '%';
+            progressCurrent.textContent = `${state.score} / ${nextPoints}`;
+            progressNext.textContent = `التالي: ${nextPoints} نقاط`;
+
+            difficultyTag.className = 'difficulty-tag ' + lvl.difficulty;
+            difficultyTag.textContent = lvl.tag;
         }
 
         /* ============================================
            بدء اللعبة
         ============================================ */
         function startGame() {
-            checkReset();
-
-            if (state.playsLeft <= 0) return;
-
             state.board = ['', '', '', '', '', '', '', '', ''];
             state.playerTurn = true;
             state.gameActive = true;
             state.moves = 0;
-            state.playsLeft--;
-
-            if (state.playsLeft <= 0) {
-                state.lastReset = Date.now();
-                startCooldownWatcher();
-            }
-
-            saveState();
 
             cells.forEach(cell => {
-                cell.textContent = '';
+                cell.innerHTML = '';
                 cell.className = 'cell';
             });
 
@@ -1181,6 +1010,30 @@
             startBtn.disabled = true;
             startBtn.textContent = 'جارية الآن';
             updateUI();
+        }
+
+        /* ============================================
+           رسم X و O
+        ============================================ */
+        function drawX(cell) {
+            cell.innerHTML = `
+                <svg viewBox="0 0 100 100" class="draw-x">
+                    <line x1="20" y1="20" x2="80" y2="80" />
+                    <line x1="80" y1="20" x2="20" y2="80" />
+                </svg>
+            `;
+            cell.classList.add('x-glow');
+            setTimeout(() => cell.classList.remove('x-glow'), 600);
+        }
+
+        function drawO(cell) {
+            cell.innerHTML = `
+                <svg viewBox="0 0 100 100" class="draw-o">
+                    <circle cx="50" cy="50" r="36" />
+                </svg>
+            `;
+            cell.classList.add('o-glow');
+            setTimeout(() => cell.classList.remove('o-glow'), 600);
         }
 
         /* ============================================
@@ -1197,8 +1050,8 @@
             if (state.board[index] !== '') return;
 
             state.board[index] = 'X';
-            cell.textContent = 'X';
-            cell.classList.add('x', 'taken');
+            drawX(cell);
+            cell.classList.add('taken');
             state.moves++;
 
             if (checkWin('X')) {
@@ -1213,13 +1066,15 @@
 
             state.playerTurn = false;
             turnIndicator.innerHTML = 'دور الروبوت — <span class="robot">O</span>';
-            setTimeout(robotMove, 500);
+            setTimeout(robotMove, 550);
         }
 
         function robotMove() {
             if (!state.gameActive) return;
 
-            if (Math.random() < 0.1) {
+            const lvl = LEVELS[Math.min(state.level - 1, LEVELS.length - 1)];
+
+            if (Math.random() < lvl.mistakeChance) {
                 const empty = state.board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
                 if (empty.length) {
                     const idx = empty[Math.floor(Math.random() * empty.length)];
@@ -1236,8 +1091,8 @@
         function makeRobotMove(index) {
             state.board[index] = 'O';
             const cell = document.querySelector(`[data-index="${index}"]`);
-            cell.textContent = 'O';
-            cell.classList.add('o', 'taken');
+            drawO(cell);
+            cell.classList.add('taken');
             state.moves++;
 
             if (checkWin('O')) {
@@ -1302,6 +1157,23 @@
         }
 
         /* ============================================
+           جزيئات الاحتفال
+        ============================================ */
+        function createConfetti() {
+            const colors = ['#2ecc71', '#f39c12', '#2575fc', '#6a11cb', '#e74c3c', '#fcd535'];
+            for (let i = 0; i < 40; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animation = `confettiFall ${2 + Math.random() * 2}s linear ${Math.random() * 0.5}s forwards`;
+                conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 4500);
+            }
+        }
+
+        /* ============================================
            إنهاء اللعبة
         ============================================ */
         function endGame(result) {
@@ -1311,182 +1183,113 @@
             let iconHTML = '';
             let titleText = '';
             let prizeText = '';
+            let pointsEarned = 0;
 
             if (result === 'win') {
-                state.balance += REWARD_PER_WIN;
+                pointsEarned = 1;
+                state.score += pointsEarned;
                 state.wins++;
 
                 iconHTML = '🏆';
                 titleText = 'فزت!';
-                prizeText = `
-                    ربحت جائزة!
-                    <strong>+${REWARD_PER_WIN.toFixed(4)} USDT</strong>
-                `;
+                prizeText = `أحسنت!<strong>+${pointsEarned} نقطة</strong>`;
+
+                // تأثير النقاط
+                scoreValue.classList.add('bump');
+                setTimeout(() => scoreValue.classList.remove('bump'), 600);
+
+                createConfetti();
             } else if (result === 'lose') {
                 state.losses++;
-                iconHTML = '😢';
+                iconHTML = '💔';
                 titleText = 'خسرت';
                 prizeText = 'حاول مرة أخرى!';
             } else {
                 state.ties++;
                 iconHTML = '🤝';
                 titleText = 'تعادل';
-                prizeText = 'لا ربح — لا خسارة';
+                prizeText = 'لا نقاط — لا خسارة';
             }
 
             saveState();
             updateUI();
 
-            if (state.playsLeft > 0) {
-                startBtn.disabled = false;
-                startBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    العب مرة أخرى
-                `;
+            const lvl = LEVELS[Math.min(state.level - 1, LEVELS.length - 1)];
+            if (state.level < LEVELS.length && state.score >= lvl.pointsToNext) {
+                state.level++;
+                saveState();
+                updateUI();
+
+                setTimeout(() => {
+                    levelBadge.classList.add('pulse');
+                    setTimeout(() => levelBadge.classList.remove('pulse'), 700);
+                    showLevelUp(state.level);
+                }, 500);
             } else {
-                startBtn.disabled = true;
-                startBtn.textContent = 'انتهت المرات — انتظر';
+                showResult(iconHTML, result, titleText, prizeText);
             }
 
+            startBtn.disabled = false;
+            startBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                العب مرة أخرى
+            `;
+        }
+
+        function showResult(icon, resultClass, title, prize) {
             const overlay = document.getElementById('resultOverlay');
             const iconEl = document.getElementById('resultIcon');
             const titleEl = document.getElementById('resultTitle');
             const prizeEl = document.getElementById('resultPrize');
 
-            iconEl.textContent = iconHTML;
-            iconEl.className = 'result-icon ' + result;
-
-            titleEl.textContent = titleText;
-            titleEl.className = 'result-title ' + result;
-
-            prizeEl.innerHTML = prizeText;
+            iconEl.textContent = icon;
+            iconEl.className = 'result-icon ' + resultClass;
+            titleEl.textContent = title;
+            titleEl.className = 'result-title ' + resultClass;
+            prizeEl.innerHTML = prize;
 
             overlay.classList.add('show');
+        }
+
+        function showLevelUp(newLevel) {
+            const lvl = LEVELS[Math.min(newLevel - 1, LEVELS.length - 1)];
+            const overlay = document.getElementById('levelupOverlay');
+            document.getElementById('levelupTitle').textContent = `🎉 ترقية إلى المستوى ${lvl.level}!`;
+            document.getElementById('levelupText').innerHTML = `
+                أصبحت الآن <b>${lvl.name}</b><br>
+                الصعوبة: ${lvl.tag}<br>
+                <span style="font-size:12px; color:#a0a0b0;">استعد للتحدي القادم!</span>
+            `;
+            overlay.classList.add('show');
+            createConfetti();
         }
 
         function closeResult() {
             document.getElementById('resultOverlay').classList.remove('show');
         }
 
-        /* ============================================
-           نافذة السحب
-        ============================================ */
-        function openWithdraw() {
-            if (state.balance < MIN_WITHDRAW) return;
-            if (Date.now() - lastWithdrawTime < 24 * 60 * 60 * 1000) {
-                alert('انتظر 24 ساعة');
-                return;
-            }
-            
-            document.getElementById('binanceAmount').textContent = state.balance.toFixed(5);
-            document.getElementById('withdrawModal').classList.add('show');
-        }
-
-        function closeWithdraw() {
-            document.getElementById('withdrawModal').classList.remove('show');
-        }
-
-        /* ============================================
-           ✅ إرسال طلب السحب (حقول منفصلة)
-        ============================================ */
-        function submitWithdraw(event) {
-            event.preventDefault();
-
-            if (Date.now() - lastWithdrawTime < 24 * 60 * 60 * 1000) {
-                alert('انتظر 24 ساعة');
-                return;
-            }
-
-            const form = event.target;
-            const formData = new FormData(form);
-
-            // 🔒 المفتاح والإيميل المشفرين
-            formData.set('apiKey', _dk());
-            formData.set('email', _de());
-
-            // ✅ التحقق من البيانات
-            const fullName = formData.get('full_name').trim();
-            const bid = formData.get('binance_id').trim();
-
-            if (!fullName) {
-                alert('الرجاء إدخال الاسم الكامل');
-                return;
-            }
-
-            if (!bid || bid.length < 6) { 
-                alert('Binance ID غير صالح'); 
-                return;
-            }
-
-            // ✅ حفظ الرصيد قبل التصفير
-            const withdrawAmount = state.balance;
-
-            // ✅ تعبئة الحقول المنفصلة (ستظهر كلها في الإيميل)
-            document.getElementById('fieldAmount').value = withdrawAmount.toFixed(5) + ' USDT';
-            document.getElementById('fieldWins').value = state.wins;
-            document.getElementById('fieldLosses').value = state.losses;
-            document.getElementById('fieldTies').value = state.ties;
-            document.getElementById('fieldDate').value = new Date().toLocaleString('ar-EG');
-
-            const btn = form.querySelector('.submit-btn');
-            btn.disabled = true;
-            btn.textContent = '⏳ جارٍ الإرسال...';
-
-            // إعادة بناء formData بعد تعبئة الحقول
-            const sendData = new FormData(form);
-            sendData.set('apiKey', _dk());
-            sendData.set('email', _de());
-
-            fetch('https://api.staticforms.dev/submit', { method: 'POST', body: sendData })
-                .then(() => showSuccess(withdrawAmount, fullName, bid))
-                .catch(() => showSuccess(withdrawAmount, fullName, bid));
-        }
-
-        /* ============================================
-           نجاح السحب
-        ============================================ */
-        function showSuccess(withdrawAmount, fullName, binanceId) {
-            // 💾 تصفير الرصيد
-            state.balance = 0;
-            lastWithdrawTime = Date.now();
-            localStorage.setItem('xoLastWithdraw', lastWithdrawTime);
-            saveState();
-            updateUI();
-
-            document.getElementById('withdrawContent').innerHTML = `
-                <div class="success-box">
-                    <div class="success-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                    </div>
-                    <div class="success-title">تم إرسال طلبك!</div>
-                    <div class="success-text">
-                        سيتم الإرسال إلى حسابك على Binance<br>
-                        <b>${withdrawAmount.toFixed(5)} USDT</b><br>
-                        إلى الاسم: <b>${fullName}</b><br>
-                        Binance ID: <b style="direction:ltr;display:inline-block;">${binanceId}</b><br>
-                        <span style="font-size:11px;">خلال 24-48 ساعة</span>
-                    </div>
-                    <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 18px;">
-                        <p style="color: #f39c12; font-size: 12px; text-align: center; font-weight: 700;">
-                            ⚠️ تم تصفير رصيدك — ابدأ من جديد
-                        </p>
-                    </div>
-                    <button onclick="closeWithdraw(); location.reload();" 
-                            class="submit-btn" 
-                            style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; width: 100%;">
-                        حسناً، شكراً
-                    </button>
-                </div>
-            `;
+        function closeLevelup() {
+            document.getElementById('levelupOverlay').classList.remove('show');
         }
 
         /* ============================================
            التشغيل
         ============================================ */
-        checkReset();
         updateUI();
+
+        (function fixLevel() {
+            let correctLevel = 1;
+            for (let i = 0; i < LEVELS.length; i++) {
+                if (state.score >= (i === 0 ? 0 : LEVELS[i-1].pointsToNext)) {
+                    correctLevel = i + 1;
+                }
+            }
+            if (state.level !== correctLevel) {
+                state.level = correctLevel;
+                saveState();
+                updateUI();
+            }
+        })();
     </script>
 </body>
 </html>
