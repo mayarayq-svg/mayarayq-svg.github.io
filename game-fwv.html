@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a15">
-    <title>لعبة الفضاء — اربح USDT | PAID PLUS</title>
+    <title>لعبة الفضاء | PAID PLUS</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; font-family: 'Cairo', sans-serif; }
@@ -32,199 +32,7 @@
         .fullscreen-btn:active { transform: translateX(-50%) scale(0.94); }
         .fullscreen-btn svg { width: 16px; height: 16px; }
 
-        .withdraw-float-btn {
-            position: fixed; bottom: 20px; left: 15px; z-index: 100;
-            display: flex; align-items: center; gap: 7px;
-            background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; border: none;
-            padding: 13px 20px; border-radius: 24px; font-family: 'Cairo', sans-serif;
-            font-size: 13px; font-weight: 900; cursor: pointer;
-            box-shadow: 0 12px 30px rgba(38,161,123,0.55); border: 1px solid rgba(255,255,255,0.25);
-        }
-        .withdraw-float-btn:active { transform: scale(0.94); }
-        .withdraw-float-btn svg { width: 16px; height: 16px; }
-        .withdraw-float-btn:disabled {
-            background: linear-gradient(135deg, rgba(100,100,100,0.6), rgba(70,70,70,0.6));
-            box-shadow: none; cursor: not-allowed; border-color: rgba(255,255,255,0.1);
-        }
-
-        .boss-btn {
-            position: fixed; bottom: 75px; right: 15px; z-index: 100;
-            display: none; align-items: center; gap: 7px;
-            background: linear-gradient(135deg, #d35400, #f39c12);
-            color: #fff; border: none;
-            padding: 13px 20px; border-radius: 24px;
-            font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 12px 30px rgba(243,156,18,0.55);
-            border: 1px solid rgba(255,255,255,0.25);
-            animation: bossPulse 1.5s ease-in-out infinite;
-        }
-        .boss-btn.show { display: flex; }
-        .boss-btn:active { transform: scale(0.94); }
-        .boss-btn svg { width: 16px; height: 16px; }
-
-        @keyframes bossPulse {
-            0%, 100% {
-                box-shadow: 0 12px 30px rgba(243,156,18,0.55);
-                transform: scale(1);
-            }
-            50% {
-                box-shadow: 0 15px 40px rgba(243,156,18,0.9);
-                transform: scale(1.03);
-            }
-        }
-
-        .ad-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(15px);
-            z-index: 10000; display: none;
-            align-items: center; justify-content: center;
-            padding: 20px;
-        }
-        .ad-overlay.show { display: flex; }
-
-        .ad-content { text-align: center; max-width: 320px; width: 100%; }
-
-        .ad-label {
-            display: inline-block;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            color: #fff; padding: 5px 16px; border-radius: 15px;
-            font-size: 11px; font-weight: 800;
-            margin-bottom: 20px; letter-spacing: 1px;
-        }
-
-        .ad-timer-circle {
-            position: relative;
-            width: 140px; height: 140px;
-            margin: 0 auto 20px;
-        }
-        .ad-timer-circle svg { width: 100%; height: 100%; }
-        .ad-count {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 42px; font-weight: 900;
-            color: #2ecc71;
-            text-shadow: 0 0 20px rgba(46,204,113,0.8);
-            font-family: 'Courier New', monospace;
-        }
-
-        .ad-text { color: #a0a0b0; font-size: 13px; line-height: 1.7; }
-
-        .cooldown-float {
-            position: fixed; bottom: 20px; right: 15px; z-index: 100; display: none;
-            align-items: center; gap: 7px;
-            background: linear-gradient(135deg, rgba(231,76,60,0.9), rgba(192,57,43,0.9));
-            color: #fff; padding: 11px 16px; border-radius: 22px;
-            font-family: 'Cairo', sans-serif; font-size: 11px; font-weight: 800;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .cooldown-float.show { display: flex; }
-        .cooldown-float svg { width: 14px; height: 14px; }
-        .cooldown-float-timer { font-size: 13px; font-weight: 900; direction: ltr; font-family: 'Cairo', monospace; }
-
-        .withdraw-modal {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.92);
-            backdrop-filter: blur(15px);
-            display: none; align-items: center; justify-content: center;
-            z-index: 9999; padding: 15px; overflow-y: auto;
-        }
-        .withdraw-modal.show { display: flex; }
-
-        .withdraw-content {
-            background: linear-gradient(160deg, #1a1a2e, #0f0f1a);
-            border-radius: 24px; padding: 28px 24px;
-            max-width: 420px; width: 100%;
-            position: relative;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-            color: #fff;
-        }
-
-        .modal-close {
-            position: absolute; top: 14px; left: 14px;
-            width: 36px; height: 36px;
-            background: rgba(255,255,255,0.08);
-            border: none; border-radius: 50%;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .modal-close svg { width: 16px; height: 16px; color: #fff; }
-
-        .modal-title { text-align: center; font-size: 19px; font-weight: 900; margin-bottom: 20px; }
-
-        .withdraw-tabs {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-            margin-bottom: 20px;
-            background: rgba(255,255,255,0.04);
-            padding: 5px; border-radius: 16px;
-        }
-
-        .tab-btn {
-            display: flex; align-items: center; justify-content: center; gap: 7px;
-            padding: 12px 8px; border: none; border-radius: 12px;
-            background: transparent; color: #a0a0b0;
-            font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 800;
-        }
-        .tab-btn.active { background: linear-gradient(135deg, #6a11cb, #2575fc); color: #fff; }
-        .tab-btn img { width: 22px; height: 22px; object-fit: contain; background: #000; border-radius: 6px; padding: 2px; }
-        .tab-btn.sham.active { background: linear-gradient(135deg, #1a3a6e, #2c5282); }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        .frozen-balance {
-            background: linear-gradient(135deg, rgba(38,161,123,0.15), rgba(46,204,113,0.08));
-            border: 2px solid rgba(38,161,123,0.35);
-            border-radius: 16px; padding: 16px;
-            text-align: center; margin-bottom: 16px;
-        }
-        .frozen-label { font-size: 11px; color: #a0a0b0; font-weight: 700; margin-bottom: 6px; }
-        .frozen-amount { font-size: 26px; font-weight: 900; color: #26a17b; direction: ltr; line-height: 1; }
-        .frozen-amount small { font-size: 12px; opacity: 0.85; }
-
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 11px; font-weight: 800; margin-bottom: 6px; color: #fff; }
-        .form-group input {
-            width: 100%; padding: 13px 15px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.04);
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px; font-weight: 700;
-        }
-        .form-group input:focus { outline: none; border-color: #f0b90b; }
-
-        .submit-btn {
-            width: 100%; padding: 15px;
-            border: none; border-radius: 14px;
-            background: linear-gradient(135deg, #f0b90b, #fcd535);
-            color: #1a1a2e;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px; font-weight: 900;
-            cursor: pointer; margin-top: 16px;
-        }
-        .submit-btn.sham { background: linear-gradient(135deg, #1a3a6e, #2c5282); color: #fff; }
-        .submit-btn:disabled { opacity: 0.6; }
-
-        .success-box { text-align: center; padding: 10px 0; }
-        .success-icon {
-            width: 75px; height: 75px;
-            margin: 0 auto 18px;
-            background: linear-gradient(135deg, #26a17b, #2ecc71);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .success-icon svg { width: 38px; height: 38px; color: #fff; }
-        .success-title { font-size: 19px; font-weight: 900; color: #26a17b; margin-bottom: 10px; }
-        .success-text { font-size: 12px; color: #a0a0b0; line-height: 1.8; margin-bottom: 16px; }
-        .success-text b { color: #26a17b; }
-
         @media (max-width: 500px) {
-            .withdraw-float-btn { padding: 11px 16px; font-size: 11px; bottom: 16px; left: 12px; }
-            .boss-btn { padding: 11px 16px; font-size: 11px; bottom: 70px; right: 12px; }
-            .cooldown-float { padding: 9px 13px; font-size: 10px; bottom: 16px; right: 12px; }
             .fullscreen-btn { padding: 11px 22px; font-size: 12px; bottom: 16px; }
         }
 
@@ -244,27 +52,6 @@
         الألعاب
     </a>
 
-    <button class="withdraw-float-btn" id="withdrawBtn" onclick="openWithdraw()" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-        <span id="withdrawText">الحد 0.01</span>
-    </button>
-
-    <button class="boss-btn" id="bossBtn" onclick="startBossAd()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
-        <span>عدو ضخم!</span>
-    </button>
-
-    <div class="cooldown-float" id="cooldownBar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>
-        <span class="cooldown-float-timer" id="cooldownTimer">24:00:00</span>
-    </div>
-
     <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
@@ -272,128 +59,37 @@
         ملء الشاشة
     </button>
 
-    <div class="ad-overlay" id="adOverlay">
-        <div class="ad-content">
-            <div class="ad-label">
-          <!--ADSTERRA-->
-
-
-                
-            </div>
-            <div class="ad-timer-circle">
-                <svg viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="6"/>
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#26a17b" stroke-width="6"
-                            stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0"
-                            id="adCircle" transform="rotate(-90 50 50)"/>
-                </svg>
-                <div class="ad-count" id="adCount">5</div>
-            </div>
-            <p class="ad-text">سيظهر العدو الضخم بعد انتهاء الإعلان</p>
-        </div>
-    </div>
-
-    <div class="withdraw-modal" id="withdrawModal">
-        <div class="withdraw-content" id="withdrawContent">
-            <button class="modal-close" onclick="closeWithdraw()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-            <div class="modal-title">طلب سحب</div>
-            <div class="withdraw-tabs">
-                <button class="tab-btn active" data-tab="binance" onclick="switchTab('binance')">
-                    <img src="Binance_Logo.png" alt="Binance">بينانس
-                </button>
-                <button class="tab-btn sham" data-tab="sham" onclick="switchTab('sham')">
-                    <img src="SHAM.png" alt="Sham Cash">شام كاش
-                </button>
-            </div>
-
-            <div class="tab-content active" id="tab-binance">
-                <div class="frozen-balance">
-                    <div class="frozen-label">المبلغ (بالدولار)</div>
-                    <div class="frozen-amount"><span id="binanceAmount">0.00</span> <small>USDT</small></div>
-                </div>
-                <form id="formBinance" onsubmit="submitWithdraw(event, 'binance')">
-                    <input type="hidden" name="subject" value="طلب سحب USDT - لعبة الفضاء - بينانس" />
-                    <div class="form-group">
-                        <label>Binance ID</label>
-                        <input type="text" name="binance_id" placeholder="أدخل Binance ID" inputmode="numeric" required />
-                    </div>
-                    <input type="hidden" name="message" id="msgBinance" />
-                    <button type="submit" class="submit-btn" id="submitBinance">إرسال طلب السحب</button>
-                </form>
-            </div>
-
-            <div class="tab-content" id="tab-sham">
-                <div class="frozen-balance">
-                    <div class="frozen-label">المبلغ (بالليرة السورية)</div>
-                    <div class="frozen-amount"><span id="shamAmount">0</span> <small>SYP</small></div>
-                </div>
-                <form id="formSham" onsubmit="submitWithdraw(event, 'sham')">
-                    <input type="hidden" name="subject" value="طلب سحب USDT - لعبة الفضاء - شام كاش" />
-                    <div class="form-group">
-                        <label>الاسم</label>
-                        <input type="text" name="sham_name" placeholder="أدخل الاسم" required />
-                    </div>
-                    <div class="form-group">
-                        <label>الكود</label>
-                        <input type="text" name="sham_code" placeholder="أدخل الكود" pattern="[a-zA-Z0-9]+" required />
-                    </div>
-                    <input type="hidden" name="message" id="msgSham" />
-                    <button type="submit" class="submit-btn sham" id="submitSham">إرسال طلب السحب</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <script>
-        /* ============================================
-           🔒 المفاتيح المشفرة
-        ============================================ */
-        const _K1 = [115, 102, 95, 100, 98, 49, 50, 48, 102, 98, 98];
-        const _K2 = [99, 101, 97, 53, 48, 48, 49, 97, 56, 54, 100, 98];
-        const _K3 = [53, 99, 52, 56];
-        const _EM = [109, 97, 121, 97, 114, 97, 121, 113, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
-
-        function _dk() {
-            let s = '';
-            for (let i = 0; i < _K1.length; i++) s += String.fromCharCode(_K1[i]);
-            for (let i = 0; i < _K2.length; i++) s += String.fromCharCode(_K2[i]);
-            for (let i = 0; i < _K3.length; i++) s += String.fromCharCode(_K3[i]);
-            return s;
-        }
-
-        function _de() {
-            let s = '';
-            for (let i = 0; i < _EM.length; i++) s += String.fromCharCode(_EM[i]);
-            return s;
-        }
-
         /* ============================================
            الإعدادات
         ============================================ */
-        const MIN_WITHDRAW = 0.01;
-        const SYP_RATE = 130;
-        const KILL_VALUE = 0.00003;
-        const BOSS_KILL_VALUE = 0.00005;
-        const WITHDRAW_COOLDOWN = 24 * 60 * 60 * 1000;
-
-        const BOSS_BONUS_POINTS = 100;
-        const BOSS_AD_DURATION = 5;
-        const BOSS_COOLDOWN = 60 * 1000;
-
-        function saveBalance() {
-            localStorage.setItem('fwvBalance', usdtScore);
-            localStorage.setItem('fwvBossKills', bossKilled);
-        }
+        const KILL_POINTS = 1;
+        const BOSS_KILL_POINTS = 15;
+        const BOSS_BONUS_POINTS = 50;
+        const ENEMIES_PER_BOSS = 25;
+        const MAX_LEVEL = 10;
 
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d', { alpha: false });
         let DPR = Math.min(window.devicePixelRatio || 1, 2);
         let viewWidth = window.innerWidth;
         let viewHeight = window.innerHeight;
+
+        /* ============================================
+           الخلفيات المتغيرة حسب المستوى
+        ============================================ */
+        const BACKGROUNDS = [
+            { name: 'فضاء',   colors: ['#0a0020', '#1a0040', '#2d1b4e'], stars: '#ffffff', nebula: 'rgba(106,17,203,0.15)' },
+            { name: 'مجرى',   colors: ['#001a2e', '#003366', '#005a8a'], stars: '#aaccff', nebula: 'rgba(37,117,252,0.2)' },
+            { name: 'غروب',   colors: ['#2e0010', '#4a0020', '#6b0030'], stars: '#ffccaa', nebula: 'rgba(231,76,60,0.2)' },
+            { name: 'زمرد',   colors: ['#001a10', '#003020', '#004a30'], stars: '#aaffcc', nebula: 'rgba(46,204,113,0.2)' },
+            { name: 'بنفسج',  colors: ['#1a0030', '#2d0050', '#400070'], stars: '#ddaaff', nebula: 'rgba(155,89,182,0.25)' },
+            { name: 'جهنمي',  colors: ['#2e0000', '#4a0000', '#6b1010'], stars: '#ffaaaa', nebula: 'rgba(231,76,60,0.3)' },
+            { name: 'جليد',   colors: ['#001a2e', '#003a5e', '#005a8e'], stars: '#ccffff', nebula: 'rgba(52,152,219,0.25)' },
+            { name: 'ذهبي',   colors: ['#2e1a00', '#4a2e00', '#6b4500'], stars: '#ffeeaa', nebula: 'rgba(243,156,18,0.25)' },
+            { name: 'ظلام',   colors: ['#050505', '#0a0a15', '#151520'], stars: '#8888aa', nebula: 'rgba(106,17,203,0.15)' },
+            { name: 'أسطوري', colors: ['#1a0020', '#300040', '#500060'], stars: '#ff88ff', nebula: 'rgba(255,0,255,0.2)' }
+        ];
 
         const enemyImg = new Image();
         let enemyLoaded = false;
@@ -405,16 +101,15 @@
         bossImg.onload = () => { bossLoaded = true; };
         bossImg.src = 'USDTX.png';
 
-        let usdtScore = parseFloat(localStorage.getItem('fwvBalance') || '0');
-        let displayedScore = usdtScore;
-        let bossKilled = parseInt(localStorage.getItem('fwvBossKills') || '0');
-        let enemiesKilled = 0;
-        const ENEMIES_PER_BOSS = 25;
+        /* ============================================
+           النقاط (بدون USDT)
+        ============================================ */
+        let score = 0;
+        let displayedScore = 0;
+        let bestScore = parseInt(localStorage.getItem('spaceHighScore') || '0');
+        let level = 1;
 
         const shipHP = { current: 100, max: 100, hitFlash: 0, invulnerable: 0 };
-
-        let bossBtnCooldown = 0;
-        let adRunning = false;
 
         /* ============================================
            الأصوات
@@ -505,46 +200,28 @@
         const smokeParticles = [];
         const enemies = [];
         const explosions = [];
+        const scorePopups = [];
 
         let enemySpawnTimer = 0;
-        let enemySpawnInterval = 70;
+        let enemySpawnInterval = 60;
         let bossActive = false;
+        let gameTime = 0;
 
         const leftTouch = { active: false, id: null, x: 0, y: 0 };
         const rightTouch = { active: false, id: null };
         let fireInterval = null;
 
-        let lastWithdrawTime = parseInt(localStorage.getItem('fwvLastWithdraw') || '0');
-        let cooldownInterval = null;
-        const cooldownBar = document.getElementById('cooldownBar');
-        const cooldownTimer = document.getElementById('cooldownTimer');
+        /* ============================================
+           السرعة والسلاسة
+        ============================================ */
+        const SHIP_FOLLOW_SPEED = 0.35;   // سرعة متابعة المركبة للهدف
+        const SHIP_MAX_SPEED = 22;        // أقصى سرعة في الإطار
+        const BULLET_SPEED = 26;          // سرعة الرصاصة
+        const ORB_SPEED = 20;             // سرعة الكرة الطاقية
 
-        function updateCooldown() {
-            const now = Date.now();
-            const remaining = WITHDRAW_COOLDOWN - (now - lastWithdrawTime);
-            if (lastWithdrawTime === 0 || remaining <= 0) {
-                cooldownBar.classList.remove('show');
-                if (cooldownInterval) { clearInterval(cooldownInterval); cooldownInterval = null; }
-                return;
-            }
-            cooldownBar.classList.add('show');
-            const h = Math.floor(remaining / 3600000);
-            const m = Math.floor((remaining % 3600000) / 60000);
-            const s = Math.floor((remaining % 60000) / 1000);
-            cooldownTimer.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        function startCooldownWatcher() {
-            if (cooldownInterval) return;
-            cooldownInterval = setInterval(updateCooldown, 1000);
-            updateCooldown();
-        }
-
-        function isWithdrawLocked() {
-            if (lastWithdrawTime === 0) return false;
-            return (Date.now() - lastWithdrawTime) < WITHDRAW_COOLDOWN;
-        }
-
+        /* ============================================
+           تحديث حجم المركبة
+        ============================================ */
         function updateShipSize() {
             if (!imageLoaded) return;
             const targetWidth = Math.min(arena.width * 0.13, arena.height * 1.0);
@@ -658,7 +335,7 @@
                         rightTouch.active = true;
                         rightTouch.id = id;
                         fireBullet();
-                        fireInterval = setInterval(fireBullet, 120);
+                        fireInterval = setInterval(fireBullet, 110);
                     }
                     isChargingOrb = true;
                     chargeTouchId = id;
@@ -667,6 +344,11 @@
                     lastChargeX = pos.x;
                     lastChargeTime = Date.now();
                     chargeSpeed = 0;
+                }
+            } else if (gameState === 'gameover') {
+                // إعادة اللعب عند اللمس
+                if (Date.now() - gameOverTime > 800) {
+                    resetGame();
                 }
             }
         }
@@ -751,7 +433,7 @@
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             const pos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-            if (isDragging || isChargingOrb) handleTouchMove(pos, 'mouse');
+            if (isDragging || isChargingOrb || leftTouch.active) handleTouchMove(pos, 'mouse');
         });
         canvas.addEventListener('mouseup', () => handleTouchEnd('mouse'));
 
@@ -763,6 +445,8 @@
             const data = SHIPS_DATA[idx];
             if (data.loaded) { shipImg = data.preview; imageLoaded = true; updateShipSize(); }
         }
+
+        let gameOverTime = 0;
 
         function startGame() {
             gameState = 'playing';
@@ -776,18 +460,46 @@
             bullets.length = 0; enemyBullets.length = 0; powerOrbs.length = 0;
             particles.length = 0; muzzleFades.length = 0;
             enemies.length = 0; explosions.length = 0; smokeParticles.length = 0;
+            scorePopups.length = 0;
 
             enemySpawnTimer = 0;
-            enemiesKilled = 0;
+            enemySpawnInterval = 60;
             bossActive = false;
+            score = 0;
+            displayedScore = 0;
+            level = 1;
+            gameTime = 0;
             shipHP.current = shipHP.max;
             shipHP.hitFlash = 0; shipHP.invulnerable = 0;
-            updateWithdrawBtn();
         }
 
+        function resetGame() {
+            startGame();
+        }
+
+        /* ============================================
+           صعوبة متزايدة حسب المستوى والوقت
+        ============================================ */
+        function getDifficultyMultiplier() {
+            return 1 + (level - 1) * 0.18;
+        }
+
+        function updateLevel() {
+            const newLevel = Math.min(MAX_LEVEL, 1 + Math.floor(score / 10));
+            if (newLevel > level) {
+                level = newLevel;
+                // زيادة الصعوبة
+                enemySpawnInterval = Math.max(22, 60 - (level - 1) * 4);
+            }
+        }
+
+        /* ============================================
+           إنشاء الأعداء
+        ============================================ */
         function spawnEnemy() {
             if (!enemyLoaded) return;
-            const targetWidth = Math.min(arena.width * 0.08, 55);
+            const diff = getDifficultyMultiplier();
+            const targetWidth = Math.min(arena.width * 0.075, 50);
             const aspect = enemyImg.width / enemyImg.height;
             const w = targetWidth;
             const h = w / aspect;
@@ -795,11 +507,11 @@
                 x: arena.width + w / 2,
                 y: h / 2 + Math.random() * (arena.height - h),
                 size: w, width: w, height: h,
-                speed: 1.8 + Math.random() * 1.5,
+                speed: (2.2 + Math.random() * 1.8) * diff,
                 hp: 1, maxHp: 1, hitFlash: 0, isBoss: false,
                 vx: 0, vy: 0,
-                shootTimer: 150 + Math.floor(Math.random() * 150),
-                shootCooldown: 150 + Math.floor(Math.random() * 100)
+                shootTimer: 100 + Math.floor(Math.random() * 120),
+                shootCooldown: Math.max(70, 160 - (level - 1) * 8)
             });
         }
 
@@ -812,20 +524,20 @@
             enemies.push({
                 x: arena.width + w / 2, y: arena.height / 2,
                 size: w, width: w, height: h,
-                speed: 0.5, hp: 15, maxHp: 15,
+                speed: 0.5, hp: 15 + level * 3, maxHp: 15 + level * 3,
                 hitFlash: 0, isBoss: true, isBonusBoss: false,
                 movePhase: 0, moveTimer: 0, baseY: arena.height / 2,
-                shootTimer: 60, shootCooldown: 60,
+                shootTimer: 50, shootCooldown: Math.max(30, 60 - level * 3),
                 stopped: false, stopX: arena.width * 0.7, recoil: 0
             });
             bossActive = true;
         }
 
         function spawnSoldiersFromBoss(bx, by) {
-            const count = 6;
+            const count = 6 + Math.min(6, level);
             for (let i = 0; i < count; i++) {
                 const angle = (i / count) * Math.PI * 2;
-                const targetWidth = Math.min(arena.width * 0.08, 55);
+                const targetWidth = Math.min(arena.width * 0.075, 50);
                 const aspect = enemyImg.width / enemyImg.height;
                 const w = targetWidth;
                 const h = w / aspect;
@@ -839,57 +551,6 @@
             }
         }
 
-        /* ============================================
-           🎁 العدو الضخم الخاص (يستخدم USDX.png)
-        ============================================ */
-        function spawnBonusBoss() {
-            if (!enemyLoaded) return;
-
-            const targetWidth = Math.min(arena.width * 0.35, 200);
-            const aspect = enemyImg.width / enemyImg.height;
-            const w = targetWidth;
-            const h = w / aspect;
-
-            enemies.push({
-                x: arena.width + w / 2,
-                y: arena.height / 2,
-                size: w,
-                width: w,
-                height: h,
-                speed: 0.6,
-                hp: 5,
-                maxHp: 5,
-                hitFlash: 0,
-                isBoss: true,
-                isBonusBoss: true,     // ✅ يستخدم USDX.png + توهج ذهبي
-                movePhase: 0,
-                moveTimer: 0,
-                baseY: arena.height / 2,
-                shootTimer: 45,
-                shootCooldown: 45,
-                stopped: false,
-                stopX: arena.width * 0.7,
-                recoil: 0
-            });
-
-            bossActive = true;
-
-            for (let k = 0; k < 30; k++) {
-                const angle = Math.random() * Math.PI * 2;
-                const speed = 3 + Math.random() * 8;
-                explosions.push({
-                    x: arena.width + w / 2,
-                    y: arena.height / 2,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    life: 25,
-                    maxLife: 40,
-                    size: 3 + Math.random() * 4,
-                    color: '#f39c12'
-                });
-            }
-        }
-
         function fireBullet() {
             const data = SHIPS_DATA[selectedShipIndex];
             const mx = ship.x + ship.width / 2 - 8;
@@ -897,9 +558,9 @@
             playShootSound();
 
             if (data.bulletType === 'triangle') {
-                bullets.push({ x: mx, y: my, vx: 18, vy: (Math.random() - 0.5) * 0.3, life: 150, maxLife: 150, size: 6, type: 'triangle' });
+                bullets.push({ x: mx, y: my, vx: BULLET_SPEED, vy: (Math.random() - 0.5) * 0.3, life: 200, maxLife: 200, size: 6, type: 'triangle' });
             } else {
-                bullets.push({ x: mx, y: my, vx: 18, vy: (Math.random() - 0.5) * 0.3, life: 150, maxLife: 150, width: 10, height: 3, type: 'rect' });
+                bullets.push({ x: mx, y: my, vx: BULLET_SPEED, vy: (Math.random() - 0.5) * 0.3, life: 200, maxLife: 200, width: 12, height: 3, type: 'rect' });
             }
 
             muzzleFades.push({ x: mx, y: my, radius: 5, maxRadius: 30, life: 10, maxLife: 10, color: data.glowColor, coreColor: data.coreColor });
@@ -920,7 +581,7 @@
             const mx = ship.x + ship.width / 2 - 8;
             const my = ship.y;
             playShootSound();
-            powerOrbs.push({ x: mx, y: my, vx: 14, vy: 0, life: 140, maxLife: 140, radius: 6, maxRadius: 35, growth: 0.35 });
+            powerOrbs.push({ x: mx, y: my, vx: ORB_SPEED, vy: 0, life: 200, maxLife: 200, radius: 6, maxRadius: 35, growth: 0.35 });
             muzzleFades.push({ x: mx, y: my, radius: 8, maxRadius: 55, life: 15, maxLife: 15, color: data.glowColor, coreColor: '#ffffff' });
             ship.recoil = 20;
             ship.glow = 1.2;
@@ -930,14 +591,15 @@
         function bossFire(enemy) {
             playBossFireSound();
             enemy.recoil = 15;
-            for (let i = 0; i < 3; i++) {
+            const bulletsCount = 3 + Math.min(4, Math.floor(level / 2));
+            for (let i = 0; i < bulletsCount; i++) {
                 const dx = ship.x - enemy.x;
                 const dy = ship.y - enemy.y;
-                const angle = Math.atan2(dy, dx) + (i - 1) * 0.15;
-                const speed = 6;
+                const angle = Math.atan2(dy, dx) + (i - (bulletsCount - 1) / 2) * 0.15;
+                const speed = 7 + level * 0.3;
                 enemyBullets.push({
                     x: enemy.x - (enemy.width || enemy.size) * 0.3,
-                    y: enemy.y + (i - 1) * 12,
+                    y: enemy.y + (i - (bulletsCount - 1) / 2) * 12,
                     vx: Math.cos(angle) * speed,
                     vy: Math.sin(angle) * speed,
                     life: 200, maxLife: 200, width: 16, height: 4, isBossBullet: true
@@ -950,70 +612,12 @@
             const dx = ship.x - enemy.x;
             const dy = ship.y - enemy.y;
             const angle = Math.atan2(dy, dx);
-            const speed = 4.5;
+            const speed = 5 + level * 0.2;
             enemyBullets.push({
                 x: enemy.x - enemy.size * 0.3, y: enemy.y,
                 vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
                 life: 200, maxLife: 200, width: 10, height: 3, isBossBullet: false
             });
-        }
-
-        /* ============================================
-           🎁 زر العدو الضخم
-        ============================================ */
-        function updateBossBtn() {
-            const btn = document.getElementById('bossBtn');
-            if (!btn) return;
-
-            if (gameState !== 'playing') {
-                btn.classList.remove('show');
-                return;
-            }
-
-            const now = Date.now();
-            if (now - bossBtnCooldown >= BOSS_COOLDOWN && !adRunning) {
-                btn.classList.add('show');
-            } else {
-                btn.classList.remove('show');
-            }
-        }
-
-        function startBossAd() {
-            if (adRunning) return;
-            if (gameState !== 'playing') return;
-
-            const now = Date.now();
-            if (now - bossBtnCooldown < BOSS_COOLDOWN) return;
-
-            adRunning = true;
-            document.getElementById('bossBtn').classList.remove('show');
-
-            const overlay = document.getElementById('adOverlay');
-            overlay.classList.add('show');
-
-            let timeLeft = BOSS_AD_DURATION;
-            const adCount = document.getElementById('adCount');
-            const adCircle = document.getElementById('adCircle');
-            const totalDash = 283;
-
-            adCount.textContent = timeLeft;
-            adCircle.style.strokeDashoffset = '0';
-
-            const adInterval = setInterval(() => {
-                timeLeft--;
-                adCount.textContent = timeLeft;
-
-                const offset = totalDash - (timeLeft / BOSS_AD_DURATION) * totalDash;
-                adCircle.style.strokeDashoffset = offset;
-
-                if (timeLeft <= 0) {
-                    clearInterval(adInterval);
-                    overlay.classList.remove('show');
-                    adRunning = false;
-                    spawnBonusBoss();
-                    bossBtnCooldown = Date.now();
-                }
-            }, 1000);
         }
 
         /* ============================================
@@ -1024,8 +628,6 @@
         function update(now) {
             const dt = Math.min((now - lastFrameTime) / 16.67, 3);
             lastFrameTime = now;
-
-            updateBossBtn();
 
             for (let i = 0; i < stars.length; i++) {
                 const s = stars[i];
@@ -1058,10 +660,17 @@
                 if (f.life <= 0) muzzleFades.splice(i, 1);
             }
 
-            displayedScore += (usdtScore - displayedScore) * 0.15;
+            displayedScore += (score - displayedScore) * 0.18;
 
             if (shipHP.hitFlash > 0) shipHP.hitFlash -= dt;
             if (shipHP.invulnerable > 0) shipHP.invulnerable -= dt;
+
+            for (let i = scorePopups.length - 1; i >= 0; i--) {
+                const sp = scorePopups[i];
+                sp.y -= 1.5 * dt;
+                sp.life -= dt;
+                if (sp.life <= 0) scorePopups.splice(i, 1);
+            }
 
             if (gameState === 'select') {
                 const easing = isDragging ? 0.35 : 0.15;
@@ -1069,28 +678,50 @@
                 return;
             }
 
-            if (gameState === 'gameover') return;
+            if (gameState !== 'playing') return;
+
+            gameTime += dt;
+            updateLevel();
 
             enemySpawnTimer += dt;
             if (enemySpawnTimer >= enemySpawnInterval && !bossActive) {
                 enemySpawnTimer = 0;
                 spawnEnemy();
-                if (enemySpawnInterval > 45) enemySpawnInterval -= 0.3;
+                // زيادة تدريجية للصعوبة
+                if (enemySpawnInterval > 22) enemySpawnInterval -= 0.25;
             }
 
+            /* ============================================
+               متابعة سلسة وسريعة للمركبة
+            ============================================ */
             if (leftTouch.active) {
                 const dx = ship.targetX - ship.x;
                 const dy = ship.targetY - ship.y;
-                if (Math.abs(dx) > 200 || Math.abs(dy) > 200) {
-                    ship.x += dx * 0.5 * dt;
-                    ship.y += dy * 0.5 * dt;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                // سرعة متكيفة مع المسافة
+                let speed = SHIP_FOLLOW_SPEED;
+                if (dist > 100) speed = 0.55;
+                else if (dist > 30) speed = 0.45;
+                else speed = 0.35;
+
+                const stepX = dx * speed * dt;
+                const stepY = dy * speed * dt;
+
+                // تقييد السرعة القصوى
+                const stepDist = Math.sqrt(stepX * stepX + stepY * stepY);
+                if (stepDist > SHIP_MAX_SPEED) {
+                    const ratio = SHIP_MAX_SPEED / stepDist;
+                    ship.x += stepX * ratio;
+                    ship.y += stepY * ratio;
                 } else {
-                    ship.x += dx * 0.25 * dt;
-                    ship.y += dy * 0.25 * dt;
+                    ship.x += stepX;
+                    ship.y += stepY;
                 }
-                ship.angle = Math.max(-0.3, Math.min(0.3, dy * 0.02));
+
+                ship.angle = Math.max(-0.35, Math.min(0.35, dy * 0.02));
             } else {
-                ship.angle *= 0.9;
+                ship.angle *= 0.88;
             }
 
             ship.x = Math.max(ship.width / 2, Math.min(arena.width - ship.width / 2, ship.x));
@@ -1121,28 +752,24 @@
                         for (let k = 0; k < 4; k++) {
                             const angle = Math.random() * Math.PI * 2;
                             const speed = 3 + Math.random() * 4;
-                            explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 12, maxLife: 20, size: 1.5 + Math.random() * 2, color: e.isBonusBoss ? '#f39c12' : '#26a17b' });
+                            explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 12, maxLife: 20, size: 1.5 + Math.random() * 2, color: e.isBoss ? '#ff8800' : '#26a17b' });
                         }
 
                         if (e.hp <= 0) {
                             if (e.isBoss) {
                                 playBossDeathSound();
-                                bossKilled++;
-                                if (e.isBonusBoss) {
-                                    usdtScore += BOSS_BONUS_POINTS * KILL_VALUE;
-                                } else {
-                                    usdtScore += BOSS_KILL_VALUE;
-                                }
+                                score += BOSS_KILL_POINTS;
                                 bossActive = false;
+                                scorePopups.push({ x: e.x, y: e.y, text: '+' + BOSS_KILL_POINTS, life: 60, maxLife: 60 });
                                 for (let k = 0; k < 30; k++) {
                                     const angle = Math.random() * Math.PI * 2;
                                     const speed = 4 + Math.random() * 10;
-                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 20 + Math.random() * 15, maxLife: 35, size: 3 + Math.random() * 3, color: e.isBonusBoss ? '#f39c12' : '#0a3d1a' });
+                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 20 + Math.random() * 15, maxLife: 35, size: 3 + Math.random() * 3, color: '#0a3d1a' });
                                 }
-                                if (!e.isBonusBoss) spawnSoldiersFromBoss(e.x, e.y);
+                                spawnSoldiersFromBoss(e.x, e.y);
                             } else {
-                                enemiesKilled++;
-                                usdtScore += KILL_VALUE;
+                                score += KILL_POINTS;
+                                scorePopups.push({ x: e.x, y: e.y, text: '+1', life: 45, maxLife: 45 });
                                 for (let k = 0; k < 10; k++) {
                                     const angle = Math.random() * Math.PI * 2;
                                     const speed = 3 + Math.random() * 6;
@@ -1150,9 +777,11 @@
                                 }
                             }
                             enemies.splice(j, 1);
-                            if (!e.isBoss && enemiesKilled % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
-                            saveBalance();
-                            updateWithdrawBtn();
+                            if (!e.isBoss && score > 0 && score % (ENEMIES_PER_BOSS) === 0 && !bossActive) spawnBoss();
+                            if (score > bestScore) {
+                                bestScore = score;
+                                localStorage.setItem('spaceHighScore', score);
+                            }
                         }
                         hit = true;
                         break;
@@ -1207,22 +836,18 @@
                         if (e.hp <= 0) {
                             if (e.isBoss) {
                                 playBossDeathSound();
-                                bossKilled++;
-                                if (e.isBonusBoss) {
-                                    usdtScore += BOSS_BONUS_POINTS * KILL_VALUE;
-                                } else {
-                                    usdtScore += BOSS_KILL_VALUE;
-                                }
+                                score += BOSS_KILL_POINTS;
                                 bossActive = false;
+                                scorePopups.push({ x: e.x, y: e.y, text: '+' + BOSS_KILL_POINTS, life: 60, maxLife: 60 });
                                 for (let k = 0; k < 30; k++) {
                                     const angle = Math.random() * Math.PI * 2;
                                     const speed = 4 + Math.random() * 10;
-                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 20 + Math.random() * 15, maxLife: 35, size: 3 + Math.random() * 3, color: e.isBonusBoss ? '#f39c12' : '#0a3d1a' });
+                                    explosions.push({ x: e.x, y: e.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 20 + Math.random() * 15, maxLife: 35, size: 3 + Math.random() * 3, color: '#0a3d1a' });
                                 }
-                                if (!e.isBonusBoss) spawnSoldiersFromBoss(e.x, e.y);
+                                spawnSoldiersFromBoss(e.x, e.y);
                             } else {
-                                enemiesKilled++;
-                                usdtScore += KILL_VALUE;
+                                score += KILL_POINTS;
+                                scorePopups.push({ x: e.x, y: e.y, text: '+1', life: 45, maxLife: 45 });
                                 for (let k = 0; k < 14; k++) {
                                     const angle = Math.random() * Math.PI * 2;
                                     const speed = 4 + Math.random() * 8;
@@ -1230,9 +855,11 @@
                                 }
                             }
                             enemies.splice(j, 1);
-                            if (!e.isBoss && enemiesKilled % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
-                            saveBalance();
-                            updateWithdrawBtn();
+                            if (!e.isBoss && score > 0 && score % ENEMIES_PER_BOSS === 0 && !bossActive) spawnBoss();
+                            if (score > bestScore) {
+                                bestScore = score;
+                                localStorage.setItem('spaceHighScore', score);
+                            }
                         }
                     }
                 }
@@ -1250,7 +877,7 @@
                         e.x -= e.speed * dt;
                         if (e.x <= e.stopX) { e.x = e.stopX; e.stopped = true; }
                     } else {
-                        e.moveTimer += 0.03 * dt;
+                        e.moveTimer += (0.03 + level * 0.005) * dt;
                         e.y = e.baseY + Math.sin(e.moveTimer) * (arena.height * 0.3);
                         e.x = e.stopX + (e.recoil > 0 ? e.recoil : 0);
                     }
@@ -1290,58 +917,51 @@
 
             if (shipHP.current <= 0) {
                 shipHP.current = 0;
-                endGame();
-            }
-        }
-
-        function endGame() {
-            gameState = 'gameover';
-            saveBalance();
-            setTimeout(() => {
-                gameState = 'select';
-                updateWithdrawBtn();
-            }, 1200);
-        }
-
-        function updateWithdrawBtn() {
-            const btn = document.getElementById('withdrawBtn');
-            const text = document.getElementById('withdrawText');
-            if (isWithdrawLocked()) {
-                btn.disabled = true; text.textContent = 'انتظر...';
-                return;
-            }
-            if (usdtScore >= MIN_WITHDRAW) {
-                btn.disabled = false; text.textContent = 'سحب ' + usdtScore.toFixed(4);
-            } else {
-                btn.disabled = true; text.textContent = 'الحد 0.01';
+                gameState = 'gameover';
+                gameOverTime = Date.now();
             }
         }
 
         /* ============================================
-           الرسم
+           الرسم — الخلفيات المتغيرة حسب المستوى
         ============================================ */
         function drawBackground() {
-            ctx.fillStyle = '#000';
+            const bg = BACKGROUNDS[Math.min(level - 1, BACKGROUNDS.length - 1)];
+            const grad = ctx.createLinearGradient(0, 0, viewWidth, viewHeight);
+            grad.addColorStop(0, bg.colors[0]);
+            grad.addColorStop(0.5, bg.colors[1]);
+            grad.addColorStop(1, bg.colors[2]);
+            ctx.fillStyle = grad;
             ctx.fillRect(0, 0, viewWidth, viewHeight);
 
+            // سديم متحرك
+            const t = gameTime * 0.002;
+            const nebX = viewWidth * (0.5 + Math.sin(t) * 0.3);
+            const nebY = viewHeight * (0.5 + Math.cos(t * 1.3) * 0.3);
+            const nebGrad = ctx.createRadialGradient(nebX, nebY, 0, nebX, nebY, viewWidth * 0.7);
+            nebGrad.addColorStop(0, bg.nebula);
+            nebGrad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = nebGrad;
+            ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+            // دخان
             smokeParticles.forEach(p => {
                 const alpha = (p.life / p.maxLife) * p.alpha;
-                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-                grad.addColorStop(0, `rgba(80, 80, 100, ${alpha})`);
-                grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                ctx.fillStyle = grad;
+                const grad2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                grad2.addColorStop(0, `rgba(120, 120, 160, ${alpha})`);
+                grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = grad2;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
             });
 
+            // نجوم
             ctx.globalAlpha = 1;
-            ctx.fillStyle = '#ffffff';
+            ctx.fillStyle = bg.stars;
             stars.forEach(s => {
-                if (s.alpha > 0.3) {
-                    ctx.globalAlpha = s.alpha;
-                    ctx.fillRect(s.x, s.y, s.size, s.size);
-                }
+                ctx.globalAlpha = s.alpha;
+                ctx.fillRect(s.x, s.y, s.size, s.size);
             });
             ctx.globalAlpha = 1;
         }
@@ -1370,59 +990,25 @@
                 ctx.restore();
             });
 
-            // ===== الأعداء =====
             enemies.forEach(e => {
-                // ✅ تحديد الصورة الصحيحة
                 let img, isLoaded;
-                if (e.isBonusBoss) {
-                    img = enemyImg;         // ← USDX.png للعدو الضخم الخاص
-                    isLoaded = enemyLoaded;
-                } else if (e.isBoss) {
-                    img = bossImg;          // ← USDTX.png للزعيم العادي
-                    isLoaded = bossLoaded;
-                } else {
-                    img = enemyImg;         // ← USDX.png للعدو العادي
-                    isLoaded = enemyLoaded;
-                }
-
+                if (e.isBoss) { img = bossImg; isLoaded = bossLoaded; }
+                else { img = enemyImg; isLoaded = enemyLoaded; }
                 if (!isLoaded) return;
 
                 ctx.save();
-
-                if (e.isBonusBoss) {
-                    // 🎁 العدو الضخم الخاص — توهج ذهبي مع USDX.png
-                    ctx.translate(e.x, e.y);
-                    ctx.shadowBlur = 30;
-                    ctx.shadowColor = '#f39c12';
-                    if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
-                    ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                    // طبقة توهج إضافية
-                    ctx.globalAlpha = 0.35;
-                    ctx.shadowBlur = 50;
-                    ctx.shadowColor = '#f39c12';
-                    ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                } else if (e.isBoss) {
-                    // 👹 الزعيم العادي — توهج أخضر قاتم مع USDTX.png
-                    ctx.translate(e.x, e.y);
-                    ctx.shadowBlur = 15;
-                    ctx.shadowColor = '#0a3d1a';
-                    if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
-                    ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+                ctx.translate(e.x, e.y);
+                if (e.isBoss) {
+                    ctx.shadowBlur = 15 + Math.sin(gameTime * 0.1) * 8;
+                    ctx.shadowColor = '#ff3333';
                 } else {
-                    // 👾 عدو عادي
-                    ctx.translate(e.x, e.y);
-                    if (e.hitFlash > 0) {
-                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                        ctx.globalAlpha = 0.6;
-                        ctx.globalCompositeOperation = 'lighter';
-                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                    } else {
-                        ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
-                    }
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#0a3d1a';
                 }
+                if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
+                ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
                 ctx.restore();
 
-                // شريط صحة الزعيم
                 if (e.isBoss) {
                     const barW = e.width * 0.9;
                     const barH = 5;
@@ -1431,7 +1017,7 @@
                     ctx.save();
                     ctx.fillStyle = 'rgba(0,0,0,0.7)';
                     ctx.fillRect(barX, barY, barW, barH);
-                    ctx.fillStyle = e.isBonusBoss ? '#f39c12' : '#0a3d1a';
+                    ctx.fillStyle = '#ff3333';
                     ctx.fillRect(barX, barY, barW * (e.hp / e.maxHp), barH);
                     ctx.restore();
                 }
@@ -1495,6 +1081,21 @@
             });
             ctx.restore();
 
+            // نقاط طائرة
+            ctx.save();
+            scorePopups.forEach(sp => {
+                const alpha = sp.life / sp.maxLife;
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = '#26a17b';
+                ctx.font = 'bold 20px Cairo, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = '#26a17b';
+                ctx.fillText(sp.text, sp.x, sp.y);
+            });
+            ctx.restore();
+
+            // المركبة
             ctx.save();
             const shakeX = (Math.random() - 0.5) * ship.shake;
             const shakeY = (Math.random() - 0.5) * ship.shake;
@@ -1517,20 +1118,21 @@
 
             ctx.restore();
 
-            drawCenterHUD();
+            drawHUD();
         }
 
-        function drawCenterHUD() {
+        function drawHUD() {
             const centerX = viewWidth / 2;
             const padding = 10;
 
+            // النقاط
             const scoreFontSize = Math.min(viewWidth * 0.035, 20);
-            const scoreText = displayedScore.toFixed(6) + ' USDT';
+            const scoreText = displayedScore.toString();
 
             ctx.save();
             ctx.font = `bold ${scoreFontSize}px 'Courier New', monospace`;
             const metrics = ctx.measureText(scoreText);
-            const boxW = metrics.width + 36;
+            const boxW = Math.max(metrics.width + 60, 100);
             const boxH = scoreFontSize * 1.7;
             const boxX = centerX - boxW / 2;
             const boxY = padding;
@@ -1550,19 +1152,28 @@
             ctx.font = 'bold 10px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('T', boxX + 15, boxY + boxH / 2 + 1);
+            ctx.fillText('★', boxX + 15, boxY + boxH / 2 + 1);
 
             ctx.textAlign = 'left';
             ctx.fillStyle = '#26a17b';
             ctx.font = `bold ${scoreFontSize}px 'Courier New', monospace`;
             ctx.fillText(scoreText, boxX + 28, boxY + boxH / 2);
-
             ctx.restore();
 
+            // المستوى
+            ctx.save();
+            ctx.font = `bold 12px Cairo, sans-serif`;
+            ctx.fillStyle = '#f39c12';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`المستوى ${level}`, centerX, boxY + boxH + 14);
+            ctx.restore();
+
+            // شريط الصحة
             const hpBarW = Math.min(viewWidth * 0.38, 160);
             const hpBarH = 5;
             const hpBarX = centerX - hpBarW / 2;
-            const hpBarY = boxY + boxH + 6;
+            const hpBarY = boxY + boxH + 26;
 
             ctx.save();
             ctx.fillStyle = 'rgba(40, 0, 0, 0.7)';
@@ -1575,6 +1186,81 @@
 
             ctx.fillStyle = hpColor;
             ctx.fillRect(hpBarX, hpBarY, hpBarW * hpRatio, hpBarH);
+            ctx.restore();
+
+            // أفضل نتيجة
+            ctx.save();
+            ctx.font = `bold 10px Cairo, sans-serif`;
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText(`الأفضل: ${bestScore}`, 15, padding);
+            ctx.restore();
+        }
+
+        function drawGameOver() {
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // العنوان
+            ctx.font = `bold ${Math.min(viewWidth * 0.08, 42)}px Cairo, sans-serif`;
+            ctx.fillStyle = '#ff3333';
+            ctx.shadowBlur = 25;
+            ctx.shadowColor = '#ff3333';
+            ctx.fillText('انتهت اللعبة', viewWidth / 2, viewHeight * 0.28);
+
+            // النقاط
+            ctx.font = `bold ${Math.min(viewWidth * 0.05, 26)}px Cairo, sans-serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#26a17b';
+            ctx.shadowBlur = 15;
+            ctx.fillText('النقاط', viewWidth / 2, viewHeight * 0.42);
+
+            ctx.font = `bold ${Math.min(viewWidth * 0.12, 65)}px 'Courier New', monospace`;
+            ctx.fillStyle = '#26a17b';
+            ctx.shadowColor = '#26a17b';
+            ctx.shadowBlur = 30;
+            ctx.fillText(score.toString(), viewWidth / 2, viewHeight * 0.53);
+
+            // أفضل نتيجة
+            if (score >= bestScore && score > 0) {
+                ctx.font = `bold ${Math.min(viewWidth * 0.045, 20)}px Cairo, sans-serif`;
+                ctx.fillStyle = '#f39c12';
+                ctx.shadowColor = '#f39c12';
+                ctx.shadowBlur = 20;
+                ctx.fillText('🎉 رقم قياسي جديد!', viewWidth / 2, viewHeight * 0.63);
+            } else {
+                ctx.font = `bold ${Math.min(viewWidth * 0.04, 16)}px Cairo, sans-serif`;
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.shadowBlur = 0;
+                ctx.fillText(`الأفضل: ${bestScore}`, viewWidth / 2, viewHeight * 0.63);
+            }
+
+            // زر إعادة المحاولة
+            const btnW = Math.min(viewWidth * 0.5, 240);
+            const btnH = Math.min(viewHeight * 0.09, 55);
+            const btnX = viewWidth / 2 - btnW / 2;
+            const btnY = viewHeight * 0.75;
+
+            ctx.shadowBlur = 25;
+            ctx.shadowColor = '#6a11cb';
+            const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH);
+            btnGrad.addColorStop(0, '#6a11cb');
+            btnGrad.addColorStop(1, '#2575fc');
+            ctx.fillStyle = btnGrad;
+            ctx.beginPath();
+            ctx.roundRect(btnX, btnY, btnW, btnH, btnH / 2);
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${Math.min(btnH * 0.42, 20)}px Cairo, sans-serif`;
+            ctx.fillText('العب مرة أخرى', viewWidth / 2, btnY + btnH / 2);
+
             ctx.restore();
         }
 
@@ -1608,13 +1294,19 @@
             ctx.font = `bold ${Math.min(btn.height * 0.75, 50)}px Arial, sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = SHIPS_DATA[selectedShipIndex].coreColor;
             ctx.fillText('START', btn.x + btn.width / 2, btn.y + btn.height / 2 + 2);
             ctx.restore();
         }
 
         function draw() {
             if (gameState === 'select') drawSelectScreen();
-            else drawGame();
+            else if (gameState === 'playing') drawGame();
+            else if (gameState === 'gameover') {
+                drawGame();
+                drawGameOver();
+            }
         }
 
         function gameLoop(now) {
@@ -1625,98 +1317,21 @@
 
         function initStars() {
             stars.length = 0;
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 60; i++) {
                 stars.push({
                     x: Math.random() * viewWidth,
                     y: Math.random() * viewHeight,
                     size: Math.random() * 1.2 + 0.5,
-                    speed: Math.random() * 0.4 + 0.2,
-                    alpha: Math.random() * 0.5 + 0.2
+                    speed: Math.random() * 0.5 + 0.3,
+                    alpha: Math.random() * 0.5 + 0.3
                 });
             }
             smokeParticles.length = 0;
         }
 
-        function openWithdraw() {
-            if (isWithdrawLocked()) return;
-            if (usdtScore < MIN_WITHDRAW) return;
-            document.getElementById('binanceAmount').textContent = usdtScore.toFixed(4);
-            const sy = Math.round(usdtScore * SYP_RATE);
-            document.getElementById('shamAmount').textContent = sy.toLocaleString('en-US');
-            document.getElementById('withdrawModal').classList.add('show');
-        }
-
-        function closeWithdraw() { document.getElementById('withdrawModal').classList.remove('show'); }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
-        }
-
-        function submitWithdraw(event, type) {
-            event.preventDefault();
-            if (isWithdrawLocked()) { alert('انتظر 24 ساعة'); return; }
-            const form = event.target;
-            const formData = new FormData(form);
-
-            formData.set('apiKey', _dk());
-            formData.set('email', _de());
-
-            if (type === 'binance') {
-                const bid = formData.get('binance_id').trim();
-                if (!bid || bid.length < 6) { alert('Binance ID غير صالح'); return; }
-                document.getElementById('msgBinance').value = `طلب سحب - لعبة الفضاء\n💰 ${usdtScore.toFixed(4)} USDT\n🆔 ${bid}\n📅 ${new Date().toLocaleString('ar-EG')}`;
-            } else {
-                const sn = formData.get('sham_name').trim();
-                const sc = formData.get('sham_code').trim();
-                if (!sn || !sc) { alert('الرجاء إدخال الاسم والكود'); return; }
-                const sy = Math.round(usdtScore * SYP_RATE);
-                document.getElementById('msgSham').value = `طلب سحب - لعبة الفضاء\n💰 ${usdtScore.toFixed(4)} USDT = ${sy} ل.س\n👤 ${sn}\n🔑 ${sc}\n📅 ${new Date().toLocaleString('ar-EG')}`;
-            }
-
-            const btn = form.querySelector('.submit-btn');
-            btn.disabled = true;
-            btn.textContent = '⏳ جارٍ الإرسال...';
-
-            fetch('https://api.staticforms.dev/submit', { method: 'POST', body: formData })
-                .then(() => showSuccess(type))
-                .catch(() => showSuccess(type));
-        }
-
-        function showSuccess(type) {
-            const amt = usdtScore.toFixed(4);
-            const sy = Math.round(usdtScore * SYP_RATE);
-            usdtScore = 0;
-            displayedScore = 0;
-            bossKilled = 0;
-            saveBalance();
-            updateWithdrawBtn();
-            lastWithdrawTime = Date.now();
-            localStorage.setItem('fwvLastWithdraw', lastWithdrawTime);
-            startCooldownWatcher();
-
-            document.getElementById('withdrawContent').innerHTML = `
-                <div class="success-box">
-                    <div class="success-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                    </div>
-                    <div class="success-title">تم إرسال طلبك!</div>
-                    <div class="success-text">سيتم الإرسال<br><b>${type === 'binance' ? amt + ' USDT' : sy + ' ليرة'}</b><br>خلال 24-48 ساعة</div>
-                    <div style="background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 10px; margin-bottom: 15px;">
-                        <p style="color: #f39c12; font-size: 11px; text-align: center; font-weight: 700;">⚠️ تم تصفير الرصيد</p>
-                    </div>
-                    <button onclick="closeWithdraw(); location.reload();" class="submit-btn" style="background: linear-gradient(135deg, #26a17b, #2ecc71); color: #fff; width: 100%;">حسناً، شكراً</button>
-                </div>
-            `;
-        }
-
         function init() {
             resizeCanvas();
             initStars();
-            updateWithdrawBtn();
-            startCooldownWatcher();
             requestAnimationFrame(gameLoop);
         }
 
