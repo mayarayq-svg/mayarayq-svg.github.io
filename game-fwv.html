@@ -65,7 +65,6 @@
         ============================================ */
         const KILL_POINTS = 1;
         const BOSS_KILL_POINTS = 15;
-        const BOSS_BONUS_POINTS = 50;
         const ENEMIES_PER_BOSS = 25;
         const MAX_LEVEL = 10;
 
@@ -76,7 +75,7 @@
         let viewHeight = window.innerHeight;
 
         /* ============================================
-           الخلفيات المتغيرة حسب المستوى
+           الخلفيات المتغيرة (10 مستويات)
         ============================================ */
         const BACKGROUNDS = [
             { name: 'فضاء',   colors: ['#0a0020', '#1a0040', '#2d1b4e'], stars: '#ffffff', nebula: 'rgba(106,17,203,0.15)' },
@@ -91,6 +90,34 @@
             { name: 'أسطوري', colors: ['#1a0020', '#300040', '#500060'], stars: '#ff88ff', nebula: 'rgba(255,0,255,0.2)' }
         ];
 
+        /* ============================================
+           🌈 انتقال الخلفية التدريجي (ناعم)
+        ============================================ */
+        let bgTransition = {
+            active: false,
+            progress: 0,
+            duration: 2.5,      // بالثواني
+            fromLevel: 0,
+            toLevel: 0
+        };
+
+        const bgGradients = []; // تحسب مرة واحدة فقط
+        function buildBgGradient(levelIdx) {
+            const bg = BACKGROUNDS[Math.min(levelIdx, BACKGROUNDS.length - 1)];
+            const grad = ctx.createLinearGradient(0, 0, viewWidth, viewHeight);
+            grad.addColorStop(0, bg.colors[0]);
+            grad.addColorStop(0.5, bg.colors[1]);
+            grad.addColorStop(1, bg.colors[2]);
+            return grad;
+        }
+
+        function rebuildAllGradients() {
+            bgGradients.length = 0;
+            for (let i = 0; i < BACKGROUNDS.length; i++) {
+                bgGradients.push(buildBgGradient(i));
+            }
+        }
+
         const enemyImg = new Image();
         let enemyLoaded = false;
         enemyImg.onload = () => { enemyLoaded = true; };
@@ -102,12 +129,13 @@
         bossImg.src = 'USDTX.png';
 
         /* ============================================
-           النقاط (بدون USDT)
+           النقاط والمستوى
         ============================================ */
         let score = 0;
-        let displayedScore = 0;
+        let displayedScore = 0; // الرقم المعروض (تصاعدي)
         let bestScore = parseInt(localStorage.getItem('spaceHighScore') || '0');
         let level = 1;
+        let prevLevel = 1;
 
         const shipHP = { current: 100, max: 100, hitFlash: 0, invulnerable: 0 };
 
@@ -176,7 +204,10 @@
             x: 0, y: 0, width: 100, height: 50,
             targetX: 0, targetY: 0,
             recoil: 0, glow: 0, angle: 0,
-            vx: 0, vy: 0, shake: 0
+            vx: 0, vy: 0, shake: 0,
+            tiltAngle: 0,   // 🌟 ميلان 3D-like
+            tiltVelocity: 0,
+            bobPhase: 0     // 🌟 تمايل أعلى-أسفل 3D
         };
 
         let arena = { x: 0, y: 0, width: 0, height: 0 };
@@ -203,7 +234,7 @@
         const scorePopups = [];
 
         let enemySpawnTimer = 0;
-        let enemySpawnInterval = 60;
+        let enemySpawnInterval = 55;
         let bossActive = false;
         let gameTime = 0;
 
@@ -214,14 +245,11 @@
         /* ============================================
            السرعة والسلاسة
         ============================================ */
-        const SHIP_FOLLOW_SPEED = 0.35;   // سرعة متابعة المركبة للهدف
-        const SHIP_MAX_SPEED = 22;        // أقصى سرعة في الإطار
-        const BULLET_SPEED = 26;          // سرعة الرصاصة
-        const ORB_SPEED = 20;             // سرعة الكرة الطاقية
+        const SHIP_FOLLOW_SPEED = 0.4;
+        const SHIP_MAX_SPEED = 26;
+        const BULLET_SPEED = 30;
+        const ORB_SPEED = 24;
 
-        /* ============================================
-           تحديث حجم المركبة
-        ============================================ */
         function updateShipSize() {
             if (!imageLoaded) return;
             const targetWidth = Math.min(arena.width * 0.13, arena.height * 1.0);
@@ -275,6 +303,7 @@
             }
 
             updateShipSize();
+            rebuildAllGradients();
         }
 
         SHIPS_DATA.forEach((data, index) => {
@@ -335,7 +364,7 @@
                         rightTouch.active = true;
                         rightTouch.id = id;
                         fireBullet();
-                        fireInterval = setInterval(fireBullet, 110);
+                        fireInterval = setInterval(fireBullet, 100);
                     }
                     isChargingOrb = true;
                     chargeTouchId = id;
@@ -346,7 +375,6 @@
                     chargeSpeed = 0;
                 }
             } else if (gameState === 'gameover') {
-                // إعادة اللعب عند اللمس
                 if (Date.now() - gameOverTime > 800) {
                     resetGame();
                 }
@@ -456,6 +484,7 @@
             ship.targetY = ship.y;
             ship.recoil = 0; ship.glow = 0; ship.shake = 0;
             ship.angle = 0; ship.vx = 0; ship.vy = 0;
+            ship.tiltAngle = 0; ship.tiltVelocity = 0; ship.bobPhase = 0;
 
             bullets.length = 0; enemyBullets.length = 0; powerOrbs.length = 0;
             particles.length = 0; muzzleFades.length = 0;
@@ -463,14 +492,19 @@
             scorePopups.length = 0;
 
             enemySpawnTimer = 0;
-            enemySpawnInterval = 60;
+            enemySpawnInterval = 55;
             bossActive = false;
             score = 0;
             displayedScore = 0;
             level = 1;
+            prevLevel = 1;
             gameTime = 0;
             shipHP.current = shipHP.max;
             shipHP.hitFlash = 0; shipHP.invulnerable = 0;
+
+            // إيقاف انتقال الخلفية
+            bgTransition.active = false;
+            bgTransition.progress = 0;
         }
 
         function resetGame() {
@@ -478,28 +512,163 @@
         }
 
         /* ============================================
-           صعوبة متزايدة حسب المستوى والوقت
+           صعوبة متزايدة
         ============================================ */
         function getDifficultyMultiplier() {
-            return 1 + (level - 1) * 0.18;
+            return 1 + (level - 1) * 0.20;
         }
 
         function updateLevel() {
             const newLevel = Math.min(MAX_LEVEL, 1 + Math.floor(score / 10));
             if (newLevel > level) {
+                prevLevel = level;
                 level = newLevel;
-                // زيادة الصعوبة
-                enemySpawnInterval = Math.max(22, 60 - (level - 1) * 4);
+                enemySpawnInterval = Math.max(20, 55 - (level - 1) * 4);
+
+                // 🌈 بدء انتقال الخلفية التدريجي
+                bgTransition.active = true;
+                bgTransition.progress = 0;
+                bgTransition.fromLevel = prevLevel - 1;
+                bgTransition.toLevel = level - 1;
             }
         }
 
         /* ============================================
-           إنشاء الأعداء
+           🌈 رسم الخلفية بالانتقال التدريجي
+        ============================================ */
+        function drawBackground() {
+            const fromIdx = Math.min(bgTransition.fromLevel, BACKGROUNDS.length - 1);
+            const toIdx = Math.min(bgTransition.toLevel, BACKGROUNDS.length - 1);
+            const fromBg = BACKGROUNDS[fromIdx];
+            const toBg = BACKGROUNDS[toIdx];
+
+            if (bgTransition.active) {
+                const t = bgTransition.progress;
+
+                // اللون من → اللون إلى بشكل تدريجي
+                const c0 = lerpColor(fromBg.colors[0], toBg.colors[0], t);
+                const c1 = lerpColor(fromBg.colors[1], toBg.colors[1], t);
+                const c2 = lerpColor(fromBg.colors[2], toBg.colors[2], t);
+
+                const grad = ctx.createLinearGradient(0, 0, viewWidth, viewHeight);
+                grad.addColorStop(0, c0);
+                grad.addColorStop(0.5, c1);
+                grad.addColorStop(1, c2);
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+                // السديم
+                const nebColor = lerpColor(fromBg.nebula, toBg.nebula, t);
+                const t2 = gameTime * 0.002;
+                const nebX = viewWidth * (0.5 + Math.sin(t2) * 0.3);
+                const nebY = viewHeight * (0.5 + Math.cos(t2 * 1.3) * 0.3);
+                const nebGrad = ctx.createRadialGradient(nebX, nebY, 0, nebX, nebY, viewWidth * 0.7);
+                nebGrad.addColorStop(0, nebColor);
+                nebGrad.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = nebGrad;
+                ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+                // نجوم
+                const starColor = lerpColor(fromBg.stars, toBg.stars, t);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = starColor;
+                stars.forEach(s => {
+                    ctx.globalAlpha = s.alpha;
+                    ctx.fillRect(s.x, s.y, s.size, s.size);
+                });
+                ctx.globalAlpha = 1;
+
+                // دخان
+                smokeParticles.forEach(p => {
+                    const alpha = (p.life / p.maxLife) * p.alpha;
+                    const grad2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                    grad2.addColorStop(0, `rgba(120, 120, 160, ${alpha})`);
+                    grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    ctx.fillStyle = grad2;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+            } else {
+                const bg = BACKGROUNDS[Math.min(level - 1, BACKGROUNDS.length - 1)];
+                const grad = ctx.createLinearGradient(0, 0, viewWidth, viewHeight);
+                grad.addColorStop(0, bg.colors[0]);
+                grad.addColorStop(0.5, bg.colors[1]);
+                grad.addColorStop(1, bg.colors[2]);
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+                const t = gameTime * 0.002;
+                const nebX = viewWidth * (0.5 + Math.sin(t) * 0.3);
+                const nebY = viewHeight * (0.5 + Math.cos(t * 1.3) * 0.3);
+                const nebGrad = ctx.createRadialGradient(nebX, nebY, 0, nebX, nebY, viewWidth * 0.7);
+                nebGrad.addColorStop(0, bg.nebula);
+                nebGrad.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = nebGrad;
+                ctx.fillRect(0, 0, viewWidth, viewHeight);
+
+                smokeParticles.forEach(p => {
+                    const alpha = (p.life / p.maxLife) * p.alpha;
+                    const grad2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                    grad2.addColorStop(0, `rgba(120, 120, 160, ${alpha})`);
+                    grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    ctx.fillStyle = grad2;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = bg.stars;
+                stars.forEach(s => {
+                    ctx.globalAlpha = s.alpha;
+                    ctx.fillRect(s.x, s.y, s.size, s.size);
+                });
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        /* ============================================
+           تحويل لون HEX أو rgba
+        ============================================ */
+        function hexToRgb(color) {
+            if (color.startsWith('rgba')) {
+                const m = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+                if (m) return { r: +m[1], g: +m[2], b: +m[3], a: m[4] !== undefined ? +m[4] : 1 };
+            }
+            if (color.startsWith('#')) {
+                let hex = color.slice(1);
+                if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+                return {
+                    r: parseInt(hex.substr(0, 2), 16),
+                    g: parseInt(hex.substr(2, 2), 16),
+                    b: parseInt(hex.substr(4, 2), 16),
+                    a: 1
+                };
+            }
+            return { r: 255, g: 255, b: 255, a: 1 };
+        }
+
+        function lerpColor(a, b, t) {
+            const ca = hexToRgb(a);
+            const cb = hexToRgb(b);
+            const r = Math.round(ca.r + (cb.r - ca.r) * t);
+            const g = Math.round(ca.g + (cb.g - ca.g) * t);
+            const bl = Math.round(ca.b + (cb.b - ca.b) * t);
+            const alpha = ca.a + (cb.a - ca.a) * t;
+            if (alpha < 1) return `rgba(${r},${g},${bl},${alpha.toFixed(3)})`;
+            return `rgb(${r},${g},${bl})`;
+        }
+
+        /* ============================================
+           إنشاء الأعداء (أكبر حجماً)
         ============================================ */
         function spawnEnemy() {
             if (!enemyLoaded) return;
             const diff = getDifficultyMultiplier();
-            const targetWidth = Math.min(arena.width * 0.075, 50);
+            // 👹 حجم أكبر: من 0.075 → 0.11
+            const targetWidth = Math.min(arena.width * 0.11, 75);
             const aspect = enemyImg.width / enemyImg.height;
             const w = targetWidth;
             const h = w / aspect;
@@ -507,17 +676,18 @@
                 x: arena.width + w / 2,
                 y: h / 2 + Math.random() * (arena.height - h),
                 size: w, width: w, height: h,
-                speed: (2.2 + Math.random() * 1.8) * diff,
+                speed: (2.4 + Math.random() * 1.8) * diff,
                 hp: 1, maxHp: 1, hitFlash: 0, isBoss: false,
                 vx: 0, vy: 0,
                 shootTimer: 100 + Math.floor(Math.random() * 120),
-                shootCooldown: Math.max(70, 160 - (level - 1) * 8)
+                shootCooldown: Math.max(60, 160 - (level - 1) * 8),
+                bobPhase: Math.random() * Math.PI * 2 // 🌟 تمايل
             });
         }
 
         function spawnBoss() {
             if (!bossLoaded) return;
-            const targetWidth = Math.min(arena.width * 0.32, 180);
+            const targetWidth = Math.min(arena.width * 0.34, 200);
             const aspect = bossImg.width / bossImg.height;
             const w = targetWidth;
             const h = w / aspect;
@@ -527,7 +697,7 @@
                 speed: 0.5, hp: 15 + level * 3, maxHp: 15 + level * 3,
                 hitFlash: 0, isBoss: true, isBonusBoss: false,
                 movePhase: 0, moveTimer: 0, baseY: arena.height / 2,
-                shootTimer: 50, shootCooldown: Math.max(30, 60 - level * 3),
+                shootTimer: 40, shootCooldown: Math.max(25, 55 - level * 3),
                 stopped: false, stopX: arena.width * 0.7, recoil: 0
             });
             bossActive = true;
@@ -537,16 +707,17 @@
             const count = 6 + Math.min(6, level);
             for (let i = 0; i < count; i++) {
                 const angle = (i / count) * Math.PI * 2;
-                const targetWidth = Math.min(arena.width * 0.075, 50);
+                const targetWidth = Math.min(arena.width * 0.11, 75);
                 const aspect = enemyImg.width / enemyImg.height;
                 const w = targetWidth;
                 const h = w / aspect;
                 enemies.push({
                     x: bx, y: by, size: w, width: w, height: h,
-                    speed: 2 + Math.random() * 1.5, hp: 1, maxHp: 1,
+                    speed: 2.2 + Math.random() * 1.5, hp: 1, maxHp: 1,
                     hitFlash: 0, isBoss: false, isBonusBoss: false,
-                    vx: Math.cos(angle) * 3, vy: Math.sin(angle) * 3,
-                    spreadTimer: 40, shootTimer: 150, shootCooldown: 150
+                    vx: Math.cos(angle) * 3.5, vy: Math.sin(angle) * 3.5,
+                    spreadTimer: 40, shootTimer: 130, shootCooldown: 130,
+                    bobPhase: Math.random() * Math.PI * 2
                 });
             }
         }
@@ -558,12 +729,12 @@
             playShootSound();
 
             if (data.bulletType === 'triangle') {
-                bullets.push({ x: mx, y: my, vx: BULLET_SPEED, vy: (Math.random() - 0.5) * 0.3, life: 200, maxLife: 200, size: 6, type: 'triangle' });
+                bullets.push({ x: mx, y: my, vx: BULLET_SPEED, vy: (Math.random() - 0.5) * 0.3, life: 200, maxLife: 200, size: 7, type: 'triangle' });
             } else {
-                bullets.push({ x: mx, y: my, vx: BULLET_SPEED, vy: (Math.random() - 0.5) * 0.3, life: 200, maxLife: 200, width: 12, height: 3, type: 'rect' });
+                bullets.push({ x: mx, y: my, vx: BULLET_SPEED, vy: (Math.random() - 0.5) * 0.3, life: 200, maxLife: 200, width: 14, height: 4, type: 'rect' });
             }
 
-            muzzleFades.push({ x: mx, y: my, radius: 5, maxRadius: 30, life: 10, maxLife: 10, color: data.glowColor, coreColor: data.coreColor });
+            muzzleFades.push({ x: mx, y: my, radius: 5, maxRadius: 32, life: 10, maxLife: 10, color: data.glowColor, coreColor: data.coreColor });
 
             for (let i = 0; i < 2; i++) {
                 const angle = (Math.random() - 0.5) * Math.PI * 0.9;
@@ -581,11 +752,11 @@
             const mx = ship.x + ship.width / 2 - 8;
             const my = ship.y;
             playShootSound();
-            powerOrbs.push({ x: mx, y: my, vx: ORB_SPEED, vy: 0, life: 200, maxLife: 200, radius: 6, maxRadius: 35, growth: 0.35 });
-            muzzleFades.push({ x: mx, y: my, radius: 8, maxRadius: 55, life: 15, maxLife: 15, color: data.glowColor, coreColor: '#ffffff' });
-            ship.recoil = 20;
-            ship.glow = 1.2;
-            ship.shake = 5;
+            powerOrbs.push({ x: mx, y: my, vx: ORB_SPEED, vy: 0, life: 200, maxLife: 200, radius: 6, maxRadius: 40, growth: 0.4 });
+            muzzleFades.push({ x: mx, y: my, radius: 8, maxRadius: 60, life: 15, maxLife: 15, color: data.glowColor, coreColor: '#ffffff' });
+            ship.recoil = 22;
+            ship.glow = 1.3;
+            ship.shake = 6;
         }
 
         function bossFire(enemy) {
@@ -596,13 +767,13 @@
                 const dx = ship.x - enemy.x;
                 const dy = ship.y - enemy.y;
                 const angle = Math.atan2(dy, dx) + (i - (bulletsCount - 1) / 2) * 0.15;
-                const speed = 7 + level * 0.3;
+                const speed = 8 + level * 0.35;
                 enemyBullets.push({
                     x: enemy.x - (enemy.width || enemy.size) * 0.3,
                     y: enemy.y + (i - (bulletsCount - 1) / 2) * 12,
                     vx: Math.cos(angle) * speed,
                     vy: Math.sin(angle) * speed,
-                    life: 200, maxLife: 200, width: 16, height: 4, isBossBullet: true
+                    life: 200, maxLife: 200, width: 18, height: 5, isBossBullet: true
                 });
             }
         }
@@ -612,11 +783,11 @@
             const dx = ship.x - enemy.x;
             const dy = ship.y - enemy.y;
             const angle = Math.atan2(dy, dx);
-            const speed = 5 + level * 0.2;
+            const speed = 5.5 + level * 0.25;
             enemyBullets.push({
                 x: enemy.x - enemy.size * 0.3, y: enemy.y,
                 vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-                life: 200, maxLife: 200, width: 10, height: 3, isBossBullet: false
+                life: 200, maxLife: 200, width: 11, height: 3, isBossBullet: false
             });
         }
 
@@ -628,6 +799,15 @@
         function update(now) {
             const dt = Math.min((now - lastFrameTime) / 16.67, 3);
             lastFrameTime = now;
+
+            // انتقال الخلفية
+            if (bgTransition.active) {
+                bgTransition.progress += (dt / 60) / bgTransition.duration;
+                if (bgTransition.progress >= 1) {
+                    bgTransition.progress = 1;
+                    bgTransition.active = false;
+                }
+            }
 
             for (let i = 0; i < stars.length; i++) {
                 const s = stars[i];
@@ -660,7 +840,9 @@
                 if (f.life <= 0) muzzleFades.splice(i, 1);
             }
 
-            displayedScore += (score - displayedScore) * 0.18;
+            // 🚀 الرقم التصاعدي: من 0 إلى الهدف بشكل سلس
+            displayedScore += (score - displayedScore) * 0.15;
+            if (Math.abs(score - displayedScore) < 0.05) displayedScore = score;
 
             if (shipHP.hitFlash > 0) shipHP.hitFlash -= dt;
             if (shipHP.invulnerable > 0) shipHP.invulnerable -= dt;
@@ -687,28 +869,25 @@
             if (enemySpawnTimer >= enemySpawnInterval && !bossActive) {
                 enemySpawnTimer = 0;
                 spawnEnemy();
-                // زيادة تدريجية للصعوبة
-                if (enemySpawnInterval > 22) enemySpawnInterval -= 0.25;
+                if (enemySpawnInterval > 20) enemySpawnInterval -= 0.25;
             }
 
             /* ============================================
-               متابعة سلسة وسريعة للمركبة
+               متابعة سلسة + ميلان 3D-like
             ============================================ */
             if (leftTouch.active) {
                 const dx = ship.targetX - ship.x;
                 const dy = ship.targetY - ship.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
-                // سرعة متكيفة مع المسافة
                 let speed = SHIP_FOLLOW_SPEED;
-                if (dist > 100) speed = 0.55;
-                else if (dist > 30) speed = 0.45;
-                else speed = 0.35;
+                if (dist > 100) speed = 0.6;
+                else if (dist > 30) speed = 0.5;
+                else speed = 0.4;
 
                 const stepX = dx * speed * dt;
                 const stepY = dy * speed * dt;
 
-                // تقييد السرعة القصوى
                 const stepDist = Math.sqrt(stepX * stepX + stepY * stepY);
                 if (stepDist > SHIP_MAX_SPEED) {
                     const ratio = SHIP_MAX_SPEED / stepDist;
@@ -719,10 +898,22 @@
                     ship.y += stepY;
                 }
 
-                ship.angle = Math.max(-0.35, Math.min(0.35, dy * 0.02));
+                // 🌟 ميلان ديناميكي 3D-like
+                const targetTilt = Math.max(-0.5, Math.min(0.5, dy * 0.025));
+                ship.tiltVelocity += (targetTilt - ship.tiltAngle) * 0.15;
+                ship.tiltVelocity *= 0.85;
+                ship.tiltAngle += ship.tiltVelocity;
+
+                ship.angle = Math.max(-0.4, Math.min(0.4, dy * 0.02));
             } else {
                 ship.angle *= 0.88;
+                ship.tiltVelocity += (0 - ship.tiltAngle) * 0.08;
+                ship.tiltVelocity *= 0.85;
+                ship.tiltAngle += ship.tiltVelocity;
             }
+
+            // 🌟 تمايل أعلى-أسفل 3D-like
+            ship.bobPhase += dt * 0.08;
 
             ship.x = Math.max(ship.width / 2, Math.min(arena.width - ship.width / 2, ship.x));
             ship.y = Math.max(ship.height / 2, Math.min(arena.height - ship.height / 2, ship.y));
@@ -743,7 +934,7 @@
                     const dx = b.x - e.x;
                     const dy = b.y - e.y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    const cs = e.isBoss ? (e.width || e.size) * 0.35 : e.size * 0.4;
+                    const cs = e.isBoss ? (e.width || e.size) * 0.35 : e.size * 0.42;
 
                     if (dist < cs) {
                         e.hp--;
@@ -877,8 +1068,8 @@
                         e.x -= e.speed * dt;
                         if (e.x <= e.stopX) { e.x = e.stopX; e.stopped = true; }
                     } else {
-                        e.moveTimer += (0.03 + level * 0.005) * dt;
-                        e.y = e.baseY + Math.sin(e.moveTimer) * (arena.height * 0.3);
+                        e.moveTimer += (0.035 + level * 0.006) * dt;
+                        e.y = e.baseY + Math.sin(e.moveTimer) * (arena.height * 0.32);
                         e.x = e.stopX + (e.recoil > 0 ? e.recoil : 0);
                     }
                     e.shootTimer -= dt;
@@ -923,49 +1114,8 @@
         }
 
         /* ============================================
-           الرسم — الخلفيات المتغيرة حسب المستوى
+           رسم اللعبة
         ============================================ */
-        function drawBackground() {
-            const bg = BACKGROUNDS[Math.min(level - 1, BACKGROUNDS.length - 1)];
-            const grad = ctx.createLinearGradient(0, 0, viewWidth, viewHeight);
-            grad.addColorStop(0, bg.colors[0]);
-            grad.addColorStop(0.5, bg.colors[1]);
-            grad.addColorStop(1, bg.colors[2]);
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, viewWidth, viewHeight);
-
-            // سديم متحرك
-            const t = gameTime * 0.002;
-            const nebX = viewWidth * (0.5 + Math.sin(t) * 0.3);
-            const nebY = viewHeight * (0.5 + Math.cos(t * 1.3) * 0.3);
-            const nebGrad = ctx.createRadialGradient(nebX, nebY, 0, nebX, nebY, viewWidth * 0.7);
-            nebGrad.addColorStop(0, bg.nebula);
-            nebGrad.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = nebGrad;
-            ctx.fillRect(0, 0, viewWidth, viewHeight);
-
-            // دخان
-            smokeParticles.forEach(p => {
-                const alpha = (p.life / p.maxLife) * p.alpha;
-                const grad2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-                grad2.addColorStop(0, `rgba(120, 120, 160, ${alpha})`);
-                grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                ctx.fillStyle = grad2;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
-            // نجوم
-            ctx.globalAlpha = 1;
-            ctx.fillStyle = bg.stars;
-            stars.forEach(s => {
-                ctx.globalAlpha = s.alpha;
-                ctx.fillRect(s.x, s.y, s.size, s.size);
-            });
-            ctx.globalAlpha = 1;
-        }
-
         function drawGame() {
             const data = SHIPS_DATA[selectedShipIndex];
             drawBackground();
@@ -990,35 +1140,71 @@
                 ctx.restore();
             });
 
+            /* ============================================
+               رسم الأعداء مع تأثير 3D-like (ظل + توهج + تمايل)
+            ============================================ */
             enemies.forEach(e => {
                 let img, isLoaded;
                 if (e.isBoss) { img = bossImg; isLoaded = bossLoaded; }
                 else { img = enemyImg; isLoaded = enemyLoaded; }
                 if (!isLoaded) return;
 
+                // 🌟 تمايل أعلى-أسفل 3D-like
+                const bob = e.isBoss ? 0 : Math.sin(gameTime * 0.08 + (e.bobPhase || 0)) * 3;
+                const bobScale = e.isBoss ? 1 : 1 + Math.sin(gameTime * 0.08 + (e.bobPhase || 0)) * 0.04;
+                const drawW = e.width * bobScale;
+                const drawH = e.height * bobScale;
+
                 ctx.save();
-                ctx.translate(e.x, e.y);
-                if (e.isBoss) {
-                    ctx.shadowBlur = 15 + Math.sin(gameTime * 0.1) * 8;
-                    ctx.shadowColor = '#ff3333';
-                } else {
-                    ctx.shadowBlur = 8;
-                    ctx.shadowColor = '#0a3d1a';
-                }
-                if (e.hitFlash > 0) ctx.globalAlpha = 0.7;
-                ctx.drawImage(img, -e.width / 2, -e.height / 2, e.width, e.height);
+                ctx.translate(e.x, e.y + bob);
+
+                // ظل داكن تحتي يعطي إحساس 3D
+                ctx.save();
+                ctx.globalAlpha = 0.35;
+                ctx.fillStyle = '#000000';
+                ctx.beginPath();
+                ctx.ellipse(0, drawH * 0.35, drawW * 0.42, drawH * 0.12, 0, 0, Math.PI * 2);
+                ctx.fill();
                 ctx.restore();
 
+                // توهج متعدد الطبقات (خارجي)
+                if (e.isBoss) {
+                    ctx.shadowBlur = 20 + Math.sin(gameTime * 0.1) * 10;
+                    ctx.shadowColor = '#ff3333';
+                } else {
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = '#00ff88';
+                }
+
+                if (e.hitFlash > 0) ctx.globalAlpha = 0.75;
+                ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+
+                // طبقة توهج علوية إضافية (3D)
+                ctx.globalAlpha = 0.25;
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+
+                ctx.restore();
+
+                // شريط صحة الزعيم
                 if (e.isBoss) {
                     const barW = e.width * 0.9;
-                    const barH = 5;
+                    const barH = 6;
                     const barX = e.x - barW / 2;
-                    const barY = e.y - e.height / 2 - 12;
+                    const barY = e.y - e.height / 2 - 14;
                     ctx.save();
-                    ctx.fillStyle = 'rgba(0,0,0,0.7)';
-                    ctx.fillRect(barX, barY, barW, barH);
-                    ctx.fillStyle = '#ff3333';
+                    // خلفية
+                    ctx.fillStyle = 'rgba(0,0,0,0.8)';
+                    ctx.fillRect(barX - 1, barY - 1, barW + 2, barH + 2);
+                    // تعبئة
+                    const hpGrad = ctx.createLinearGradient(barX, barY, barX + barW, barY);
+                    hpGrad.addColorStop(0, '#ff2222');
+                    hpGrad.addColorStop(1, '#ff8888');
+                    ctx.fillStyle = hpGrad;
                     ctx.fillRect(barX, barY, barW * (e.hp / e.maxHp), barH);
+                    // لمعة
+                    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                    ctx.fillRect(barX, barY, barW * (e.hp / e.maxHp), 2);
                     ctx.restore();
                 }
             });
@@ -1081,7 +1267,6 @@
             });
             ctx.restore();
 
-            // نقاط طائرة
             ctx.save();
             scorePopups.forEach(sp => {
                 const alpha = sp.life / sp.maxLife;
@@ -1095,7 +1280,9 @@
             });
             ctx.restore();
 
-            // المركبة
+            /* ============================================
+               رسم المركبة مع تأثير 3D-like
+            ============================================ */
             ctx.save();
             const shakeX = (Math.random() - 0.5) * ship.shake;
             const shakeY = (Math.random() - 0.5) * ship.shake;
@@ -1103,15 +1290,35 @@
             const dy = ship.y + shakeY;
 
             if (imageLoaded) {
+                // ظل تحتي
+                ctx.save();
+                ctx.globalAlpha = 0.4;
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.ellipse(dx, dy + ship.height * 0.35, ship.width * 0.4, ship.height * 0.15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // جسم المركبة (مع ميلان 3D-like)
                 ctx.translate(dx, dy);
-                ctx.rotate(ship.angle);
-                ctx.shadowBlur = 10 + ship.glow * 20;
+                ctx.rotate(ship.angle + ship.tiltAngle * 0.15);
+                ctx.shadowBlur = 15 + ship.glow * 25;
                 ctx.shadowColor = data.glowColor;
 
                 if (shipHP.invulnerable > 0 && Math.floor(shipHP.invulnerable / 4) % 2 === 0) {
                     ctx.globalAlpha = 0.5;
                 }
 
+                // 🌟 محاكاة 3D: نضغط الصورة عمودياً حسب الميلان
+                const tiltScaleY = 1 - Math.abs(ship.tiltAngle) * 0.15;
+                ctx.save();
+                ctx.scale(1, tiltScaleY);
+                ctx.drawImage(shipImg, -ship.width / 2, -ship.height / 2, ship.width, ship.height);
+                ctx.restore();
+
+                // طبقة توهج علوية
+                ctx.globalAlpha = 0.2;
+                ctx.globalCompositeOperation = 'lighter';
                 ctx.drawImage(shipImg, -ship.width / 2, -ship.height / 2, ship.width, ship.height);
             }
             ctx.restore();
@@ -1125,128 +1332,147 @@
             const centerX = viewWidth / 2;
             const padding = 10;
 
-            // النقاط
-            const scoreFontSize = Math.min(viewWidth * 0.035, 20);
-            const scoreText = displayedScore.toString();
+            // 🚀 النقاط (الرقم التصاعدي)
+            const scoreFontSize = Math.min(viewWidth * 0.04, 22);
+            const scoreText = Math.floor(displayedScore).toString();
 
             ctx.save();
             ctx.font = `bold ${scoreFontSize}px 'Courier New', monospace`;
             const metrics = ctx.measureText(scoreText);
-            const boxW = Math.max(metrics.width + 60, 100);
-            const boxH = scoreFontSize * 1.7;
+            const boxW = Math.max(metrics.width + 60, 110);
+            const boxH = scoreFontSize * 1.8;
             const boxX = centerX - boxW / 2;
             const boxY = padding;
 
-            ctx.fillStyle = 'rgba(0, 20, 15, 0.85)';
+            // خلفية متدرجة
+            const bgGrad = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY + boxH);
+            bgGrad.addColorStop(0, 'rgba(0, 30, 20, 0.9)');
+            bgGrad.addColorStop(1, 'rgba(0, 15, 10, 0.85)');
+            ctx.fillStyle = bgGrad;
             ctx.fillRect(boxX, boxY, boxW, boxH);
-            ctx.strokeStyle = '#26a17b';
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(boxX, boxY, boxW, boxH);
 
+            ctx.strokeStyle = '#26a17b';
+            ctx.lineWidth = 2;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#26a17b';
+            ctx.strokeRect(boxX, boxY, boxW, boxH);
+            ctx.shadowBlur = 0;
+
+            // أيقونة
             ctx.fillStyle = '#26a17b';
             ctx.beginPath();
-            ctx.arc(boxX + 15, boxY + boxH / 2, 7, 0, Math.PI * 2);
+            ctx.arc(boxX + 18, boxY + boxH / 2, 8, 0, Math.PI * 2);
             ctx.fill();
-
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 10px Arial';
+            ctx.font = 'bold 11px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('★', boxX + 15, boxY + boxH / 2 + 1);
+            ctx.fillText('★', boxX + 18, boxY + boxH / 2 + 1);
 
+            // الرقم
             ctx.textAlign = 'left';
             ctx.fillStyle = '#26a17b';
             ctx.font = `bold ${scoreFontSize}px 'Courier New', monospace`;
-            ctx.fillText(scoreText, boxX + 28, boxY + boxH / 2);
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#26a17b';
+            ctx.fillText(scoreText, boxX + 32, boxY + boxH / 2);
             ctx.restore();
 
             // المستوى
             ctx.save();
-            ctx.font = `bold 12px Cairo, sans-serif`;
+            ctx.font = `bold 13px Cairo, sans-serif`;
             ctx.fillStyle = '#f39c12';
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#f39c12';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(`المستوى ${level}`, centerX, boxY + boxH + 14);
+            ctx.fillText(`المستوى ${level}`, centerX, boxY + boxH + 15);
             ctx.restore();
 
             // شريط الصحة
-            const hpBarW = Math.min(viewWidth * 0.38, 160);
-            const hpBarH = 5;
+            const hpBarW = Math.min(viewWidth * 0.4, 170);
+            const hpBarH = 6;
             const hpBarX = centerX - hpBarW / 2;
-            const hpBarY = boxY + boxH + 26;
+            const hpBarY = boxY + boxH + 28;
 
             ctx.save();
-            ctx.fillStyle = 'rgba(40, 0, 0, 0.7)';
-            ctx.fillRect(hpBarX, hpBarY, hpBarW, hpBarH);
+            ctx.fillStyle = 'rgba(40, 0, 0, 0.8)';
+            ctx.fillRect(hpBarX - 1, hpBarY - 1, hpBarW + 2, hpBarH + 2);
 
             const hpRatio = shipHP.current / shipHP.max;
             let hpColor = '#00ff44';
             if (hpRatio < 0.6) hpColor = '#ffcc00';
             if (hpRatio < 0.3) hpColor = '#ff3333';
 
-            ctx.fillStyle = hpColor;
+            const hpGrad = ctx.createLinearGradient(hpBarX, hpBarY, hpBarX + hpBarW, hpBarY);
+            hpGrad.addColorStop(0, hpColor);
+            hpGrad.addColorStop(1, hpColor + 'aa');
+
+            ctx.fillStyle = hpGrad;
             ctx.fillRect(hpBarX, hpBarY, hpBarW * hpRatio, hpBarH);
+
+            // لمعة
+            ctx.fillStyle = 'rgba(255,255,255,0.35)';
+            ctx.fillRect(hpBarX, hpBarY, hpBarW * hpRatio, 2);
             ctx.restore();
 
             // أفضل نتيجة
             ctx.save();
-            ctx.font = `bold 10px Cairo, sans-serif`;
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = `bold 11px Cairo, sans-serif`;
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
-            ctx.fillText(`الأفضل: ${bestScore}`, 15, padding);
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#f39c12';
+            ctx.fillText(`🏆 الأفضل: ${bestScore}`, 15, padding);
             ctx.restore();
         }
 
         function drawGameOver() {
             ctx.save();
-            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillStyle = 'rgba(0,0,0,0.75)';
             ctx.fillRect(0, 0, viewWidth, viewHeight);
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            // العنوان
-            ctx.font = `bold ${Math.min(viewWidth * 0.08, 42)}px Cairo, sans-serif`;
+            ctx.font = `bold ${Math.min(viewWidth * 0.08, 44)}px Cairo, sans-serif`;
             ctx.fillStyle = '#ff3333';
-            ctx.shadowBlur = 25;
+            ctx.shadowBlur = 30;
             ctx.shadowColor = '#ff3333';
-            ctx.fillText('انتهت اللعبة', viewWidth / 2, viewHeight * 0.28);
+            ctx.fillText('انتهت اللعبة', viewWidth / 2, viewHeight * 0.26);
 
-            // النقاط
             ctx.font = `bold ${Math.min(viewWidth * 0.05, 26)}px Cairo, sans-serif`;
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = '#26a17b';
             ctx.shadowBlur = 15;
-            ctx.fillText('النقاط', viewWidth / 2, viewHeight * 0.42);
+            ctx.fillText('النقاط', viewWidth / 2, viewHeight * 0.4);
 
-            ctx.font = `bold ${Math.min(viewWidth * 0.12, 65)}px 'Courier New', monospace`;
+            ctx.font = `bold ${Math.min(viewWidth * 0.13, 70)}px 'Courier New', monospace`;
             ctx.fillStyle = '#26a17b';
             ctx.shadowColor = '#26a17b';
-            ctx.shadowBlur = 30;
-            ctx.fillText(score.toString(), viewWidth / 2, viewHeight * 0.53);
+            ctx.shadowBlur = 35;
+            ctx.fillText(score.toString(), viewWidth / 2, viewHeight * 0.52);
 
-            // أفضل نتيجة
             if (score >= bestScore && score > 0) {
                 ctx.font = `bold ${Math.min(viewWidth * 0.045, 20)}px Cairo, sans-serif`;
                 ctx.fillStyle = '#f39c12';
                 ctx.shadowColor = '#f39c12';
                 ctx.shadowBlur = 20;
-                ctx.fillText('🎉 رقم قياسي جديد!', viewWidth / 2, viewHeight * 0.63);
+                ctx.fillText('🎉 رقم قياسي جديد!', viewWidth / 2, viewHeight * 0.62);
             } else {
                 ctx.font = `bold ${Math.min(viewWidth * 0.04, 16)}px Cairo, sans-serif`;
                 ctx.fillStyle = 'rgba(255,255,255,0.6)';
                 ctx.shadowBlur = 0;
-                ctx.fillText(`الأفضل: ${bestScore}`, viewWidth / 2, viewHeight * 0.63);
+                ctx.fillText(`الأفضل: ${bestScore}`, viewWidth / 2, viewHeight * 0.62);
             }
 
-            // زر إعادة المحاولة
-            const btnW = Math.min(viewWidth * 0.5, 240);
-            const btnH = Math.min(viewHeight * 0.09, 55);
+            const btnW = Math.min(viewWidth * 0.55, 260);
+            const btnH = Math.min(viewHeight * 0.1, 60);
             const btnX = viewWidth / 2 - btnW / 2;
-            const btnY = viewHeight * 0.75;
+            const btnY = viewHeight * 0.74;
 
-            ctx.shadowBlur = 25;
+            ctx.shadowBlur = 30;
             ctx.shadowColor = '#6a11cb';
             const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH);
             btnGrad.addColorStop(0, '#6a11cb');
@@ -1258,7 +1484,7 @@
 
             ctx.shadowBlur = 0;
             ctx.fillStyle = '#ffffff';
-            ctx.font = `bold ${Math.min(btnH * 0.42, 20)}px Cairo, sans-serif`;
+            ctx.font = `bold ${Math.min(btnH * 0.42, 22)}px Cairo, sans-serif`;
             ctx.fillText('العب مرة أخرى', viewWidth / 2, btnY + btnH / 2);
 
             ctx.restore();
@@ -1294,7 +1520,7 @@
             ctx.font = `bold ${Math.min(btn.height * 0.75, 50)}px Arial, sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.shadowBlur = 20;
+            ctx.shadowBlur = 25;
             ctx.shadowColor = SHIPS_DATA[selectedShipIndex].coreColor;
             ctx.fillText('START', btn.x + btn.width / 2, btn.y + btn.height / 2 + 2);
             ctx.restore();
@@ -1317,13 +1543,13 @@
 
         function initStars() {
             stars.length = 0;
-            for (let i = 0; i < 60; i++) {
+            for (let i = 0; i < 70; i++) {
                 stars.push({
                     x: Math.random() * viewWidth,
                     y: Math.random() * viewHeight,
-                    size: Math.random() * 1.2 + 0.5,
-                    speed: Math.random() * 0.5 + 0.3,
-                    alpha: Math.random() * 0.5 + 0.3
+                    size: Math.random() * 1.4 + 0.5,
+                    speed: Math.random() * 0.6 + 0.3,
+                    alpha: Math.random() * 0.6 + 0.3
                 });
             }
             smokeParticles.length = 0;
